@@ -8,7 +8,8 @@ import TDMSSaveData as tdmsSave
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
-
+print('git')
+print('haha')
 if (__name__ == "__main__"):
     comsolFieldFactor =  (23e3)*(6.5e-3)/10 # Conversion factor based on comsol simulation V/m/m/V
     electrodeSpacing = 6.5e-3 # Spacing between electrodes in m
