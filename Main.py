@@ -34,8 +34,8 @@ if (__name__ == "__main__"):
     # General Parameters
     tdmsPlot.plotTrace = True
     tdmsPlot.normalize = True
-    tdmsPlot.plotKymo = True
-    tdmsPlot.plotCentroidKymo = True
+    tdmsPlot.plotKymo = False
+    tdmsPlot.plotCentroidKymo = False
     
     tdmsAnimate.centroidCalculation = "gaussian fit"
     
@@ -116,7 +116,7 @@ if (__name__ == "__main__"):
     Edit and generate data from TDMS
     """    
     print("### Generating signals and segmenting \n")
-    pixelNumberArray, AODTimeArray, AODSyncTimeArray, AODSyncDataArray, SPCMDataArray, SPCMTimeArray, SPCMSyncTimeArray, SPCMSyncDataArray,eFieldDataArray, eFieldTimeArray = tdmsData.return_arrays_from_tdms_hierarchy(pixelNumberArray=pixelNumberArray, AODLoopTicksArray=AODLoopTicksArray, SPCMDataArray=SPCMDataArray,
+    AODTimeArray, AODSyncTimeArray, AODSyncDataArray, SPCMDataArray, SPCMTimeArray, SPCMSyncTimeArray, SPCMSyncDataArray,eFieldDataArray, eFieldTimeArray = tdmsData.return_arrays_from_tdms_hierarchy(AODLoopTicksArray=AODLoopTicksArray, SPCMDataArray=SPCMDataArray,
                                                                                                                                                                                                                          SPCMLoopTicksArray=SPCMLoopTicksArray, eFieldDataArray=eFieldDataArray, eFieldLoopTicksArray=eFieldLoopTicksArray,
                                                                                                                                                                                                                         FPGAClockPeriod=FPGAClockPeriod,tdmsFolderPath=tdmsFolderPath,experimentName=experimentName)
     discontIndexArray = tdmsData.locate_AOD_discontinuities(pixelNumberArray=pixelNumberArray)

@@ -1,6 +1,7 @@
 import numpy as np
 import scipy.signal as ss
 import os
+from datetime import datetime
 
 filterSPCM = True
 windowSize = 50
@@ -10,6 +11,7 @@ offsetSPCMTime = 0.0
    
 
 def write_offset_times_to_txt(offsetFilePath=""):
+    #stores SPCM and Extern field offset
     global offsetSPCMTime
     global offsetExtFieldTime
     
@@ -20,6 +22,7 @@ def write_offset_times_to_txt(offsetFilePath=""):
     offsetFile.close()
     
 def read_offset_times_from_txt(offsetFilePath=""):
+    #reads offset from given file
     global offsetSPCMTime
     global offsetExtFieldTime
     
@@ -29,8 +32,10 @@ def read_offset_times_from_txt(offsetFilePath=""):
     offsetExtFieldTime = float(offsetFile.readline().split(":")[1])
     offsetFile.close()
  
-def return_arrays_from_tdms_hierarchy(pixelNumberArray=np.array([]), AODLoopTicksArray=np.array([]), SPCMDataArray=np.array([]), SPCMLoopTicksArray=np.array([]), 
+def return_arrays_from_tdms_hierarchy(AODLoopTicksArray=np.array([]), SPCMDataArray=np.array([]), SPCMLoopTicksArray=np.array([]), 
                                       eFieldDataArray=np.array([]), eFieldLoopTicksArray=np.array([]), FPGAClockPeriod=25e-9,tdmsFolderPath="",experimentName=""):
+    #input: raw data from tdms files
+    #output: ticks are converted to time + sync signals generated + offset is applied if true
     global filterSPCM
     global windowSize
     global offsetOn
@@ -38,14 +43,14 @@ def return_arrays_from_tdms_hierarchy(pixelNumberArray=np.array([]), AODLoopTick
     global offsetSPCMTime
     
     AODTimeArray = np.cumsum(np.abs(AODLoopTicksArray.astype('float'))) * FPGAClockPeriod
-    AODSyncTimeArray, AODSyncDataArray = generate_sync_array(rawTicksArray=AODLoopTicksArray.astype('float'),FPGAClockPeriod=FPGAClockPeriod)
+    AODSyncTimeArray, AODSyncDataArray = generate_sync_array(rawTicksArray=AODLoopTicksArray.astype('float'), rawTimeArray=AODTimeArray)
     
     eFieldTimeArray = np.cumsum(eFieldLoopTicksArray.astype('float')) * FPGAClockPeriod
     
     if(filterSPCM == True):
         SPCMDataArray = noise_filter_counts_array(countsArray=SPCMDataArray,windowSize=windowSize,filterType="gauss")
     SPCMTimeArray = np.cumsum(np.abs(SPCMLoopTicksArray.astype('float'))) * FPGAClockPeriod 
-    SPCMSyncTimeArray, SPCMSyncDataArray = generate_sync_array(rawTicksArray=SPCMLoopTicksArray.astype('float'),FPGAClockPeriod=FPGAClockPeriod)
+    SPCMSyncTimeArray, SPCMSyncDataArray = generate_sync_array(rawTicksArray=SPCMLoopTicksArray.astype('float'), rawTimeArray=SPCMTimeArray)
     
     if(offsetOn == True):
         offsetFilePath = os.path.join(tdmsFolderPath,"{}_time_offset.txt".format(experimentName))
@@ -60,7 +65,7 @@ def return_arrays_from_tdms_hierarchy(pixelNumberArray=np.array([]), AODLoopTick
         SPCMSyncTimeArray = SPCMSyncTimeArray + offsetSPCMTime
         SPCMTimeArray = SPCMTimeArray + offsetSPCMTime
     
-    return pixelNumberArray, AODTimeArray, AODSyncTimeArray, AODSyncDataArray, SPCMDataArray, SPCMTimeArray, SPCMSyncTimeArray, SPCMSyncDataArray,eFieldDataArray, eFieldTimeArray
+    return AODTimeArray, AODSyncTimeArray, AODSyncDataArray, SPCMDataArray, SPCMTimeArray, SPCMSyncTimeArray, SPCMSyncDataArray,eFieldDataArray, eFieldTimeArray
     
 def noise_filter_counts_array(countsArray=np.array([]),filterType="mean"):
     global windowSize
@@ -89,27 +94,26 @@ def locate_AOD_discontinuities(pixelNumberArray=np.array([])):
     
     return discontIndexArray
 
-def generate_sync_array(rawTicksArray=np.array([]),FPGAClockPeriod=25e-9):
+def generate_sync_array(rawTicksArray=np.array([]), rawTimeArray=np.array([])):
+    
     syncTimeArray = np.array([])
     syncDataArray = np.array([])
-    
-    rawTimeArray = np.cumsum(np.abs(rawTicksArray)) * FPGAClockPeriod
-    
+
     negativeIndexArray = np.where(rawTicksArray <= 0)[0]
     negativeIndexJumpArray = np.diff(negativeIndexArray)
     negativeSignChangeIndexArray = np.where(negativeIndexJumpArray > 1)[0]
     
     positiveIndexArray = np.where(rawTicksArray >= 0)[0]
     positiveIndexJumpArray = np.diff(positiveIndexArray)
-    positiveSignChangeIndexArray = np.where(positiveIndexJumpArray > 1)[0]    
-    
+    positiveSignChangeIndexArray = np.where(positiveIndexJumpArray > 1)[0] 
+
     if(rawTicksArray[0] > 0):
         syncDataArray = np.append(syncDataArray, 1.0)
     elif(rawTicksArray[0] < 0):
         syncDataArray = np.append(syncDataArray, 0.0)
     
     syncTimeArray = np.append(syncTimeArray,rawTimeArray[0])    
-    
+ 
     allSignChangeIndexArray = np.array([])
     allSignChangeIndexArray = np.append(allSignChangeIndexArray,negativeIndexArray[negativeSignChangeIndexArray])
     allSignChangeIndexArray = np.append(allSignChangeIndexArray,positiveIndexArray[positiveSignChangeIndexArray])
@@ -140,31 +144,31 @@ def data_to_segment(timeSegment=[],AODTimeArray=np.array([]),AOD1DataArray=np.ar
     
     startIndex = len(np.where(AODTimeArray < startTime)[0]) 
     stopIndex = len(np.where(AODTimeArray < stopTime)[0])
-    AODTimeArray = np.copy(AODTimeArray[startIndex:stopIndex])
-    pixelNumberArray = np.copy(pixelNumberArray[startIndex:stopIndex])
-    AOD1DataArray = np.copy(AOD1DataArray[startIndex:stopIndex])
-    AOD2DataArray = np.copy(AOD2DataArray[startIndex:stopIndex])
+    AODTimeArray = AODTimeArray[startIndex:stopIndex]
+    pixelNumberArray = pixelNumberArray[startIndex:stopIndex]
+    AOD1DataArray = AOD1DataArray[startIndex:stopIndex]
+    AOD2DataArray = AOD2DataArray[startIndex:stopIndex]
     
     startIndex = len(np.where(discontTimeArray < startTime)[0]) 
     stopIndex = len(np.where(discontTimeArray < stopTime)[0])
-    discontTimeArray = np.copy(discontTimeArray[startIndex:stopIndex])
-    discontDataArray = np.copy(discontDataArray[startIndex:stopIndex])  
+    discontTimeArray = discontTimeArray[startIndex:stopIndex]
+    discontDataArray = discontDataArray[startIndex:stopIndex]  
     
     startIndex = len(np.where(SPCMSyncTimeArray < startTime)[0]) 
     stopIndex = len(np.where(SPCMSyncTimeArray < stopTime)[0])
-    SPCMSyncTimeArray = np.copy(SPCMSyncTimeArray[startIndex:stopIndex])
-    SPCMSyncDataArray = np.copy(SPCMSyncDataArray[startIndex:stopIndex])     
+    SPCMSyncTimeArray = SPCMSyncTimeArray[startIndex:stopIndex]
+    SPCMSyncDataArray = SPCMSyncDataArray[startIndex:stopIndex]
     
     startIndex = len(np.where(AODSyncTimeArray < startTime)[0]) 
     stopIndex = len(np.where(AODSyncTimeArray < stopTime)[0])
-    AODSyncTimeArray = np.copy(AODSyncTimeArray[startIndex:stopIndex])
-    AODSyncDataArray = np.copy(AODSyncDataArray[startIndex:stopIndex])    
-    
+    AODSyncTimeArray = AODSyncTimeArray[startIndex:stopIndex]
+    AODSyncDataArray = AODSyncDataArray[startIndex:stopIndex]   
+
     startIndex = len(np.where(SPCMTimeArray < startTime)[0]) 
     stopIndex = len(np.where(SPCMTimeArray < stopTime)[0])
     SPCMTimeArray = SPCMTimeArray[startIndex:stopIndex]
     SPCMDataArray = SPCMDataArray[startIndex:stopIndex]
-    
+
     startIndex = len(np.where(eFieldTimeArray < startTime)[0]) 
     stopIndex = len(np.where(eFieldTimeArray < stopTime)[0])
     eFieldTimeArray = eFieldTimeArray[startIndex:stopIndex]
@@ -323,14 +327,8 @@ def generate_S_grid_pixel_mapping_dict(amountOfLines=10,pixelsPerLine=10,lineAxi
         
     return pixelMappingDict
 
-    
 
-
-def pixel_number_array_to_AOD_grid_index_arrays(pixelNumberArray=np.array([]),amountOfLines=10,pixelsPerLine=10,lineAxis=0,scanningPattern="E-shape"):
-    AOD1DataArray = np.copy(pixelNumberArray)
-    AOD2DataArray = np.copy(pixelNumberArray)
-    pixelMappingDict = {}
-    
+def generate_pixel_mapping_dict(scanningPattern="S-shape", amountOfLines=10, pixelsPerLine=10, lineAxis=0):
     if(scanningPattern == "E-shape"):
         pixelMappingDict = generate_E_grid_pixel_mapping_dict(amountOfLines=amountOfLines, pixelsPerLine=pixelsPerLine, lineAxis=lineAxis)
     elif(scanningPattern == "S-shape"):
@@ -338,10 +336,16 @@ def pixel_number_array_to_AOD_grid_index_arrays(pixelNumberArray=np.array([]),am
     elif(scanningPattern == "S-shape-x2"):
         pixelMappingDict = generate_S_grid_x2_pixel_mapping_dict(amountOfLines=amountOfLines, pixelsPerLine=pixelsPerLine, lineAxis=lineAxis)
     elif(scanningPattern == "S-shape-x4"):
-        pixelMappingDict = generate_S_grid_x4_pixel_mapping_dict(amountOfLines=amountOfLines, pixelsPerLine=pixelsPerLine, lineAxis=lineAxis)        
-        
-        
+        pixelMappingDict = generate_S_grid_x4_pixel_mapping_dict(amountOfLines=amountOfLines, pixelsPerLine=pixelsPerLine, lineAxis=lineAxis) 
+    return pixelMappingDict
+
+
+def pixel_number_array_to_AOD_grid_index_arrays(pixelNumberArray=np.array([]),amountOfLines=10,pixelsPerLine=10,lineAxis=0,scanningPattern="E-shape"):
+    AOD1DataArray = np.copy(pixelNumberArray)
+    AOD2DataArray = np.copy(pixelNumberArray)
+    pixelMappingDict = generate_pixel_mapping_dict(scanningPattern=scanningPattern, amountOfLines=amountOfLines, pixelsPerLine=pixelsPerLine, lineAxis=lineAxis)
     
+
     amountOfPixels = len(pixelMappingDict.keys())
     for i in range(amountOfPixels):
         AOD1DataArray[np.where(AOD1DataArray == i)[0]] = pixelMappingDict[i][0]
