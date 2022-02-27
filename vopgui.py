@@ -440,7 +440,7 @@ class Ui_MainWindow(object):
         self.comboBox_16.setItemText(1, _translate("MainWindow", "Dashed"))
         self.comboBox_16.setItemText(2, _translate("MainWindow", "solid"))
         self.checkBox_6.setText(_translate("MainWindow", "AOD Sync"))
-        self.comboBox_6.setItemText(0, _translate("MainWindow", "Red "))
+        self.comboBox_6.setItemText(0, _translate("MainWindow", "Red"))
         self.comboBox_6.setItemText(1, _translate("MainWindow", "Green"))
         self.comboBox_6.setItemText(2, _translate("MainWindow", "Blue"))
         self.comboBox_6.setItemText(3, _translate("MainWindow", "Yellow"))

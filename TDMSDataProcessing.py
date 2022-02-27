@@ -374,74 +374,11 @@ def flatten_fragments_to_segment(frameTimeStampArrayList=[],frameSumWidthArrayLi
     
     frameTimeStampArray = np.array([])
     frameTimeStampArray = ravel_list_of_arrays(arrayList=frameTimeStampArrayList)
-    
-    #averageFrameTime = np.average(np.diff(frameTimeStampArray))
-    
+       
     frameSumHeightCentroidArray = np.array([])
     frameSumWidthCentroidArray = np.array([])
     frameSumWidthArrayList = []
     frameSumHeightArrayList = []
-    
-    #tempList = []
-    
-    #gapsBetweenSegments = False
-    """
-    
-    for i in range(len(frameTimeStampArrayList)-1):
-        if((frameTimeStampArrayList[i+1][0]-frameTimeStampArrayList[i][-1]) >= 1.3*averageFrameTime):
-            gapsBetweenSegments = True
-            
-            
-    if(gapsBetweenSegments == True):
-        for i in range(len(frameTimeStampArrayList)-1):
-            newTime = frameTimeStampArrayList[i+1][0] + frameTimeStampArrayList[i][-1]
-            newTime = newTime/2
-            frameTimeStampArray = np.append(frameTimeStampArray,frameTimeStampArrayList[i])
-            frameTimeStampArray = np.append(frameTimeStampArray, newTime)
-            
-            
-            newWidthCentroid = frameSumWidthCentroidArrayList[i+1][0] + frameSumWidthCentroidArrayList[i][-1]
-            newWidthCentroid = newWidthCentroid/2
-            frameSumWidthCentroidArray = np.append(frameSumWidthCentroidArray,frameSumWidthCentroidArrayList[i])
-            frameSumWidthCentroidArray = np.append(frameSumWidthCentroidArray,newWidthCentroid)
-            
-            newHeightCentroid = frameSumHeightCentroidArrayList[i+1][0] + frameSumHeightCentroidArrayList[i][-1]
-            newHeightCentroid = newHeightCentroid/2
-            frameSumHeightCentroidArray = np.append(frameSumHeightCentroidArray,frameSumHeightCentroidArrayList[i])
-            frameSumHeightCentroidArray = np.append(frameSumHeightCentroidArray,newHeightCentroid)            
-            
-            
-            newSumWidthArray = frameSumWidthArrayListList[i+1][0] + frameSumWidthArrayListList[i][-1]
-            newSumWidthArray = newSumWidthArray/2
-            tempList = frameSumWidthArrayListList[i]
-            tempList.append(newSumWidthArray)
-            frameSumWidthArrayList = frameSumWidthArrayList + tempList
-            
-            newSumHeightArray = frameSumHeightArrayListList[i+1][0] + frameSumHeightArrayListList[i][-1]
-            newSumHeightArray = newSumHeightArray/2
-            tempList = frameSumHeightArrayListList[i]
-            tempList.append(newSumHeightArray)
-            frameSumHeightArrayList = frameSumHeightArrayList + tempList 
-            
-            
-        frameTimeStampArray = np.append(frameTimeStampArray,frameTimeStampArrayList[len(frameTimeStampArrayList)-1])
-        frameSumWidthCentroidArray = np.append(frameSumWidthCentroidArray,frameSumWidthCentroidArrayList[len(frameSumWidthCentroidArrayList)-1])
-        frameSumHeightCentroidArray = np.append(frameSumHeightCentroidArray,frameSumHeightCentroidArrayList[len(frameSumHeightCentroidArrayList)-1])
-        frameSumWidthArrayList = frameSumWidthArrayList + frameSumWidthArrayListList[-1]
-        frameSumHeightArrayList = frameSumHeightArrayList + frameSumHeightArrayListList[-1]
-        
-        
-    else:
-    
-        frameTimeStampArray = np.ravel(np.array(frameTimeStampArrayList))
-        frameSumWidthCentroidArray = np.ravel(np.array(frameSumWidthCentroidArrayList))
-        frameSumHeightCentroidArray = np.ravel(np.array(frameSumHeightCentroidArrayList))
-    
-        frameSumWidthArrayList = np.array(frameSumWidthArrayListList).reshape(-1, np.array(frameSumWidthArrayListList).shape[-1]).tolist()
-        frameSumHeightArrayList = np.array(frameSumHeightArrayListList).reshape(-1, np.array(frameSumHeightArrayListList).shape[-1]).tolist()
-    
-"""
-    
     
     frameSumWidthCentroidArray = ravel_list_of_arrays(arrayList=frameSumWidthCentroidArrayList)
     frameSumHeightCentroidArray = ravel_list_of_arrays(arrayList=frameSumHeightCentroidArrayList)

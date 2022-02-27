@@ -17,7 +17,7 @@ from matplotlib.collections import LineCollection
 import moviepy.editor as mp
 from scipy.optimize import curve_fit
 
-
+#global variables used to exchange data between functions in/outside of TDMSAnimateTraces 
 globalArrayList1 = []
 globalArrayList2 = []
 globalArrayList3 = []
@@ -903,135 +903,7 @@ def generate_frame_list_from_fragment(AODTimeArray=np.array([]),AOD1DataArray=np
         frameArray[AOD1Index][AOD2Index] = frameArray[AOD1Index][AOD2Index] + pixelArray
         
     return frameArrayList, frameSumWidthArrayList, frameSumHeightArrayList, frameSumWidthCentroidArray ,frameSumHeightCentroidArray, frameTimeStampArray,frameSumHeightAmplitudeArray,frameSumHeightSigmaArray,frameSumWidthAmplitudeArray,frameSumWidthSigmaArray      
-"""
-def generate_frame_list_from_fragment(AODTimeArray=np.array([]),AOD1DataArray=np.array([]),AOD2DataArray=np.array([]),pixelNumberArray=np.array([]),
-                                     SPCMTimeArray=np.array([]),SPCMDataArray=np.array([]),rollImage=False,rollAxis=0,rollPixels=1):
-    global pixelsPerFrame
-    global centroidCalculation
-    global pitchX
-    global pitchY
-    global darkCount
-    
-    frameArrayList = []
-    frameSumWidthArrayList = []
-    frameSumHeightArrayList = []
-    frameSumHeightCentroidArray = np.array([])
-    frameSumHeightAmplitudeArray = np.array([])
-    frameSumHeightSigmaArray = np.array([])
-    frameSumWidthCentroidArray = np.array([])
-    frameSumWidthAmplitudeArray = np.array([])
-    frameSumWidthSigmaArray = np.array([])
-    
-    
-    width = int(max(AOD1DataArray)+1)
-    height = int(max(AOD2DataArray)+1)
-    frameArray = np.zeros((width,height,3),dtype=np.uint8)
-    counter = 1
-    frameStartTime = AODTimeArray[0]
-    frameTimeStampArray = np.array([])
-    
-    frameSumWidthArray = np.zeros(width,dtype=int)
-    frameSumHeightArray = np.zeros(height,dtype=int)
-    
-    startTime = AODTimeArray[0]
-    stopTime = AODTimeArray[-1]
-    progresCounter = 0
-    progresPercentage = 0
-    progresString = ""
-    
-    AODXCalibrationArray = AOD_calibration_curve(pitch=pitchX,numberOfPixels=16)
-    AODYCalibrationArray = AOD_calibration_curve(pitch=pitchY,numberOfPixels=4)
-    
-    print("Generating frames between {}s and {}s".format(startTime, stopTime))
-    for i in range(len(AODTimeArray)):
-        AOD1Index = AOD1DataArray[i]
-        AOD2Index = AOD2DataArray[i]
-        pixelNumber = pixelNumberArray[i]
-        
-        if(pixelNumber == pixelsPerFrame):
-        
-        if((AOD1Index == 0) and (AOD2Index == 0)):
-            if(rollImage):
-                frameArray = np.roll(frameArray,rollPixels,rollAxis=rollAxis)
-                if(rollAxis==0):
-                    frameSumWidthArray = np.roll(frameSumWidthArray,rollPixels)
-                elif(rollAxis==1):
-                    frameSumHeightArray = np.roll(frameSumHeightArray,rollPixels)
-                
-            if(counter > (width*height)):
-                if(counter == (pixelsPerFrame+1)):
-                    frameArrayList.append(frameArray)
-                    #print(frameArray)
-                    
-                    #indexArray = frameSumHeightArray < 0.6*np.average(frameSumHeightArray)
-                    #frameSumHeightArray[indexArray] = 0.0
-                    #frameSumHeightArray = frameSumHeightArray - 0.6*np.average(frameSumHeightArray)
-                    #indexArray = frameSumHeightArray < 0
-                    #frameSumHeightArray[indexArray] = 0.0                    
-                    #indexArray = frameSumHeightArray > 0
-                    #frameSumHeightArray[indexArray] = 1                    
-            
-                    #frameSumHeightArray = np.multiply(frameSumHeightArray, AODXCalibrationArray)
-                    #indexArray = np.where(frameSumHeightArray < 1.2*np.average(frameSumHeightArray))[0]
-                    #frameSumHeightArray[indexArray] = 0.0
-                    
-                    frameSumHeightCentroid,amplitude,sigma = calc_centroid(frameSumArray=frameSumHeightArray,spotSize=1)
-                    frameSumHeightCentroidArray = np.append(frameSumHeightCentroidArray,frameSumHeightCentroid)
-                    frameSumHeightAmplitudeArray = np.append(frameSumHeightAmplitudeArray, amplitude)
-                    frameSumHeightSigmaArray = np.append(frameSumHeightSigmaArray,sigma)
-            
-                    frameSumWidthCentroid,amplitude,sigma = calc_centroid(frameSumArray=frameSumWidthArray,spotSize=1)
-                    frameSumWidthCentroidArray = np.append(frameSumWidthCentroidArray,frameSumWidthCentroid)    
-                    frameSumWidthAmplitudeArray = np.append(frameSumWidthAmplitudeArray,amplitude)
-                    frameSumWidthSigmaArray = np.append(frameSumWidthSigmaArray,sigma)
-                    
-                    frameSumHeightArrayList.append(frameSumHeightArray)
-                    frameSumWidthArrayList.append(frameSumWidthArray)
-            
-                      
-                    frameSumWidthArray = np.zeros(width,dtype=int)
-                    frameSumHeightArray = np.zeros(height,dtype=int)
-                    frameArray = np.zeros((width,height,3),dtype=np.uint8)
-            
-                    frameStopTime = AODTimeArray[i]
-                    frameTimeStamp = (frameStopTime+frameStartTime)/2
-                    frameTimeStampArray = np.append(frameTimeStampArray,frameTimeStamp)
-            
-                counter = 0
-            
-            #frameTimeStampArray = np.append(frameTimeStampArray,AODTimeArray[i])
-            
-            progresPercentage = (AODTimeArray[i] - startTime)/(stopTime - startTime)
-            if(progresPercentage > progresCounter):
-                print("{} {:.0f}%".format(progresString,(progresPercentage*100)))
-                progresString = progresString + "#"
-                progresCounter = progresCounter + 0.1
-            
-            
-        SPCMDataArrayIndex = len(np.where(SPCMTimeArray < AODTimeArray[i])[0])
-        if(SPCMDataArrayIndex == len(SPCMTimeArray)):
-            SPCMDataArrayIndex = SPCMDataArrayIndex - 1
-        #pixelValue = int(SPCMDataArray[SPCMDataArrayIndex]*255)
-        if(SPCMDataArray[SPCMDataArrayIndex] > darkCount):
-            pixelValue = int(SPCMDataArray[SPCMDataArrayIndex])
-        else:
-            pixelValue = 0
-            
-        frameSumWidthArray[AOD1Index] = frameSumWidthArray[AOD1Index] + pixelValue
-        frameSumHeightArray[AOD2Index] = frameSumHeightArray[AOD2Index] + pixelValue
-        pixelArray = np.ones(3,dtype=np.uint8) * pixelValue
-        frameArray[AOD1Index][AOD2Index] = frameArray[AOD1Index][AOD2Index] + pixelArray
-        
-        if(counter == 0):
-            frameStartTime = AODTimeArray[i]
-            
-        
-        counter = counter + 1
-    
-    
-    return frameArrayList, frameSumWidthArrayList, frameSumHeightArrayList, frameSumWidthCentroidArray ,frameSumHeightCentroidArray, frameTimeStampArray,frameSumHeightAmplitudeArray,frameSumHeightSigmaArray,frameSumWidthAmplitudeArray,frameSumWidthSigmaArray      
 
-"""
 def concatenate_videos(videoPathList=[],experimentName=""):
     videoFileList = []
     for videoPath in videoPathList:
