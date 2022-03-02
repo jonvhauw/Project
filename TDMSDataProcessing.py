@@ -376,7 +376,6 @@ def ravel_list_of_list_of_array(arrayListList=[]):
 
 def flatten_fragments_to_segment(frameTimeStampArrayList=[],frameSumWidthArrayListList=[],frameSumHeightArrayListList=[],frameSumWidthCentroidArrayList=[],frameSumHeightCentroidArrayList=[]):
     
-    frameTimeStampArray = np.array([])
     frameTimeStampArray = ravel_list_of_arrays(arrayList=frameTimeStampArrayList)
        
     frameSumHeightCentroidArray = np.array([])
