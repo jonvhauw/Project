@@ -1,9 +1,12 @@
-
+#from matplotlib.lines import _LineStyle
+import pyqtgraph as pg
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib import cm
 from matplotlib.collections import LineCollection
+import PyQt5 as qt
+import Colors as Col
 
 globalEventList = []
 
@@ -37,17 +40,101 @@ def on_right_click_plot_time(event):
             print("Time difference = {} s".format(globalEventList[0]-globalEventList[1]))
             globalEventList = []
     
+
 def plot_trace_segment(AODTimeArray=np.array([]),pixelNumberArray=np.array([]),SPCMTimeArray=np.array([]),SPCMDataArray=np.array([]),AOD1DataArray=np.array([]),AOD2DataArray=np.array([]),
                       eFieldTimeArray=np.array([]),eFieldDataArray=np.array([]),discontTimeArray=np.array([]),discontDataArray=np.array([]),AODSyncTimeArray=np.array([]),AODSyncDataArray=np.array([]),
                       SPCMSyncDataArray=np.array([]),SPCMSyncTimeArray=np.array([]),yLabel="Normalized Trace (a.u.)"):
     global plotTrace
     if(plotTrace == True):
-        plot_trace(AODTimeArray=AODTimeArray, pixelNumberArray=pixelNumberArray, SPCMTimeArray=SPCMTimeArray, SPCMDataArray=SPCMDataArray, AOD1DataArray=AOD1DataArray, 
+        plot_trace2(AODTimeArray=AODTimeArray, pixelNumberArray=pixelNumberArray, SPCMTimeArray=SPCMTimeArray, SPCMDataArray=SPCMDataArray, AOD1DataArray=AOD1DataArray, 
                           AOD2DataArray=AOD2DataArray, eFieldTimeArray=eFieldTimeArray, eFieldDataArray=eFieldDataArray, discontTimeArray=discontTimeArray, discontDataArray=discontDataArray, 
                           AODSyncTimeArray=AODSyncTimeArray, AODSyncDataArray=AODSyncDataArray, SPCMSyncDataArray=SPCMSyncDataArray, SPCMSyncTimeArray=SPCMSyncTimeArray,yLabel=yLabel)
 
+def plot_trace2(AODTimeArray=np.array([]),pixelNumberArray=np.array([]),SPCMTimeArray=np.array([]),SPCMDataArray=np.array([]),AOD1DataArray=np.array([]),AOD2DataArray=np.array([]),
+                      eFieldTimeArray=np.array([]),eFieldDataArray=np.array([]),discontTimeArray=np.array([]),discontDataArray=np.array([]),AODSyncTimeArray=np.array([]),AODSyncDataArray=np.array([]),
+                      SPCMSyncDataArray=np.array([]),SPCMSyncTimeArray=np.array([]),yLabel="Normalized Trace (a.u.)", AOD1_c='dg', AOD1_s = 'solid', AOD2_c = 'db', AOD2_s = 'solid', Pix_c = 'lg', Pix_s='solid',
+                      SPCM_c = 're', SPCM_s = 'solid', EF_c = 'bl', EF_s = 'solid', SPCM_sync_c = 'dr', SPCM_sync_s= 'dashed', AOD_sync_c = 'dg', AOD_sync_s = 'dashed', Disc_c = 'go', Disc_s = 'solid'):
+    
+    global plotAOD
+    global plotPixelNumber
+    global plotAODSync
+    global plotDiscont
+    global plotSPCM
+    global plotSPCMSync
+    global plotSPCMSampleRatio
+    global normalize
+    global plotExtField
 
-def plot_trace(AODTimeArray=np.array([]),pixelNumberArray=np.array([]),SPCMTimeArray=np.array([]),SPCMDataArray=np.array([]),AOD1DataArray=np.array([]),AOD2DataArray=np.array([]),
+    #qt.QTCore.Qt.DashLine
+    #pen = pg.mkPen('r', style=qt.QtCore.Qt.DashLine)
+    #win = pg.GraphicsWindow(title="test")
+    #pg.setConfigOptions(antialias=True)
+    pg.setConfigOption('background', 'w')
+    pg.setConfigOption('foreground', 'k')
+    ax = pg.plot()
+    #pw = pg.plot(AODTimeArray, AOD1DataArray/max(AOD1DataArray), pen=pen )  # plot x vs y in red
+    #pw.plot(AODTimeArray,AOD2DataArray/max(AOD2DataArray), pen='b' )
+    #fig, ax = plt.subplots()
+    #cid = fig.canvas.mpl_connect('button_press_event', on_right_click_plot_time)
+    
+    if(plotAOD == True):
+        if(normalize == True):
+            if(plotPixelNumber == True):
+                ax.plot(AODTimeArray,pixelNumberArray/max(pixelNumberArray), pen=Col.make_pen(color=Pix_c, style=Pix_s))
+            else:
+                ax.plot(AODTimeArray,AOD1DataArray/max(AOD1DataArray), pen=Col.make_pen(color=AOD1_c, style=AOD1_s))
+                ax.plot(AODTimeArray,AOD2DataArray/max(AOD2DataArray), pen=Col.make_pen(color=AOD2_c, style=AOD2_s))
+        else:
+            if(plotPixelNumber == True):
+                ax.plot(AODTimeArray,pixelNumberArray,pen=Col.make_pen(color=Pix_c, style=Pix_s))
+            else:
+                ax.plot(AODTimeArray,AOD1DataArray, pen=Col.make_pen(color=AOD1_c, style=AOD1_s))
+                ax.plot(AODTimeArray,AOD2DataArray, pen=Col.make_pen(color=AOD2_c, style=AOD2_s))
+            
+    if(plotSPCM == True):
+        if(normalize == True):
+            if(plotSPCMSampleRatio >= 1):
+                ax.plot(SPCMTimeArray,SPCMDataArray/max(SPCMDataArray), pen=Col.make_pen(color=SPCM_c, style=SPCM_s))
+            else:
+                sampleArray = np.arange(0,len(SPCMTimeArray),int(1.0/plotSPCMSampleRatio))
+                ax.plot(SPCMTimeArray[sampleArray],SPCMDataArray[sampleArray]/max(SPCMDataArray[sampleArray]), pen=Col.make_pen(color=SPCM_c, style=SPCM_s))
+        else:
+            if(plotSPCMSampleRatio >= 1):
+                ax.plot(SPCMTimeArray,SPCMDataArray, pen='c')
+            else:
+                sampleArray = np.arange(0,len(SPCMTimeArray),int(1.0/plotSPCMSampleRatio))
+                ax.plot(SPCMTimeArray[sampleArray],SPCMDataArray[sampleArray], pen=Col.make_pen(color=SPCM_c, style=SPCM_s))
+                
+    if(plotExtField == True):       
+        if(normalize == True):
+            ax.plot(eFieldTimeArray,eFieldDataArray/max(eFieldDataArray), pen=Col.make_pen(color=EF_c, style=EF_s))
+        else:
+            ax.plot(eFieldTimeArray,eFieldDataArray,linestyle='-', pen=Col.make_pen(color=EF_c, style=EF_s))
+
+    #from here: dashed lines standard 
+    if(plotSPCMSync == True):      
+        ax.plot(SPCMSyncTimeArray,SPCMSyncDataArray, pen=Col.make_pen(color=SPCM_sync_c, style=SPCM_sync_s))  
+        
+    if(plotAODSync == True):
+        ax.plot(AODSyncTimeArray,AODSyncDataArray, pen=Col.make_pen(color=AOD_sync_c, style=AOD_sync_s))  
+            
+    if(plotDiscont == True):
+        ax.plot(discontTimeArray,discontDataArray, pen=Col.make_pen(color=Disc_c, style=Disc_s))    
+         
+        
+    ax.setTitle('Time traces',fontsize=20)
+
+    #ax.tick_params(labelsize=15)
+    #pg.setLabel('left', 'y')
+    #pg.setLabem('bottom', 'time(s)')
+    #plt.xlabel("time (s)", fontsize = 15)
+    #plt.ylabel(yLabel, fontsize = 15)
+    #ax.legend(fontsize=15,loc="upper right") 
+    #ax.grid()
+    #plt.show()
+
+'''
+def plot_trace1(AODTimeArray=np.array([]),pixelNumberArray=np.array([]),SPCMTimeArray=np.array([]),SPCMDataArray=np.array([]),AOD1DataArray=np.array([]),AOD2DataArray=np.array([]),
                       eFieldTimeArray=np.array([]),eFieldDataArray=np.array([]),discontTimeArray=np.array([]),discontDataArray=np.array([]),AODSyncTimeArray=np.array([]),AODSyncDataArray=np.array([]),
                       SPCMSyncDataArray=np.array([]),SPCMSyncTimeArray=np.array([]),yLabel="Normalized Trace (a.u.)"):
     
@@ -116,7 +203,7 @@ def plot_trace(AODTimeArray=np.array([]),pixelNumberArray=np.array([]),SPCMTimeA
     ax.legend(fontsize=15,loc="upper right") 
     ax.grid()
     plt.show()
-    
+'''  
 
     
 def plot_position_and_velocity_trace(frameTimeStampArray=np.array([]),widthPositionArray=np.array([]),heightPositionArray=np.array([]),

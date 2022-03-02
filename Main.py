@@ -8,6 +8,7 @@ import TDMSSaveData as tdmsSave
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
+from numba import jit
 
 if (__name__ == "__main__"):
     comsolFieldFactor =  (23e3)*(6.5e-3)/10 # Conversion factor based on comsol simulation V/m/m/V
@@ -114,7 +115,8 @@ if (__name__ == "__main__"):
     
     """ 
     Edit and generate data from TDMS
-    """    
+    """  
+      
     print("### Generating signals and segmenting \n")
     pixelNumberArray, AODTimeArray, AODSyncTimeArray, AODSyncDataArray, SPCMDataArray, SPCMTimeArray, SPCMSyncTimeArray, SPCMSyncDataArray,eFieldDataArray, eFieldTimeArray = tdmsData.return_arrays_from_tdms_hierarchy(pixelNumberArray=pixelNumberArray, AODLoopTicksArray=AODLoopTicksArray, SPCMDataArray=SPCMDataArray,
                                                                                                                                                                                                                          SPCMLoopTicksArray=SPCMLoopTicksArray, eFieldDataArray=eFieldDataArray, eFieldLoopTicksArray=eFieldLoopTicksArray,
