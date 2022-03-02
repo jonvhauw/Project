@@ -60,6 +60,10 @@ pitchX = 0.4e-6
 pitchY = 0.4e-6
 pixelsPerFrame = 16*16
 
+# Generates the figures and axes references, based on the type of animation to be generated (based on global boolean values, the axes will change)
+
+# Output: - animationFigure: Reference to the figure to be used for frame per frame animation
+#         - animationAxes: Reference to the axes of the animation figure
 
 def generate_figure_and_axes():
     global animationFigure
@@ -74,8 +78,6 @@ def generate_figure_and_axes():
         else:
             animationFigure, animationAxes = plt.subplots(nrows=2,ncols=2)
             animationAxes[0,1].remove()            
-         
-        
     
     return animationFigure, animationAxes
    
