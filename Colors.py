@@ -1,5 +1,6 @@
 import pyqtgraph as pg
 import PyQt5 as qt
+import numpy as np
 
 color_dict = {}
 color_dict['lg'] = (144,238,144)
