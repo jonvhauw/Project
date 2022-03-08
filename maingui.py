@@ -56,6 +56,9 @@ class MainWindow(QMainWindow):
 
          print(self.filenames)
 
+    def resizeEvent(self, event: QResizeEvent):
+        self.graphicsTimeTraces.fitInView(self.scene.sceneRect())
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = MainWindow()
