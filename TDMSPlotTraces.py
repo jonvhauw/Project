@@ -595,11 +595,11 @@ def plot_frame_image_and_sums(frameArray=np.array([]),sumHeightArray=np.array([]
     
     plt.show()
 
-#import TDMSDataProcessing as tdms
-#import sys
+import TDMSDataProcessing as tdms
+import sys
 
-'''
-def plot_image(time=43.15, AODTimeArray=[], AOD1DataArray=[], AOD2DataArray=[], SPCMTimeArray=[], SPCMDataArray=[], PixelsPerLine=16, NumberOfLines=16):
+
+def plot_image(time=43.15, AODTimeArray=[], AOD1DataArray=[], AOD2DataArray=[], SPCMTimeArray=[], SPCMDataArray=[], PixelsPerLine=16, NumberOfLines=16, darkCount=1):
     StartIndexArray1 = np.where(AOD1DataArray == 0)[0]
     StartIndexArray2 = np.where(AOD1DataArray == 0)[0]
     StartIndexArray = np.intersect1d(StartIndexArray2, StartIndexArray1)
@@ -614,11 +614,13 @@ def plot_image(time=43.15, AODTimeArray=[], AOD1DataArray=[], AOD2DataArray=[], 
     for j in range(Pixels):
         index = S_dict[j]
         ValueIndex = np.where(SPCMTimeArray>start+j*increment)[0][0]
-        FrameArray[index[0], index[1]] = SPCMDataArray[ValueIndex]
+        if SPCMDataArray[ValueIndex] > darkCount:
+            FrameArray[index[0], index[1]] = SPCMDataArray[ValueIndex]
+        else:
+            FrameArray[index[0], index[1]] = 0
     plt.imshow(FrameArray)
     plt.show()
     #App = qt.QtCore.QCoreApplication(sys.argv)
     #imv = pg.ImageView()
     #imv.setImage(FrameArray)
     #sys.exit(App.exec())
-'''
