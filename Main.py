@@ -1,4 +1,4 @@
-import TDMS as tdms
+import TDMS as tdms                             #test
 import TDMSDataProcessing as tdmsData
 import TDMSPlotTraces as tdmsPlot
 import TDMSAnimateTraces as tdmsAnimate
