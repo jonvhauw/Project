@@ -595,9 +595,10 @@ def plot_frame_image_and_sums(frameArray=np.array([]),sumHeightArray=np.array([]
     
     plt.show()
 
-import TDMSDataProcessing as tdms
-import sys
+#import TDMSDataProcessing as tdms
+#import sys
 
+'''
 def plot_image(time=43.15, AODTimeArray=[], AOD1DataArray=[], AOD2DataArray=[], SPCMTimeArray=[], SPCMDataArray=[], PixelsPerLine=16, NumberOfLines=16):
     StartIndexArray1 = np.where(AOD1DataArray == 0)[0]
     StartIndexArray2 = np.where(AOD1DataArray == 0)[0]
@@ -620,3 +621,4 @@ def plot_image(time=43.15, AODTimeArray=[], AOD1DataArray=[], AOD2DataArray=[], 
     #imv = pg.ImageView()
     #imv.setImage(FrameArray)
     #sys.exit(App.exec())
+'''

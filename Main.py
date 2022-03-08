@@ -144,8 +144,8 @@ if (__name__ == "__main__"):
                       SPCMSyncDataArray=SPCMSyncDataArray,SPCMSyncTimeArray=SPCMSyncTimeArray)
     
   
-    tdmsPlot.plot_image(time=43.15, AOD1DataArray=AOD1DataArray, AODTimeArray=AODTimeArray, AOD2DataArray=AOD2DataArray, SPCMTimeArray=
-                        SPCMTimeArray, SPCMDataArray=SPCMDataArray, PixelsPerLine=int(dotsPerLine), NumberOfLines=int(numberOfLines))
+    '''tdmsPlot.plot_image(time=43.15, AOD1DataArray=AOD1DataArray, AODTimeArray=AODTimeArray, AOD2DataArray=AOD2DataArray, SPCMTimeArray=
+                        SPCMTimeArray, SPCMDataArray=SPCMDataArray, PixelsPerLine=int(dotsPerLine), NumberOfLines=int(numberOfLines))'''
     input("Press enter to continue...")
 
 
