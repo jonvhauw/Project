@@ -633,6 +633,71 @@ def generate_video_from_segment(pixelNumberArray=np.array([]),AODTimeArray=np.ar
     
     return frameTimeStampArrayList,frameArrayListList,frameSumWidthArrayListList,frameSumHeightArrayListList, frameSumWidthCentroidArrayList, frameSumHeightCentroidArrayList
 
+def search_time_index(AODTimeFragmentArrayList=np.array([]), time=0):
+    AODTimeFragmentArray = np.concatenate(AODTimeFragmentArrayList).ravel()
+    Index = np.abs(AODTimeFragmentArray - time).argmin()
+    AODTime = AODTimeFragmentArray[Index]
+    for i, e in enumerate(AODTimeFragmentArrayList):
+        if AODTime in e:
+            return i
+
+def search_frame_index(FrameTimeStampArray=np.array([]), time=0):
+    index = np.abs(FrameTimeStampArray-time).argmin()
+    return index
+
+def generate_picture_from_segment(pixelNumberArray=np.array([]),AODTimeArray=np.array([]),AOD1DataArray=np.array([]),
+                                AOD2DataArray=np.array([]),SPCMTimeArray=np.array([]),SPCMDataArray=np.array([]),eFieldTimeArray=np.array([]),
+                                eFieldDataArray=np.array([]),
+                                rollImage=False,rollAxis=0,rollPixels=1,
+                                tdmsFolderPath="",experimentName="", time=0):
+   
+    
+    global globalArrayList1
+    global globalArrayList2
+    global globalArrayList3
+    global globalFrameTimeStampArray
+    global animationFigure
+    global animationAxes
+    global onlyImage
+    global liveAnimation
+    global combineVideos
+    global globalCounter
+    global maxFramesPerFragment
+    global saveVideo
+    global animate
+    global fps
+    global dpi
+    global globalSigmaArray
+    global globalAmplitudeArray
+    global globalCentroidArray
+    global pitchX
+    global pitchY
+    
+    frameTimeStampArray = np.array([])
+    
+    SPCMTimeFragmentArrayList, SPCMDataFragmentArrayList, AODTimeFragmentArrayList, AOD1DataFragmentArrayList, AOD2DataFragmentArrayList,pixelNumberFragmentArrayList = split_segment_into_fragments(pixelNumberArray=pixelNumberArray,AODTimeArray=AODTimeArray,
+                                 AOD1DataArray=AOD1DataArray,AOD2DataArray=AOD2DataArray,SPCMTimeArray=SPCMTimeArray,SPCMDataArray=SPCMDataArray)
+
+    i = search_time_index(AODTimeFragmentArrayList=AODTimeFragmentArrayList, time=time)
+
+        
+    AODTimeFragmentArray = AODTimeFragmentArrayList[i]
+    AOD1DataFragmentArray = AOD1DataFragmentArrayList[i]
+    AOD2DataFragmentArray = AOD2DataFragmentArrayList[i]
+    SPCMTimeFragmentArray = SPCMTimeFragmentArrayList[i]
+    SPCMDataFragmentArray = SPCMDataFragmentArrayList[i]
+    pixelNumberFragmentArray = pixelNumberFragmentArrayList[i]
+      
+    
+    frameArrayList, frameSumWidthArrayList, frameSumHeightArrayList, frameSumWidthCentroidArray ,frameSumHeightCentroidArray, frameTimeStampArray,frameSumHeightAmplitudeArray,frameSumHeightSigmaArray,frameSumWidthAmplitudeArray,frameSumWidthSigmaArray  = generate_frame_list_from_fragment(AODTimeArray=AODTimeFragmentArray,AOD1DataArray=AOD1DataFragmentArray,
+                                                          AOD2DataArray=AOD2DataFragmentArray,pixelNumberArray=pixelNumberFragmentArray,SPCMTimeArray=SPCMTimeFragmentArray,SPCMDataArray=SPCMDataFragmentArray,
+                                                          rollImage=rollImage,rollAxis=rollAxis,rollPixels=rollPixels)
+        
+         
+    print('Displaying frames')      
+    i = search_frame_index(FrameTimeStampArray=frameTimeStampArray, time=time)
+    tdmsPlot.plot_frame_image_and_sums(frameArray=frameArrayList[i],sumHeightArray=frameSumHeightArrayList[i],sumWidthArray=frameSumWidthArrayList[i],time=frameTimeStampArray[i],pitchX=pitchX,pitchY=pitchY)
+
 
 def AOD_calibration_curve(pitch=0.5,numberOfPixels=16):
     voltageArray = np.arange(0,numberOfPixels)*pitch

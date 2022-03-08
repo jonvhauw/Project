@@ -124,7 +124,7 @@ def plot_trace2(AODTimeArray=np.array([]),pixelNumberArray=np.array([]),SPCMTime
          
         
     ax.setTitle('Time traces',fontsize=20)
-
+    ax.plotItem.getViewBox().setMouseMode(pg.ViewBox.RectMode)
     #ax.tick_params(labelsize=15)
     #pg.setLabel('left', 'y')
     #pg.setLabem('bottom', 'time(s)')

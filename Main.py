@@ -144,16 +144,15 @@ if (__name__ == "__main__"):
                       SPCMSyncDataArray=SPCMSyncDataArray,SPCMSyncTimeArray=SPCMSyncTimeArray)   
     
   
-<<<<<<< HEAD
-    '''tdmsPlot.plot_image(time=43.103, AOD1DataArray=AOD1DataArray, AODTimeArray=AODTimeArray, AOD2DataArray=AOD2DataArray, SPCMTimeArray=
-                        SPCMTimeArray, SPCMDataArray=SPCMDataArray, PixelsPerLine=int(dotsPerLine), NumberOfLines=int(numberOfLines))'''
     
-    
+    '''tdmsAnimate.generate_picture_from_segment(pixelNumberArray=pixelNumberArray,AODTimeArray=AODTimeArray,AOD1DataArray=AOD1DataArray,
+                                        AOD2DataArray=AOD2DataArray,SPCMTimeArray=SPCMTimeArray,SPCMDataArray=SPCMDataArray,eFieldTimeArray=eFieldTimeArray,eFieldDataArray=eFieldStrengthDataArray,
+                                        rollImage=rollImage,rollAxis=rollAxis,rollPixels=rollPixels,tdmsFolderPath=tdmsFolderPath,experimentName=experimentName, time=43.15)
+    '''
     input("Press enter to continue...")
 
 
-=======
->>>>>>> f5a83424950fcbdd0d9084c8f4a38802f2ccddd7
+
     """ 
     Extracting Information from Data
     """     
