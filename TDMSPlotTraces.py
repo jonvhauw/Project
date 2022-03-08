@@ -1,4 +1,5 @@
 #from matplotlib.lines import _LineStyle
+from operator import index
 import pyqtgraph as pg
 import numpy as np
 import matplotlib
@@ -204,7 +205,7 @@ def plot_trace1(AODTimeArray=np.array([]),pixelNumberArray=np.array([]),SPCMTime
     ax.grid()
     plt.show()
 '''  
-
+ 
     
 def plot_position_and_velocity_trace(frameTimeStampArray=np.array([]),widthPositionArray=np.array([]),heightPositionArray=np.array([]),
                                      positionTimeArray=np.array([]),filteredHeightPositionArray=np.array([]),filteredWidthPositionArray=np.array([]),
@@ -593,3 +594,29 @@ def plot_frame_image_and_sums(frameArray=np.array([]),sumHeightArray=np.array([]
     axes[0,0].set_ylim([0,maxHeightSumValue])
     
     plt.show()
+
+import TDMSDataProcessing as tdms
+import sys
+
+def plot_image(time=43.15, AODTimeArray=[], AOD1DataArray=[], AOD2DataArray=[], SPCMTimeArray=[], SPCMDataArray=[], PixelsPerLine=16, NumberOfLines=16):
+    StartIndexArray1 = np.where(AOD1DataArray == 0)[0]
+    StartIndexArray2 = np.where(AOD1DataArray == 0)[0]
+    StartIndexArray = np.intersect1d(StartIndexArray2, StartIndexArray1)
+    StartTimeArray = AODTimeArray[StartIndexArray]
+    StartIndex = np.abs(StartTimeArray - time).argmin()
+    start = StartTimeArray[StartIndex]
+    stop = StartTimeArray[StartIndex+1]
+    Pixels = PixelsPerLine*NumberOfLines
+    increment = (start-stop)/Pixels
+    FrameArray = np.zeros((PixelsPerLine, NumberOfLines))
+    S_dict = tdms.generate_S_grid_pixel_mapping_dict(amountOfLines=NumberOfLines, pixelsPerLine=PixelsPerLine)
+    for j in range(Pixels):
+        index = S_dict[j]
+        ValueIndex = np.where(SPCMTimeArray>start+j*increment)[0][0]
+        FrameArray[index[0], index[1]] = SPCMDataArray[ValueIndex]
+    plt.imshow(FrameArray)
+    plt.show()
+    #App = qt.QtCore.QCoreApplication(sys.argv)
+    #imv = pg.ImageView()
+    #imv.setImage(FrameArray)
+    #sys.exit(App.exec())

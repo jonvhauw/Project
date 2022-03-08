@@ -40,7 +40,7 @@ if (__name__ == "__main__"):
     
     tdmsAnimate.centroidCalculation = "gaussian fit"
     
-    saveData = True
+    saveData = False
     readSavedData = False
     
     # AOD Parameters
@@ -73,7 +73,7 @@ if (__name__ == "__main__"):
     tdmsAnimate.onlyImage = False
     tdmsAnimate.singleAxisSum = False
     tdmsAnimate.addCentroidLine = False
-    tdmsAnimate.liveAnimation = False
+    tdmsAnimate.liveAnimation = True
     tdmsAnimate.displayTimeStamp = True    
     tdmsAnimate.saveVideo = False
     tdmsAnimate.combineVideos = True
@@ -141,9 +141,14 @@ if (__name__ == "__main__"):
     tdmsPlot.plot_trace_segment(AODTimeArray=AODTimeArray,AOD1DataArray=AOD1DataArray,AOD2DataArray=AOD2DataArray,
                       pixelNumberArray=pixelNumberArray,SPCMTimeArray=SPCMTimeArray,SPCMDataArray=SPCMDataArray,
                       eFieldTimeArray=eFieldTimeArray,eFieldDataArray=eFieldDataArray,discontTimeArray=discontTimeArray,discontDataArray=discontDataArray,AODSyncTimeArray=AODSyncTimeArray,AODSyncDataArray=AODSyncDataArray,
-                      SPCMSyncDataArray=SPCMSyncDataArray,SPCMSyncTimeArray=SPCMSyncTimeArray)   
+                      SPCMSyncDataArray=SPCMSyncDataArray,SPCMSyncTimeArray=SPCMSyncTimeArray)
     
   
+    tdmsPlot.plot_image(time=43.15, AOD1DataArray=AOD1DataArray, AODTimeArray=AODTimeArray, AOD2DataArray=AOD2DataArray, SPCMTimeArray=
+                        SPCMTimeArray, SPCMDataArray=SPCMDataArray, PixelsPerLine=int(dotsPerLine), NumberOfLines=int(numberOfLines))
+    input("Press enter to continue...")
+
+
     """ 
     Extracting Information from Data
     """     
