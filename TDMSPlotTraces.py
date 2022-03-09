@@ -2,7 +2,7 @@
 from operator import index
 import pyqtgraph as pg
 import numpy as np
-import matplotlib
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 from matplotlib import cm
 from matplotlib.collections import LineCollection
@@ -595,32 +595,80 @@ def plot_frame_image_and_sums(frameArray=np.array([]),sumHeightArray=np.array([]
     
     plt.show()
 
-import TDMSDataProcessing as tdms
-import sys
+from pyqtgraph.Qt import QtCore
+from pyqtgraph.Qt import QtGui
+
+def plot_frame_video_and_sums(frameArray=np.array([]),sumHeightArray=np.array([]),sumWidthArray=np.array([]),time=0,pitchX=0.4e-6,pitchY=0.4e-6):
+      
+    heightIndexArray = np.arange(len(sumHeightArray))
+
+    widthIndexArray = np.arange(len(sumWidthArray))  
+    
+    maxFrameValue = 10
+    maxWidthSumValue = 30
+    maxHeightSumValue = 30
+
+    x = np.arange(len(frameArray))*pitchX
+    y = np.arange(len(frameArray[0]))*pitchY
+    frame2DArray = np.zeros((len(x),len(y)))
+    '''
+    for i in range(len(frameArray)):
+        for j in range(len(frameArray[i])):
+            frame2DArray[i][j] = frameArray[i][j][0]
+    '''
+
+    frameArray = np.swapaxes(frameArray, 0, 3)
+    frameArray = frameArray[:][:][:][0]
+
+    frameArray = np.swapaxes(frameArray, 0, 2)
+
+    app = pg.QtGui.QApplication([])
+
+    #x = np.random.rand(500,50,50)
+
+    pg.setConfigOptions(antialias=True)
+
+    # main graphics window
+    #view = pg.GraphicsView()
+
+    # show the window
+    #view.show()
+    imv = pg.ImageView()
+    imv.show()
 
 
-def plot_image(time=43.15, AODTimeArray=[], AOD1DataArray=[], AOD2DataArray=[], SPCMTimeArray=[], SPCMDataArray=[], PixelsPerLine=16, NumberOfLines=16, darkCount=1):
-    StartIndexArray1 = np.where(AOD1DataArray == 0)[0]
-    StartIndexArray2 = np.where(AOD1DataArray == 0)[0]
-    StartIndexArray = np.intersect1d(StartIndexArray2, StartIndexArray1)
-    StartTimeArray = AODTimeArray[StartIndexArray]
-    StartIndex = np.abs(StartTimeArray - time).argmin()
-    start = StartTimeArray[StartIndex]
-    stop = StartTimeArray[StartIndex+1]
-    Pixels = PixelsPerLine*NumberOfLines
-    increment = (start-stop)/Pixels
-    FrameArray = np.zeros((PixelsPerLine, NumberOfLines))
-    S_dict = tdms.generate_S_grid_pixel_mapping_dict(amountOfLines=NumberOfLines, pixelsPerLine=PixelsPerLine)
-    for j in range(Pixels):
-        index = S_dict[j]
-        ValueIndex = np.where(SPCMTimeArray>start+j*increment)[0][0]
-        if SPCMDataArray[ValueIndex] > darkCount:
-            FrameArray[index[0], index[1]] = SPCMDataArray[ValueIndex]
+    # add the plotItem to the graphicsWindow and set it as central
+
+    # create an image object
+    img = pg.ImageItem(border='w', levels=(frameArray.min(),frameArray.max()))
+    tr = QtGui.QTransform()  # prepare ImageItem transformation:
+    tr.scale(pitchX, pitchY)
+
+    img.setTransform(tr)
+    imv.setImage(frameArray)
+    app.exec_()
+'''
+    #can be used for video demonstration
+    norm = mpl.colors.Normalize(vmin=0, vmax=frameArray.max())
+    cmap = cm.jet
+    m = cm.ScalarMappable(norm=norm, cmap=cmap)
+
+
+
+    # data generator
+    def animLoop():
+        global cnt
+        if cnt < frameArray.shape[0]:
+            imv.setImage(m.to_rgba(frameArray[cnt]))
         else:
-            FrameArray[index[0], index[1]] = 0
-    plt.imshow(FrameArray)
-    plt.show()
-    #App = qt.QtCore.QCoreApplication(sys.argv)
-    #imv = pg.ImageView()
-    #imv.setImage(FrameArray)
-    #sys.exit(App.exec())
+            cnt = 0
+        cnt+=1
+    #start = interval and interval = start
+    timer = QtCore.QTimer()
+    timer.setInterval(200)
+    timer.timeout.connect(animLoop)
+    timer.start(500)
+
+    app.exec_()
+'''
+cnt=0

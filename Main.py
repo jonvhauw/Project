@@ -144,11 +144,11 @@ if (__name__ == "__main__"):
                       SPCMSyncDataArray=SPCMSyncDataArray,SPCMSyncTimeArray=SPCMSyncTimeArray)   
     
   
-    
-    '''tdmsAnimate.generate_picture_from_segment(pixelNumberArray=pixelNumberArray,AODTimeArray=AODTimeArray,AOD1DataArray=AOD1DataArray,
+    #tdmsPlot.cnt=0
+    tdmsAnimate.generate_picture_from_segment(pixelNumberArray=pixelNumberArray,AODTimeArray=AODTimeArray,AOD1DataArray=AOD1DataArray,
                                         AOD2DataArray=AOD2DataArray,SPCMTimeArray=SPCMTimeArray,SPCMDataArray=SPCMDataArray,eFieldTimeArray=eFieldTimeArray,eFieldDataArray=eFieldStrengthDataArray,
                                         rollImage=rollImage,rollAxis=rollAxis,rollPixels=rollPixels,tdmsFolderPath=tdmsFolderPath,experimentName=experimentName, time=43.15)
-    '''
+    
     input("Press enter to continue...")
 
 

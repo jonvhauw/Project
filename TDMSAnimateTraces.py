@@ -641,9 +641,7 @@ def search_time_index(AODTimeFragmentArrayList=np.array([]), time=0):
         if AODTime in e:
             return i
 
-def search_frame_index(FrameTimeStampArray=np.array([]), time=0):
-    index = np.abs(FrameTimeStampArray-time).argmin()
-    return index
+
 
 def generate_picture_from_segment(pixelNumberArray=np.array([]),AODTimeArray=np.array([]),AOD1DataArray=np.array([]),
                                 AOD2DataArray=np.array([]),SPCMTimeArray=np.array([]),SPCMDataArray=np.array([]),eFieldTimeArray=np.array([]),
@@ -672,7 +670,7 @@ def generate_picture_from_segment(pixelNumberArray=np.array([]),AODTimeArray=np.
     global globalCentroidArray
     global pitchX
     global pitchY
-    
+
     frameTimeStampArray = np.array([])
     
     SPCMTimeFragmentArrayList, SPCMDataFragmentArrayList, AODTimeFragmentArrayList, AOD1DataFragmentArrayList, AOD2DataFragmentArrayList,pixelNumberFragmentArrayList = split_segment_into_fragments(pixelNumberArray=pixelNumberArray,AODTimeArray=AODTimeArray,
@@ -694,9 +692,8 @@ def generate_picture_from_segment(pixelNumberArray=np.array([]),AODTimeArray=np.
                                                           rollImage=rollImage,rollAxis=rollAxis,rollPixels=rollPixels)
         
          
-    print('Displaying frames')      
-    i = search_frame_index(FrameTimeStampArray=frameTimeStampArray, time=time)
-    tdmsPlot.plot_frame_image_and_sums(frameArray=frameArrayList[i],sumHeightArray=frameSumHeightArrayList[i],sumWidthArray=frameSumWidthArrayList[i],time=frameTimeStampArray[i],pitchX=pitchX,pitchY=pitchY)
+    print('Displaying frames')    
+    tdmsPlot.plot_frame_video_and_sums(frameArray=np.array(frameArrayList),sumHeightArray=frameSumHeightArrayList[i],sumWidthArray=frameSumWidthArrayList[i],time=frameTimeStampArray[i],pitchX=pitchX,pitchY=pitchY)
 
 
 def AOD_calibration_curve(pitch=0.5,numberOfPixels=16):

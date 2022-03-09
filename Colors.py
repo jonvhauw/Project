@@ -1,6 +1,7 @@
 import pyqtgraph as pg
 import PyQt5 as qt
 import numpy as np
+import matplotlib.pyplot as plt
 
 color_dict = {}
 color_dict['lg'] = (144,238,144)
@@ -20,3 +21,11 @@ def make_pen(color= 're', style='solid'):
     else:
         pen = pg.mkPen(color_dict[color])
     return pen
+
+def generatePgColormap(cm_name):
+    pltMap = plt.get_cmap(cm_name)
+    colors = pltMap.colors
+    colors = [c + [1.] for c in colors]
+    positions = np.linspace(0, 1, len(colors))
+    pgMap = pg.ColorMap(positions, 255*colors)
+    return pgMap
