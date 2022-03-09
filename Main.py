@@ -23,7 +23,8 @@ if (__name__ == "__main__"):
     Scripting Parameters
     """    
     # Time Parameters
-    timeSegment =  [43.1,43.85]
+    #timeSegment =  [43.1,43.85]
+    timeSegment = [0, 0.6]
     tdmsData.offsetExtFieldTime =0.001581849
     tdmsData.offsetSPCMTime =0.00073128 -2.220855e-6
     tdmsData.offsetOn = True
@@ -121,6 +122,8 @@ if (__name__ == "__main__"):
     pixelNumberArray, AODTimeArray, AODSyncTimeArray, AODSyncDataArray, SPCMDataArray, SPCMTimeArray, SPCMSyncTimeArray, SPCMSyncDataArray,eFieldDataArray, eFieldTimeArray = tdmsData.return_arrays_from_tdms_hierarchy(pixelNumberArray=pixelNumberArray, AODLoopTicksArray=AODLoopTicksArray, SPCMDataArray=SPCMDataArray,
                                                                                                                                                                                                                          SPCMLoopTicksArray=SPCMLoopTicksArray, eFieldDataArray=eFieldDataArray, eFieldLoopTicksArray=eFieldLoopTicksArray,
                                                                                                                                                                                                                         FPGAClockPeriod=FPGAClockPeriod,tdmsFolderPath=tdmsFolderPath,experimentName=experimentName)
+
+ 
     discontIndexArray = tdmsData.locate_AOD_discontinuities(pixelNumberArray=pixelNumberArray)
     discontTimeArray,discontDataArray = tdmsData.discont_index_to_time_and_data_array(discontIndexArray=discontIndexArray, AODTimeArray=AODTimeArray)
     
@@ -148,6 +151,10 @@ if (__name__ == "__main__"):
     tdmsAnimate.generate_picture_from_segment(pixelNumberArray=pixelNumberArray,AODTimeArray=AODTimeArray,AOD1DataArray=AOD1DataArray,
                                         AOD2DataArray=AOD2DataArray,SPCMTimeArray=SPCMTimeArray,SPCMDataArray=SPCMDataArray,eFieldTimeArray=eFieldTimeArray,eFieldDataArray=eFieldStrengthDataArray,
                                         rollImage=rollImage,rollAxis=rollAxis,rollPixels=rollPixels,tdmsFolderPath=tdmsFolderPath,experimentName=experimentName, time=43.15)
+    
+    offsetExtFieldTimeAuto, offsetSPCMTimeAuto, Period = tdmsData.find_auto_offset(AODSyncTimeArray=AODSyncTimeArray, AODSyncDataArray=AODSyncDataArray, SPCMSyncTimeArray=SPCMSyncTimeArray, 
+                                    SPCMSyncDataArray=SPCMDataArray, eFieldTimeArray=eFieldTimeArray, eFieldDataArray=eFieldDataArray)
+    
     
     input("Press enter to continue...")
 

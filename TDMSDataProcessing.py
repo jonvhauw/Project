@@ -548,3 +548,39 @@ def discont_index_to_time_and_data_array(discontIndexArray=np.array([]), AODTime
         discontDataArray = np.append(discontDataArray, 0.0)     
     
     return discontTimeArray, discontDataArray
+
+def find_auto_offset(AODSyncTimeArray=np.array([]),AODSyncDataArray=np.array([]),SPCMSyncTimeArray=np.array([]),
+                        SPCMSyncDataArray=np.array([]),eFieldTimeArray=np.array([]),eFieldDataArray=np.array([]), cutoff = 100000):
+
+    AODSyncDataArray = AODSyncDataArray[1:cutoff]
+    SPCMSyncDataArray = SPCMSyncDataArray[1: cutoff]
+    eFieldDataArray = eFieldDataArray[1: cutoff]
+
+    AODSyncDiff = np.diff(AODSyncDataArray)
+    AODIndex = np.where(AODSyncDiff == 1)[0][0]
+    AODTime = (AODSyncTimeArray[AODIndex]+AODSyncTimeArray[AODIndex+1])/2
+
+    SPCMSyncDiff = np.diff(SPCMSyncDataArray)
+    SPCMIndex = np.where(SPCMSyncDiff == 1)[0][0]
+    SPCMTime = (SPCMSyncTimeArray[SPCMIndex]+SPCMSyncTimeArray[SPCMIndex+1])/2
+
+    eFieldSyncArray = np.where(eFieldDataArray >= 0, 1, 0)
+    eFieldsyncDiff = np.diff(eFieldSyncArray)
+    eFieldIndex = np.where(eFieldsyncDiff == 1)[0][0]
+    eFieldTime = (eFieldTimeArray[eFieldIndex]+eFieldTimeArray[eFieldIndex+1])/2
+
+
+    period = eFieldTimeArray[np.where(eFieldsyncDiff == 1)[0][1]]-eFieldTimeArray[eFieldIndex]
+
+    print(SPCMTime-AODTime)
+    offsetSPCMTime = mod((SPCMTime-AODTime), period)
+    offsetExtFieldTime = mod((eFieldTime-AODTime), period)
+
+    return offsetSPCMTime, offsetExtFieldTime, period
+
+def mod(x, y):
+    while x >= y:
+        x -= y
+    if x >= y/2:
+        x -= y
+    return x

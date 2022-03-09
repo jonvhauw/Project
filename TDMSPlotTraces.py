@@ -1,4 +1,4 @@
-#from matplotlib.lines import _LineStyle
+
 from operator import index
 import pyqtgraph as pg
 import numpy as np
