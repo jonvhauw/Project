@@ -598,25 +598,8 @@ def plot_frame_image_and_sums(frameArray=np.array([]),sumHeightArray=np.array([]
 from pyqtgraph.Qt import QtCore
 from pyqtgraph.Qt import QtGui
 
-def plot_frame_video_and_sums(frameArray=np.array([]),sumHeightArray=np.array([]),sumWidthArray=np.array([]),time=0,pitchX=0.4e-6,pitchY=0.4e-6):
+def plot_frame_video_and_sums(frameArray=np.array([]), pitchX=0.4e-6,pitchY=0.4e-6, timeArray=np.array([])):
       
-    heightIndexArray = np.arange(len(sumHeightArray))
-
-    widthIndexArray = np.arange(len(sumWidthArray))  
-    
-    maxFrameValue = 10
-    maxWidthSumValue = 30
-    maxHeightSumValue = 30
-
-    x = np.arange(len(frameArray))*pitchX
-    y = np.arange(len(frameArray[0]))*pitchY
-    frame2DArray = np.zeros((len(x),len(y)))
-    '''
-    for i in range(len(frameArray)):
-        for j in range(len(frameArray[i])):
-            frame2DArray[i][j] = frameArray[i][j][0]
-    '''
-
     frameArray = np.swapaxes(frameArray, 0, 3)
     frameArray = frameArray[:][:][:][0]
 
@@ -645,7 +628,7 @@ def plot_frame_video_and_sums(frameArray=np.array([]),sumHeightArray=np.array([]
     tr.scale(pitchX, pitchY)
 
     img.setTransform(tr)
-    imv.setImage(frameArray)
+    imv.setImage(frameArray, xvals=timeArray)
     app.exec_()
 '''
     #can be used for video demonstration

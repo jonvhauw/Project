@@ -23,8 +23,8 @@ if (__name__ == "__main__"):
     Scripting Parameters
     """    
     # Time Parameters
-    #timeSegment =  [43.1,43.85]
-    timeSegment = [0, 0.6]
+    timeSegment =  [43.1,43.85]
+    #timeSegment = [0, 0.6]
     tdmsData.offsetExtFieldTime =0.001581849
     tdmsData.offsetSPCMTime =0.00073128 -2.220855e-6
     tdmsData.offsetOn = True

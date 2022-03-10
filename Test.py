@@ -6,7 +6,8 @@ from pyqtgraph.Qt import QtGui
 import Colors
 import matplotlib.cm as cm
 import matplotlib as mpl
-
+from PyQt5.QtWidgets import QApplication, QGraphicsScene, QMainWindow, QFileDialog
+'''
 app = pg.QtGui.QApplication([])
 
 x = np.random.rand(500,50,50)
@@ -55,7 +56,7 @@ m = cm.ScalarMappable(norm=norm, cmap=cmap)
 imv.setImage(x)
 app.exec_()
 # hide axis and set title
-
+'''
 
 # data generator
 '''
@@ -88,3 +89,19 @@ timer.start(2000)
 
 app.exec_()
 '''
+def set_plot_in_box(view):
+    x = [1, 2, 3, 4, 5, 6, 7 ,8 ,9, 10]
+    y = [0, 1, 2,3, 4 ,5, 6, 7, 8, 9]
+    scene = QGraphicsScene()
+    view.setScene(scene)
+    ploti = pg.PlotItem()
+    ploti.plot(x, y)
+    scene.addItem(ploti)
+
+
+def set_image_in_box(view):
+    x = np.random.rand(50,50)
+    scene = QGraphicsScene()
+    view.setScene(scene)
+    img = pg.ImageItem(x)
+    scene.addItem(img)

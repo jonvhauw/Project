@@ -2,8 +2,9 @@ import sys
 
 import pyqtgraph as pg
 from PyQt5.QtWidgets import QApplication, QGraphicsScene, QMainWindow, QFileDialog
+from PyQt5.QtGui import QResizeEvent
 from PyQt5 import uic
-
+import Test
 
 class MainWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
@@ -33,6 +34,8 @@ class MainWindow(QMainWindow):
 
         self.actionimport_files.triggered.connect(self.getfiles)
 
+        self.test()
+
     def refreshDataProcessingPlot(self):
         self.scene = QGraphicsScene()
         self.graphicsTimeTraces.setScene(self.scene)
@@ -58,6 +61,9 @@ class MainWindow(QMainWindow):
 
     def resizeEvent(self, event: QResizeEvent):
         self.graphicsTimeTraces.fitInView(self.scene.sceneRect())
+    
+    def test(self):
+        Test.set_plot_in_box(self.graphicsTimeTraces)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

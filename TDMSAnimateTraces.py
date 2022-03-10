@@ -693,7 +693,7 @@ def generate_picture_from_segment(pixelNumberArray=np.array([]),AODTimeArray=np.
         
          
     print('Displaying frames')    
-    tdmsPlot.plot_frame_video_and_sums(frameArray=np.array(frameArrayList),sumHeightArray=frameSumHeightArrayList[i],sumWidthArray=frameSumWidthArrayList[i],time=frameTimeStampArray[i],pitchX=pitchX,pitchY=pitchY)
+    tdmsPlot.plot_frame_video_and_sums(frameArray=np.array(frameArrayList),pitchX=pitchX,pitchY=pitchY, timeArray=frameTimeStampArray)
 
 
 def AOD_calibration_curve(pitch=0.5,numberOfPixels=16):
