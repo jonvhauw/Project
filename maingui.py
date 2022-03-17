@@ -1,4 +1,4 @@
-import sys          #test
+import sys          #test lol
 
 import pyqtgraph as pg
 from PyQt5.QtWidgets import QApplication, QGraphicsScene, QMainWindow, QFileDialog
