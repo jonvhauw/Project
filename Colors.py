@@ -5,15 +5,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 from math import fmod
 color_dict = {}
-color_dict['lg'] = (144,238,144)
-color_dict['lg'] = (144,238,144)
-color_dict['dg'] = (144,238,144)
-color_dict['db'] = (0,0,139)
-color_dict['tu'] = (48, 213, 200)
-color_dict['re'] = (255, 0, 0)
-color_dict['dr'] = (139, 0, 0)
-color_dict['bl'] = (0, 0, 255)
-color_dict['go'] = (255,215,0)
+#color_dict['lg'] = (144,238,144)
+color_dict['light_green'] = (144,238,144)
+color_dict['dark_green'] = (144,238,144)
+color_dict['dark_blue'] = (0,0,139)
+color_dict['turquoise'] = (48, 213, 200)
+color_dict['red'] = (255, 0, 0)
+color_dict['dark_red'] = (139, 0, 0)
+color_dict['blue'] = (0, 0, 255)
+color_dict['gold'] = (255,215,0)
 
 style_dict = {}
 style_dict['solid'] = qt.QtCore.Qt.SolidLine
