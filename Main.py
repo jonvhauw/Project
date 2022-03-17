@@ -146,7 +146,7 @@ if (__name__ == "__main__"):
                       eFieldTimeArray=eFieldTimeArray,eFieldDataArray=eFieldDataArray,discontTimeArray=discontTimeArray,discontDataArray=discontDataArray,AODSyncTimeArray=AODSyncTimeArray,AODSyncDataArray=AODSyncDataArray,
                       SPCMSyncDataArray=SPCMSyncDataArray,SPCMSyncTimeArray=SPCMSyncTimeArray)   
     
-  
+    input("Press enter to continue...")
     #tdmsPlot.cnt=0
     tdmsAnimate.generate_picture_from_segment(pixelNumberArray=pixelNumberArray,AODTimeArray=AODTimeArray,AOD1DataArray=AOD1DataArray,
                                         AOD2DataArray=AOD2DataArray,SPCMTimeArray=SPCMTimeArray,SPCMDataArray=SPCMDataArray,eFieldTimeArray=eFieldTimeArray,eFieldDataArray=eFieldStrengthDataArray,
