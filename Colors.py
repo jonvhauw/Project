@@ -21,7 +21,7 @@ style_dict['dashed'] = qt.QtCore.Qt.DashLine
 style_dict['dotted'] = qt.QtCore.Qt.DotLine
 style_dict['dashed/dotted'] = qt.QtCore.Qt.DashDotLine
 
-def make_pen(color= 're', style='solid', width=1):
+def make_pen(color= 'red', style='solid', width=1):
     global color_dict
     
     pen = pg.mkPen(color_dict[color], style=style_dict[style], width=width)

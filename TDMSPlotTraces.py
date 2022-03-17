@@ -53,8 +53,8 @@ def plot_trace_segment(AODTimeArray=np.array([]),pixelNumberArray=np.array([]),S
 
 def plot_trace2(AODTimeArray=np.array([]),pixelNumberArray=np.array([]),SPCMTimeArray=np.array([]),SPCMDataArray=np.array([]),AOD1DataArray=np.array([]),AOD2DataArray=np.array([]),
                       eFieldTimeArray=np.array([]),eFieldDataArray=np.array([]),discontTimeArray=np.array([]),discontDataArray=np.array([]),AODSyncTimeArray=np.array([]),AODSyncDataArray=np.array([]),
-                      SPCMSyncDataArray=np.array([]),SPCMSyncTimeArray=np.array([]),yLabel="Normalized Trace (a.u.)", AOD1_c='dg', AOD1_s = 'solid', AOD2_c = 'db', AOD2_s = 'solid', Pix_c = 'lg', Pix_s='solid',
-                      SPCM_c = 're', SPCM_s = 'solid', EF_c = 'bl', EF_s = 'solid', SPCM_sync_c = 'dr', SPCM_sync_s= 'dashed', AOD_sync_c = 'dg', AOD_sync_s = 'dashed', Disc_c = 'go', Disc_s = 'solid'):
+                      SPCMSyncDataArray=np.array([]),SPCMSyncTimeArray=np.array([]),yLabel="Normalized Trace (a.u.)", AOD1_c='dark green', AOD1_s = 'solid', AOD2_c = 'dark blue', AOD2_s = 'solid', Pix_c = 'light green', Pix_s='solid',
+                      SPCM_c = 'red', SPCM_s = 'solid', EF_c = 'blue', EF_s = 'solid', SPCM_sync_c = 'dark red', SPCM_sync_s= 'dashed', AOD_sync_c = 'dark green', AOD_sync_s = 'dashed', Disc_c = 'gold', Disc_s = 'solid'):
     
     global plotAOD
     global plotPixelNumber
