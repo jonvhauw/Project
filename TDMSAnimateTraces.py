@@ -695,6 +695,43 @@ def generate_picture_from_segment(pixelNumberArray=np.array([]),AODTimeArray=np.
     print('Displaying frames')    
     tdmsPlot.plot_frame_video_and_sums(frameArray=np.array(frameArrayList),pitchX=pitchX,pitchY=pitchY, timeArray=frameTimeStampArray)
 
+def generate_picture_from_segmentgui(frameArrayListList = [], frameTimeStampArrayList = [], frameSumHeightArrayListList = [], frameSumWidthArrayListList = [],
+                                    frameSumHeightCentroidArrayList = [], frameSumWidthCentroidArrayList = [], AODTimeFragmentArray = np.array([]),
+                                    AOD1DataFragmentArray = np.array([]), AOD2DataFragmentArray = np.array([]), SPCMTimeFragmentArray = np.array([]),
+                                    SPCMDataFragmentArray = np.array([]), pixelNumberFragmentArray = np.array([]), rollImage=False,rollAxis=0,rollPixels=1):
+   
+
+    global globalArrayList1
+    global globalArrayList2
+    global globalArrayList3
+    global globalFrameTimeStampArray
+    global animationFigure
+    global animationAxes
+    global onlyImage
+    global liveAnimation
+    global combineVideos
+    global globalCounter
+    global maxFramesPerFragment
+    global saveVideo
+    global animate
+    global fps
+    global dpi
+    global globalSigmaArray
+    global globalAmplitudeArray
+    global globalCentroidArray
+    global pitchX
+    global pitchY
+
+    
+
+      
+    
+    frameArrayList, frameSumWidthArrayList, frameSumHeightArrayList, frameSumWidthCentroidArray ,frameSumHeightCentroidArray, frameTimeStampArray,frameSumHeightAmplitudeArray,frameSumHeightSigmaArray,frameSumWidthAmplitudeArray,frameSumWidthSigmaArray  = generate_frame_list_from_fragment(AODTimeArray=AODTimeFragmentArray,AOD1DataArray=AOD1DataFragmentArray,
+                                                          AOD2DataArray=AOD2DataFragmentArray,pixelNumberArray=pixelNumberFragmentArray,SPCMTimeArray=SPCMTimeFragmentArray,SPCMDataArray=SPCMDataFragmentArray,
+                                                          rollImage=rollImage,rollAxis=rollAxis,rollPixels=rollPixels)
+        
+         
+    return frameTimeStampArray, frameArrayList, frameSumWidthCentroidArray, frameSumWidthArrayList, frameSumHeightCentroidArray, frameSumHeightArrayList
 
 def AOD_calibration_curve(pitch=0.5,numberOfPixels=16):
     voltageArray = np.arange(0,numberOfPixels)*pitch

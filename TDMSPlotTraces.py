@@ -1,5 +1,9 @@
 
 from operator import index
+import re
+from symtable import Symbol
+from turtle import color
+from matplotlib import colors
 import pyqtgraph as pg
 import numpy as np
 import matplotlib as mpl
@@ -12,7 +16,8 @@ import Colors as Col
 globalEventList = []
 
 plotTrace = True
-plotAOD = True
+plotAODX = True
+plotAODY = True
 plotPixelNumber = True
 plotAODSync = True
 plotDiscont = True
@@ -51,12 +56,12 @@ def plot_trace_segment(AODTimeArray=np.array([]),pixelNumberArray=np.array([]),S
                           AOD2DataArray=AOD2DataArray, eFieldTimeArray=eFieldTimeArray, eFieldDataArray=eFieldDataArray, discontTimeArray=discontTimeArray, discontDataArray=discontDataArray, 
                           AODSyncTimeArray=AODSyncTimeArray, AODSyncDataArray=AODSyncDataArray, SPCMSyncDataArray=SPCMSyncDataArray, SPCMSyncTimeArray=SPCMSyncTimeArray,yLabel=yLabel)
 
-def plot_trace2(AODTimeArray=np.array([]),pixelNumberArray=np.array([]),SPCMTimeArray=np.array([]),SPCMDataArray=np.array([]),AOD1DataArray=np.array([]),AOD2DataArray=np.array([]),
+def plot_trace2(scene, AODTimeArray=np.array([]),pixelNumberArray=np.array([]),SPCMTimeArray=np.array([]),SPCMDataArray=np.array([]),AOD1DataArray=np.array([]),AOD2DataArray=np.array([]),
                       eFieldTimeArray=np.array([]),eFieldDataArray=np.array([]),discontTimeArray=np.array([]),discontDataArray=np.array([]),AODSyncTimeArray=np.array([]),AODSyncDataArray=np.array([]),
                       SPCMSyncDataArray=np.array([]),SPCMSyncTimeArray=np.array([]),yLabel="Normalized Trace (a.u.)", AOD1_c='dark green', AOD1_s = 'solid', AOD2_c = 'dark blue', AOD2_s = 'solid', Pix_c = 'light green', Pix_s='solid',
                       SPCM_c = 'red', SPCM_s = 'solid', EF_c = 'blue', EF_s = 'solid', SPCM_sync_c = 'dark red', SPCM_sync_s= 'dashed', AOD_sync_c = 'dark green', AOD_sync_s = 'dashed', Disc_c = 'gold', Disc_s = 'solid'):
     
-    global plotAOD
+    global plotAODX, plotAODY
     global plotPixelNumber
     global plotAODSync
     global plotDiscont
@@ -66,32 +71,56 @@ def plot_trace2(AODTimeArray=np.array([]),pixelNumberArray=np.array([]),SPCMTime
     global normalize
     global plotExtField
 
+
+    print('plotAOD 1e checkup: ', plotAODX)
+
     #qt.QTCore.Qt.DashLine
     #pen = pg.mkPen('r', style=qt.QtCore.Qt.DashLine)
     #win = pg.GraphicsWindow(title="test")
     #pg.setConfigOptions(antialias=True)
     pg.setConfigOption('background', 'w')
     pg.setConfigOption('foreground', 'k')
-    ax = pg.plot()
+
+    # create an axis
+    #ax = self.figure.add_subplot(111)
+    
+    ax = pg.PlotWidget(scene)
+    ax.plotItem.getViewBox().setMouseMode(pg.ViewBox.RectMode)
+
+    #ax = pg.plot()
+    #ax = self.graphicsTimeTraces.plot()
+
     #pw = pg.plot(AODTimeArray, AOD1DataArray/max(AOD1DataArray), pen=pen )  # plot x vs y in red
     #pw.plot(AODTimeArray,AOD2DataArray/max(AOD2DataArray), pen='b' )
     #fig, ax = plt.subplots()
     #cid = fig.canvas.mpl_connect('button_press_event', on_right_click_plot_time)
     
-    if(plotAOD == True):
+    if(plotAODX == True):
         if(normalize == True):
             if(plotPixelNumber == True):
                 ax.plot(AODTimeArray,pixelNumberArray/max(pixelNumberArray), pen=Col.make_pen(color=Pix_c, style=Pix_s))
             else:
                 ax.plot(AODTimeArray,AOD1DataArray/max(AOD1DataArray), pen=Col.make_pen(color=AOD1_c, style=AOD1_s))
-                ax.plot(AODTimeArray,AOD2DataArray/max(AOD2DataArray), pen=Col.make_pen(color=AOD2_c, style=AOD2_s))
+                #ax.plot(AODTimeArray,AOD2DataArray/max(AOD2DataArray), pen=Col.make_pen(color=AOD2_c, style=AOD2_s))
         else:
             if(plotPixelNumber == True):
                 ax.plot(AODTimeArray,pixelNumberArray,pen=Col.make_pen(color=Pix_c, style=Pix_s))
             else:
                 ax.plot(AODTimeArray,AOD1DataArray, pen=Col.make_pen(color=AOD1_c, style=AOD1_s))
+                #ax.plot(AODTimeArray,AOD2DataArray, pen=Col.make_pen(color=AOD2_c, style=AOD2_s))
+    if(plotAODY == True):
+        if(normalize == True):
+            if(plotPixelNumber == True):
+                ax.plot(AODTimeArray,pixelNumberArray/max(pixelNumberArray), pen=Col.make_pen(color=Pix_c, style=Pix_s))
+            else:
+                #ax.plot(AODTimeArray,AOD1DataArray/max(AOD1DataArray), pen=Col.make_pen(color=AOD1_c, style=AOD1_s))
+                ax.plot(AODTimeArray,AOD2DataArray/max(AOD2DataArray), pen=Col.make_pen(color=AOD2_c, style=AOD2_s))
+        else:
+            if(plotPixelNumber == True):
+                ax.plot(AODTimeArray,pixelNumberArray,pen=Col.make_pen(color=Pix_c, style=Pix_s))
+            else:
+                #ax.plot(AODTimeArray,AOD1DataArray, pen=Col.make_pen(color=AOD1_c, style=AOD1_s))
                 ax.plot(AODTimeArray,AOD2DataArray, pen=Col.make_pen(color=AOD2_c, style=AOD2_s))
-            
     if(plotSPCM == True):
         if(normalize == True):
             if(plotSPCMSampleRatio >= 1):
@@ -124,7 +153,9 @@ def plot_trace2(AODTimeArray=np.array([]),pixelNumberArray=np.array([]),SPCMTime
          
         
     ax.setTitle('Time traces',fontsize=20)
-    ax.plotItem.getViewBox().setMouseMode(pg.ViewBox.RectMode)
+    
+    return ax
+
     #ax.tick_params(labelsize=15)
     #pg.setLabel('left', 'y')
     #pg.setLabem('bottom', 'time(s)')
@@ -133,7 +164,6 @@ def plot_trace2(AODTimeArray=np.array([]),pixelNumberArray=np.array([]),SPCMTime
     #ax.legend(fontsize=15,loc="upper right") 
     #ax.grid()
     #plt.show()
-
 '''
 def plot_trace1(AODTimeArray=np.array([]),pixelNumberArray=np.array([]),SPCMTimeArray=np.array([]),SPCMDataArray=np.array([]),AOD1DataArray=np.array([]),AOD2DataArray=np.array([]),
                       eFieldTimeArray=np.array([]),eFieldDataArray=np.array([]),discontTimeArray=np.array([]),discontDataArray=np.array([]),AODSyncTimeArray=np.array([]),AODSyncDataArray=np.array([]),
@@ -204,7 +234,126 @@ def plot_trace1(AODTimeArray=np.array([]),pixelNumberArray=np.array([]),SPCMTime
     ax.legend(fontsize=15,loc="upper right") 
     ax.grid()
     plt.show()
-'''  
+''' 
+def plot_position_and_velocity_trace_gui(scenePos, sceneVel, frameTimeStampArray=np.array([]),widthPositionArray=np.array([]),heightPositionArray=np.array([]),
+                                     positionTimeArray=np.array([]),filteredHeightPositionArray=np.array([]),filteredWidthPositionArray=np.array([]),
+                                     velocityTimeArray=np.array([]),heightVelocityArray=np.array([]),widthVelocityArray=np.array([]),
+                                     eFieldTimeArray=np.array([]),eFieldDataArray=np.array([])):
+    
+
+    plotHeight = False
+    plotWidth = False
+    global plotExtField
+    
+    
+    if(len(widthPositionArray)>0):
+        plotWidth = True
+    
+    if(len(heightPositionArray)>0):
+        plotHeight = True
+    '''
+    pw = pg.PlotWidget()
+    pw.show()
+    #pw.setWindowsTitle('pyqtgraph example: MultiplePlotAxes')
+    p1 = pw.plotItem
+    p1.setLabels(left='axis 1')
+    
+    ## create a new ViewBox, link the right axis to its coordinate system
+    p2 = pg.ViewBox()
+    p1.showAxis('right')
+    p1.scene().addItem(p2)
+    p1.getAxis('right').linkToView(p2)
+    p2.setXLink(p1)
+    p1.getAxis('right').setLabel('axis2', color='#0000ff')
+    '''
+    pw1 = pg.PlotWidget()
+    #pw2 = pg.PlotWidget()
+    #pw1.show()
+    #pw2.show()
+
+    positionAx1 = pw1.plotItem
+    positionAx1.setLabels(left='axis 1')
+    positionAx2 = pg.ViewBox()
+    positionAx1.showAxis('right')
+    positionAx1.scene().addItem(positionAx2)
+    positionAx1.getAxis('right').linkToView(positionAx2)
+    positionAx2.setXLink(positionAx1)
+    positionAx1.getAxis('right').setLabel('axis2', color='#0000ff')
+
+    positionAx2.setGeometry(positionAx1.vb.sceneBoundingRect())
+    positionAx2.linkedViewChanged(positionAx1.vb, positionAx2.XAxis)
+    lineListPosition = []    
+    
+    velocityAx1 = pg.PlotWidget(sceneVel)
+    velocityAx2 = pg.PlotWidget(sceneVel)
+    lineListVelocity = []    
+    
+    if(plotExtField == True):
+        stopIndexEField = np.where(eFieldTimeArray <= positionTimeArray[-1])[0][-1]
+
+        line = positionAx2.addItem(pg.PlotCurveItem(eFieldTimeArray[:stopIndexEField],eFieldDataArray[:stopIndexEField]/max(eFieldDataArray[:stopIndexEField]),pen=Col.make_pen('dark green')))
+        #lineListPosition = lineListPosition + line
+
+        line = velocityAx2.plot(eFieldTimeArray[:stopIndexEField],eFieldDataArray[:stopIndexEField]/max(eFieldDataArray[:stopIndexEField]),pen=Col.make_pen('dark green'))
+        #lineListVelocity = lineListVelocity + line
+        '''
+        line = positionAx2.plot(eFieldTimeArray[:stopIndexEField],eFieldDataArray[:stopIndexEField]/max(eFieldDataArray[:stopIndexEField]),lw=2,linestyle="-",color="green",label="E/Emax")
+        lineListPosition = lineListPosition + line
+        positionAx2.set_ylabel('E-Field/max(E-Field)',fontsize=15)
+        positionAx2.tick_params(axis="y",labelsize=10)
+        positionAx2.yaxis.label.set_color("green")
+        
+        line = velocityAx2.plot(eFieldTimeArray[:stopIndexEField],eFieldDataArray[:stopIndexEField]/max(eFieldDataArray[:stopIndexEField]),lw=2,linestyle="-",color="green",label="E/Emax")
+        lineListVelocity = lineListVelocity + line
+        velocityAx2.set_ylabel('E-Field/max(E-Field)',fontsize=15)
+        velocityAx2.tick_params(axis="y",labelsize=10)
+        velocityAx2.yaxis.label.set_color("green")
+        '''
+    if(plotHeight == True):
+        line = positionAx1.plot(frameTimeStampArray,heightPositionArray*1e6, pen=pg.mkPen(None), symbol='o', symbolPen=(255, 140, 105))
+        #lineListPosition = lineListPosition + line
+
+        line = positionAx1.plot(positionTimeArray,filteredHeightPositionArray*1e6,lw=2, pen=Col.make_pen("dark red"))
+        #lineListPosition = lineListPosition + line
+        
+        line = velocityAx1.plot(velocityTimeArray,heightVelocityArray*1e3, pen=Col.make_pen("red"))
+        #lineListVelocity = lineListVelocity + line
+        
+        
+    
+    if(plotWidth == True):
+        line = positionAx1.plot(frameTimeStampArray,widthPositionArray*1e6, pen=pg.mkPen(None), symbol='o', symbolPen=(21, 244, 238))
+        #lineListPosition = lineListPosition + line
+        
+        line = positionAx1.plot(positionTimeArray,filteredWidthPositionArray*1e6, pen=Col.make_pen("dark blue"))
+        #lineListPosition = lineListPosition + line
+        
+        line = velocityAx1.plot(velocityTimeArray,widthVelocityArray*1e3, pen=Col.make_pen("blue"))   
+        #lineListVelocity = lineListVelocity + line
+    
+    
+    return positionAx2, positionAx1, velocityAx2, velocityAx1, pw1
+
+    '''
+    labels = [line.get_label() for line in lineListPosition]
+    positionAx2.legend(lineListPosition,labels,fontsize=15,loc="upper right")
+    positionAx1.set_title('Particle position trace',fontsize=20)
+    positionAx1.set_ylabel('Particle position (um)',fontsize=15)
+    positionAx1.tick_params(axis='both',labelsize=10)
+    positionAx1.yaxis.label.set_color("red")
+    positionAx1.set_xlabel('Time (s)',fontsize=15)
+    positionAx1.grid()
+    
+    labels = [line.get_label() for line in lineListVelocity]
+    velocityAx2.legend(lineListVelocity,labels,fontsize=15,loc="upper right")    
+    velocityAx1.set_title('Particle velocity trace',fontsize=20)
+    velocityAx1.set_ylabel('Particle velocity (mm/s)',fontsize=15)
+    velocityAx1.tick_params(axis="both",labelsize=10)
+    velocityAx1.yaxis.label.set_color("red")
+    velocityAx1.set_xlabel('Time (s)',fontsize=15)
+    velocityAx1.grid()
+    '''
+      
  
     
 def plot_position_and_velocity_trace(frameTimeStampArray=np.array([]),widthPositionArray=np.array([]),heightPositionArray=np.array([]),
@@ -371,6 +520,34 @@ def plot_fitted_velocity_scatter_plot(fittedVelocityList=[],fittedCovVelocityLis
     ax.set_xlabel('Electroosmotic velocity (mm/s)',fontsize=15)
     plt.show()
     
+def plot_fitted_velocity_fixed_uEO_gui(scene, fitteduEPArray=np.array([]),uEO=0.001):
+
+    fitteduEOArray = np.array([])
+    
+    for i in range(len(fitteduEPArray)):
+        fitteduEOArray = np.append(fitteduEOArray,uEO)
+        
+    averageuEP = np.average(fitteduEPArray)
+
+    ax = pg.PlotWidget(scene)
+    ax.plotItem.getViewBox().setMouseMode(pg.ViewBox.RectMode)
+
+    ax.plot(fitteduEOArray*1e3,fitteduEPArray*1e3, pen=pg.mkPen(None), symbol='o', symbolPen='r')
+    #print(np.array(uEO)*1e3,np.array(averageuEP)*1e3)
+    ax.plot([uEO*1e3], [averageuEP*1e3], pen=pg.mkPen(None), symbol='x', symbolPen=(105, 105, 105))
+
+    #ax.plot(fitteduEOArray*1e3,fitteduEPArray*1e3,color="red",marker="o",linestyle="",label="Fitted Data")
+    #ax.plot(uEO*1e3,averageuEP*1e3,color="black",marker="X",linestyle="",label="Average", markersize=20)
+    '''
+    ax.grid()
+    ax.legend(fontsize=15,loc="upper right")
+    ax.set_title('Electrophoretic vs Electroosmotic velocity',fontsize=20)
+    ax.set_ylabel('Electrophoretic velocity (mm/s)',fontsize=15)
+    ax.set_xlabel('Electroosmotic velocity (mm/s)',fontsize=15)
+    plt.show()
+    '''
+    return ax    
+
 def plot_fitted_velocity_fixed_uEO(fitteduEPArray=np.array([]),uEO=0.001):
     fitteduEOArray = np.array([])
     
@@ -389,8 +566,7 @@ def plot_fitted_velocity_fixed_uEO(fitteduEPArray=np.array([]),uEO=0.001):
     ax.set_title('Electrophoretic vs Electroosmotic velocity',fontsize=20)
     ax.set_ylabel('Electrophoretic velocity (mm/s)',fontsize=15)
     ax.set_xlabel('Electroosmotic velocity (mm/s)',fontsize=15)
-    plt.show()    
-
+    plt.show() 
 
 def plot_kymograph(xDataArrayList=[],yDataArrayList=[],frameTimeStampArray=np.array([]),eFieldTimeArray=np.array([]),eFieldDataArray=np.array([]),positionTimeArray=np.array([]),
                    frameSumWidthCentroidArray=np.array([]),frameSumHeightCentroidArray=np.array([]),pitchX=0.4e-6,pitchY=0.4e-6,offsetFactor=1.0,saveFig=True,figurePath=""):
@@ -655,3 +831,35 @@ def plot_frame_video_and_sums(frameArray=np.array([]), pitchX=0.4e-6,pitchY=0.4e
     app.exec_()
 '''
 cnt=0
+def plot_frame_video_and_sums2(scene, frameArray=np.array([]), pitchX=0.4e-6,pitchY=0.4e-6, timeArray=np.array([])):
+      
+    frameArray = np.swapaxes(frameArray, 0, 3)
+    frameArray = frameArray[:][:][:][0]
+
+    frameArray = np.swapaxes(frameArray, 0, 2)
+
+
+    #x = np.random.rand(500,50,50)
+
+    pg.setConfigOptions(antialias=True)
+
+    # main graphics window
+    #view = pg.GraphicsView()
+
+    # show the window
+    #view.show()
+
+    imv = pg.ImageView()
+    imv.show()
+
+
+    # add the plotItem to the graphicsWindow and set it as central
+
+    # create an image object
+    img = pg.ImageItem(border='w', levels=(frameArray.min(),frameArray.max()))
+    tr = QtGui.QTransform()  # prepare ImageItem transformation:
+    tr.scale(pitchX, pitchY)
+
+    img.setTransform(tr)
+    imv.setImage(frameArray, xvals=timeArray)
+    return imv

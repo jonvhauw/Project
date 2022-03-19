@@ -8,7 +8,7 @@ import TDMSSaveData as tdmsSave
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
-#from numba import jit
+from numba import jit
 
 if (__name__ == "__main__"):
     comsolFieldFactor =  (23e3)*(6.5e-3)/10 # Conversion factor based on comsol simulation V/m/m/V
@@ -41,12 +41,13 @@ if (__name__ == "__main__"):
     
     tdmsAnimate.centroidCalculation = "gaussian fit"
     
-    saveData = True
+    saveData = False
     readSavedData = False
     
     # AOD Parameters
     scanPattern = "S-shape"
-    tdmsPlot.plotAOD = True
+    tdmsPlot.plotAODX = True
+    tdmsPlot.plotAODY = True
     tdmsPlot.plotPixelNumber = False
     tdmsPlot.plotAODSync = plotSync
     tdmsPlot.plotDiscont = False
@@ -66,7 +67,7 @@ if (__name__ == "__main__"):
     tdmsPlot.plotExtFieldKymo = False
     
     # Fit Parameters
-    fixeduEO = True
+    fixeduEO = False
     
     
     # Animation Parameters
@@ -141,6 +142,7 @@ if (__name__ == "__main__"):
     """      
     
     print("### Plotting signals \n")
+    '''
     tdmsPlot.plot_trace_segment(AODTimeArray=AODTimeArray,AOD1DataArray=AOD1DataArray,AOD2DataArray=AOD2DataArray,
                       pixelNumberArray=pixelNumberArray,SPCMTimeArray=SPCMTimeArray,SPCMDataArray=SPCMDataArray,
                       eFieldTimeArray=eFieldTimeArray,eFieldDataArray=eFieldDataArray,discontTimeArray=discontTimeArray,discontDataArray=discontDataArray,AODSyncTimeArray=AODSyncTimeArray,AODSyncDataArray=AODSyncDataArray,
@@ -157,7 +159,7 @@ if (__name__ == "__main__"):
     
     
     input("Press enter to continue...")
-
+    '''
 
 
     """ 

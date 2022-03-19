@@ -89,7 +89,21 @@ timer.start(2000)
 
 app.exec_()
 '''
+def twin_plot():
+    plotWidget1 = pg.plot(title="Three plot curves")
+    plotWidget2 = pg.plot(title="Three plot curves")
+    plotWidget1.setXLink(plotWidget2)
+    x = [0, 1, 2, 3, 4]
+    y1 = [0, 1, 2, 3, 4]
+    y2 = np.array(y1)*10
+
+    plot1 = plotWidget1.plot(x, y1)
+    plot2 = plotWidget2.plot(x, y2)
+
+    #plot2.plot(x, y2)
+
 def set_plot_in_box(view):
+    app = pg.QtGui.QApplication([])
     x = [1, 2, 3, 4, 5, 6, 7 ,8 ,9, 10]
     y = [0, 1, 2,3, 4 ,5, 6, 7, 8, 9]
     scene = QGraphicsScene()
@@ -105,3 +119,59 @@ def set_image_in_box(view):
     view.setScene(scene)
     img = pg.ImageItem(x)
     scene.addItem(img)
+'''
+twin_plot()
+## Start Qt event loop.
+if __name__ == '__main__':
+    import sys
+    if sys.flags.interactive != 1 or not hasattr(pg.QtCore, 'PYQT_VERSION'):
+        pg.QtGui.QApplication.exec_()
+'''
+
+pg.mkQApp()
+ 
+pw = pg.PlotWidget()
+pw.show()
+#pw.setWindowsTitle('pyqtgraph example: MultiplePlotAxes')
+p1 = pw.plotItem
+p1.setLabels(left='axis 1')
+ 
+## create a new ViewBox, link the right axis to its coordinate system
+p2 = pg.ViewBox()
+p1.showAxis('right')
+p1.scene().addItem(p2)
+p1.getAxis('right').linkToView(p2)
+p2.setXLink(p1)
+p1.getAxis('right').setLabel('axis2', color='#0000ff')
+ 
+## create third ViewBox. 
+## this time we need to create a new axis as well.
+
+ 
+ 
+## Handle view resizing 
+def updateViews():
+    ## view has resized; update auxiliary views to match
+    global p1, p2, p3
+    p2.setGeometry(p1.vb.sceneBoundingRect())
+    p3.setGeometry(p1.vb.sceneBoundingRect())
+     
+    ## need to re-update linked axes since this was called
+    ## incorrectly while views had different shapes.
+    ## (probably this should be handled in ViewBox.resizeEvent)
+    p2.linkedViewChanged(p1.vb, p2.XAxis)
+    p3.linkedViewChanged(p1.vb, p3.XAxis)
+ 
+updateViews()
+p1.vb.sigResized.connect(updateViews)
+ 
+ 
+p1.plot([1,2,4,8,16,32])
+p2.addItem(pg.PlotCurveItem([10,20,40,80,40,20], pen='b'))
+p3.addItem(pg.PlotCurveItem([3200,1600,800,400,200,100], pen='r'))
+ 
+## Start Qt event loop unless running in interactive mode or using pyside.
+if __name__ == '__main__':
+    import sys
+    if (sys.flags.interactive != 1) or not hasattr(QtCore, 'PYQT_VERSION'):
+        QtGui.QApplication.instance().exec_()
