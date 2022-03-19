@@ -94,6 +94,33 @@ def return_arrays_from_tdms_hierarchy(pixelNumberArray=np.array([]), AODLoopTick
     
     return pixelNumberArray, AODTimeArray, AODSyncTimeArray, AODSyncDataArray, SPCMDataArray, SPCMTimeArray, SPCMSyncTimeArray, SPCMSyncDataArray,eFieldDataArray, eFieldTimeArray
  
+def return_arrays_from_tdms_hierarchy2(pixelNumberArray=np.array([]), AODLoopTicksArray=np.array([]), SPCMDataArray=np.array([]), SPCMLoopTicksArray=np.array([]), 
+                                      eFieldDataArray=np.array([]), eFieldLoopTicksArray=np.array([]), FPGAClockPeriod=25e-9,tdmsFolderPath="",experimentName=""):
+    global filterSPCM
+    global windowSize
+    global offsetOn
+    global offsetExtFieldTime
+    global offsetSPCMTime
+    
+    AODTimeArray = np.cumsum(np.abs(AODLoopTicksArray.astype('float'))) * FPGAClockPeriod
+    AODSyncTimeArray, AODSyncDataArray = generate_sync_array(rawTicksArray=AODLoopTicksArray.astype('float'),FPGAClockPeriod=FPGAClockPeriod)
+    
+    eFieldTimeArray = np.cumsum(eFieldLoopTicksArray.astype('float')) * FPGAClockPeriod
+    
+    if(filterSPCM == True):
+        SPCMDataArray = noise_filter_counts_array(countsArray=SPCMDataArray,windowSize=windowSize,filterType="gauss")
+    SPCMTimeArray = np.cumsum(np.abs(SPCMLoopTicksArray.astype('float'))) * FPGAClockPeriod 
+    SPCMSyncTimeArray, SPCMSyncDataArray = generate_sync_array(rawTicksArray=SPCMLoopTicksArray.astype('float'),FPGAClockPeriod=FPGAClockPeriod)
+    
+    if(offsetOn == True):
+            
+            
+        eFieldTimeArray = eFieldTimeArray + offsetExtFieldTime
+        SPCMSyncTimeArray = SPCMSyncTimeArray + offsetSPCMTime
+        SPCMTimeArray = SPCMTimeArray + offsetSPCMTime
+    
+    return pixelNumberArray, AODTimeArray, AODSyncTimeArray, AODSyncDataArray, SPCMDataArray, SPCMTimeArray, SPCMSyncTimeArray, SPCMSyncDataArray,eFieldDataArray, eFieldTimeArray
+    
 # Returns a running average filtered array of photoncounts array
 
 # Input:  - countsArray: Array containing the photon counts that need to be filtered
@@ -444,12 +471,24 @@ def pixel_number_array_to_AOD_grid_index_arrays(pixelNumberArray=np.array([]),am
 # Input:  - arrayList: List containing arrays to be concatinated
 
 # Output: - array: Concatinated array
+def ravel_list_of_lists(listList=[]):
+    array = np.array([])
+    l = []
+    for a in listList:
+        l = l + a
+        
+    array = np.array(l)
+    
+    return array
 
 def ravel_list_of_arrays(arrayList=[]):
     array = np.array([])
     l = []
     for a in arrayList:
-        l = l + a.tolist()
+        try:
+            l = l + a.tolist()
+        except:
+            l = l+a
         
     array = np.array(l)
     
@@ -468,7 +507,7 @@ def ravel_list_of_list_of_array(arrayListList=[]):
         for a in l:
             arrayList.append(a)
     
-    return arrayList
+    return np.array(arrayList)
 
 # Returns flattened arrays of all array lists or array list lists using the two function above. 
 # A single trace is called a segment and a segment is split up in fragments for every 300 frames or so
@@ -572,7 +611,6 @@ def find_auto_offset(AODSyncTimeArray=np.array([]),AODSyncDataArray=np.array([])
 
     period = eFieldTimeArray[np.where(eFieldsyncDiff == 1)[0][1]]-eFieldTimeArray[eFieldIndex]
 
-    print(SPCMTime-AODTime)
     offsetSPCMTime = mod((SPCMTime-AODTime), period)
     offsetExtFieldTime = mod((eFieldTime-AODTime), period)
 

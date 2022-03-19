@@ -1,4 +1,3 @@
-from matplotlib import style
 import pyqtgraph as pg
 import PyQt5 as qt
 import numpy as np
@@ -15,16 +14,12 @@ color_dict['dark red'] = (139, 0, 0)
 color_dict['blue'] = (0, 0, 255)
 color_dict['gold'] = (255,215,0)
 
-style_dict = {}
-style_dict['solid'] = qt.QtCore.Qt.SolidLine
-style_dict['dashed'] = qt.QtCore.Qt.DashLine
-style_dict['dotted'] = qt.QtCore.Qt.DotLine
-style_dict['dashed/dotted'] = qt.QtCore.Qt.DashDotLine
 
-def make_pen(color= 'red', style='solid', width=1):
+def make_pen(color= 're', style='solid', width=1):
     global color_dict
-    
-    pen = pg.mkPen(color_dict[color], style=style_dict[style], width=width)
-    
+    if style == 'dashed':
+        pen = pg.mkPen(color_dict[color], style=qt.QtCore.Qt.DashLine, width=width)
+    else:
+        pen = pg.mkPen(color_dict[color], width=width)
     return pen
 
