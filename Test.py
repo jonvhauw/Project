@@ -7,7 +7,7 @@ import Colors
 import matplotlib.cm as cm
 import matplotlib as mpl
 from PyQt5.QtWidgets import QApplication, QGraphicsScene, QMainWindow, QFileDialog
-'''
+
 app = pg.QtGui.QApplication([])
 
 x = np.random.rand(500,50,50)
@@ -56,7 +56,7 @@ m = cm.ScalarMappable(norm=norm, cmap=cmap)
 imv.setImage(x)
 app.exec_()
 # hide axis and set title
-'''
+
 
 # data generator
 '''
@@ -152,15 +152,15 @@ p1.getAxis('right').setLabel('axis2', color='#0000ff')
 ## Handle view resizing 
 def updateViews():
     ## view has resized; update auxiliary views to match
-    global p1, p2, p3
+    global p1, p2
     p2.setGeometry(p1.vb.sceneBoundingRect())
-    p3.setGeometry(p1.vb.sceneBoundingRect())
+    #p3.setGeometry(p1.vb.sceneBoundingRect())
      
     ## need to re-update linked axes since this was called
     ## incorrectly while views had different shapes.
     ## (probably this should be handled in ViewBox.resizeEvent)
     p2.linkedViewChanged(p1.vb, p2.XAxis)
-    p3.linkedViewChanged(p1.vb, p3.XAxis)
+    #p3.linkedViewChanged(p1.vb, p3.XAxis)
  
 updateViews()
 p1.vb.sigResized.connect(updateViews)
@@ -168,7 +168,7 @@ p1.vb.sigResized.connect(updateViews)
  
 p1.plot([1,2,4,8,16,32])
 p2.addItem(pg.PlotCurveItem([10,20,40,80,40,20], pen='b'))
-p3.addItem(pg.PlotCurveItem([3200,1600,800,400,200,100], pen='r'))
+#p3.addItem(pg.PlotCurveItem([3200,1600,800,400,200,100], pen='r'))
  
 ## Start Qt event loop unless running in interactive mode or using pyside.
 if __name__ == '__main__':

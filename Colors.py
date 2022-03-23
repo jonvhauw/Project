@@ -13,9 +13,9 @@ color_dict['red'] = (255, 0, 0)
 color_dict['dark red'] = (139, 0, 0)
 color_dict['blue'] = (0, 0, 255)
 color_dict['gold'] = (255,215,0)
+color_dict['black'] = (115,115,115)
 
-
-def make_pen(color= 're', style='solid', width=1):
+def make_pen(color= 'red', style='solid', width=1):
     global color_dict
     if style == 'dashed':
         pen = pg.mkPen(color_dict[color], style=qt.QtCore.Qt.DashLine, width=width)

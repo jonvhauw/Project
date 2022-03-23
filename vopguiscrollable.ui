@@ -677,7 +677,7 @@
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>-23</y>
+             <y>-366</y>
              <width>1042</width>
              <height>923</height>
             </rect>
@@ -1177,7 +1177,7 @@
              </widget>
             </item>
             <item row="3" column="0" colspan="3">
-             <widget class="QGraphicsView" name="graphicsKymoX_2">
+             <widget class="QGraphicsView" name="graphicsKymoX">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
                 <horstretch>0</horstretch>
@@ -1187,7 +1187,7 @@
              </widget>
             </item>
             <item row="4" column="0" colspan="3">
-             <widget class="QGraphicsView" name="graphicsKymoY_2">
+             <widget class="QGraphicsView" name="graphicsKymoY">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
                 <horstretch>0</horstretch>

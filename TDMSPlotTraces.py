@@ -266,8 +266,8 @@ def plot_position_and_velocity_trace_gui(scenePos, sceneVel, frameTimeStampArray
     p2.setXLink(p1)
     p1.getAxis('right').setLabel('axis2', color='#0000ff')
     '''
-    pw1 = pg.PlotWidget()
-    #pw2 = pg.PlotWidget()
+    pw1 = pg.PlotWidget(scenePos)
+    pw2 = pg.PlotWidget(sceneVel)
     #pw1.show()
     #pw2.show()
 
@@ -284,8 +284,17 @@ def plot_position_and_velocity_trace_gui(scenePos, sceneVel, frameTimeStampArray
     positionAx2.linkedViewChanged(positionAx1.vb, positionAx2.XAxis)
     lineListPosition = []    
     
-    velocityAx1 = pg.PlotWidget(sceneVel)
-    velocityAx2 = pg.PlotWidget(sceneVel)
+    velocityAx1 = pw2.plotItem
+    velocityAx1.setLabels(left='axis 1')
+    velocityAx2 = pg.ViewBox()
+    velocityAx1.showAxis('right')
+    velocityAx1.scene().addItem(velocityAx2)
+    velocityAx1.getAxis('right').linkToView(velocityAx2)
+    velocityAx2.setXLink(velocityAx1)
+    velocityAx1.getAxis('right').setLabel('axis2', color='#0000ff')
+
+    velocityAx2.setGeometry(velocityAx1.vb.sceneBoundingRect())
+    velocityAx2.linkedViewChanged(velocityAx1.vb, velocityAx2.XAxis)
     lineListVelocity = []    
     
     if(plotExtField == True):
@@ -294,7 +303,7 @@ def plot_position_and_velocity_trace_gui(scenePos, sceneVel, frameTimeStampArray
         line = positionAx2.addItem(pg.PlotCurveItem(eFieldTimeArray[:stopIndexEField],eFieldDataArray[:stopIndexEField]/max(eFieldDataArray[:stopIndexEField]),pen=Col.make_pen('dark green')))
         #lineListPosition = lineListPosition + line
 
-        line = velocityAx2.plot(eFieldTimeArray[:stopIndexEField],eFieldDataArray[:stopIndexEField]/max(eFieldDataArray[:stopIndexEField]),pen=Col.make_pen('dark green'))
+        line = velocityAx2.addItem(pg.PlotCurveItem(eFieldTimeArray[:stopIndexEField],eFieldDataArray[:stopIndexEField]/max(eFieldDataArray[:stopIndexEField]),pen=Col.make_pen('dark green')))
         #lineListVelocity = lineListVelocity + line
         '''
         line = positionAx2.plot(eFieldTimeArray[:stopIndexEField],eFieldDataArray[:stopIndexEField]/max(eFieldDataArray[:stopIndexEField]),lw=2,linestyle="-",color="green",label="E/Emax")
@@ -332,7 +341,7 @@ def plot_position_and_velocity_trace_gui(scenePos, sceneVel, frameTimeStampArray
         #lineListVelocity = lineListVelocity + line
     
     
-    return positionAx2, positionAx1, velocityAx2, velocityAx1, pw1
+    return positionAx2, positionAx1, velocityAx2, velocityAx1, pw1, pw2
 
     '''
     labels = [line.get_label() for line in lineListPosition]
@@ -443,7 +452,6 @@ def plot_position_and_velocity_trace(frameTimeStampArray=np.array([]),widthPosit
     plt.show()    
     
 
-
 def plot_overlapping_periods(timeArrayList=[],dataArrayList=[],averageVelocityTimeArray=np.array([]),averageVelocityArray=np.array([]),eFieldFreq=100):
     global plotExtField
     
@@ -495,6 +503,85 @@ def plot_overlapping_periods(timeArrayList=[],dataArrayList=[],averageVelocityTi
     periodOverlapAxes.tick_params(axis="both",labelsize=10)
     periodOverlapAxes.grid()
     plt.show()
+
+def plot_overlapping_periods_gui(scene, timeArrayList=[],dataArrayList=[],averageVelocityTimeArray=np.array([]),averageVelocityArray=np.array([]),eFieldFreq=100):
+    global plotExtField
+    
+    maxPeriodDuration = 0
+    labelList = []
+    lineList = []
+    '''
+    pw = pg.PlotWidget()
+    pw.show()
+    #pw.setWindowsTitle('pyqtgraph example: MultiplePlotAxes')
+    p1 = pw.plotItem
+    p1.setLabels(left='axis 1')
+    
+    ## create a new ViewBox, link the right axis to its coordinate system
+    p2 = pg.ViewBox()
+    p1.showAxis('right')
+    p1.scene().addItem(p2)
+    p1.getAxis('right').linkToView(p2)
+    p2.setXLink(p1)
+    p1.getAxis('right').setLabel('axis2', color='#0000ff')
+    '''
+    pw= pg.PlotWidget(scene)
+
+    periodOverlapAxes = pw.plotItem
+    periodOverlapAxes.setLabels(left='Particle velocity (mm/s)')
+    eFieldPeriodAxes = pg.ViewBox()
+    periodOverlapAxes.showAxis('right')
+    periodOverlapAxes.scene().addItem(eFieldPeriodAxes)
+    periodOverlapAxes.getAxis('right').linkToView(eFieldPeriodAxes)
+    eFieldPeriodAxes.setXLink(periodOverlapAxes)
+    periodOverlapAxes.getAxis('right').setLabel('E-Field/max(E-Field)', color='#0000ff')
+
+    eFieldPeriodAxes.setGeometry(periodOverlapAxes.vb.sceneBoundingRect())
+    eFieldPeriodAxes.linkedViewChanged(periodOverlapAxes.vb, eFieldPeriodAxes.XAxis)
+    
+    for period in timeArrayList:
+        periodDuration = period[-1] - period[0]
+        if( periodDuration > maxPeriodDuration):
+            maxPeriodDuration = periodDuration
+    
+    for i in range(len(timeArrayList)):
+        
+        tempTimeArray = timeArrayList[i] - timeArrayList[i][0] 
+        tempTimeArray = tempTimeArray/maxPeriodDuration
+        
+        periodOverlapAxes.plot(tempTimeArray,dataArrayList[i]*1e3, pen = Col.make_pen('red'))
+        
+    #lineList.append(line[0])
+    #labelList = [line[0].get_label()]
+    
+    if(plotExtField == True):
+        eFieldTimeArray = np.linspace(0,1,100)
+        eFieldDataArray = np.sin(2*np.pi*eFieldTimeArray)
+        
+        eFieldPeriodAxes.addItem(pg.PlotCurveItem(eFieldTimeArray,eFieldDataArray, pen=Col.make_pen('dark green', style='dashed')))
+        
+        #lineList.append(eLine[0])
+        #labelList.append(eLine[0].get_label())
+        
+        #eFieldPeriodAxes.set_ylabel('E-Field/max(E-Field)',color="green",fontsize=15)
+        #eFieldPeriodAxes.tick_params(axis="y",labelsize=10)
+        
+    if(len(averageVelocityArray) > 0):
+        periodOverlapAxes.plot(averageVelocityTimeArray,averageVelocityArray*1e3,lw=2, pen=Col.make_pen('black'))
+        #lineList.append(avgLine[0])
+        #labelList.append(avgLine[0].get_label())
+        
+        
+    '''
+    periodOverlapAxes.legend(lineList,labelList,fontsize=15,loc="upper right")
+    periodOverlapAxes.set_title('Particle velocity at centerline',fontsize=20)
+    periodOverlapAxes.set_ylabel('Particle velocity (mm/s)',color="red",fontsize=15)
+    periodOverlapAxes.set_xlabel('Normalized time (time/period) (a.u.)',fontsize=15)   
+    periodOverlapAxes.tick_params(axis="both",labelsize=10)
+    periodOverlapAxes.grid()
+    plt.show()
+    '''
+    return pw, periodOverlapAxes, eFieldPeriodAxes
     
     
 def plot_fitted_velocity_scatter_plot(fittedVelocityList=[],fittedCovVelocityList=[]):
@@ -520,6 +607,35 @@ def plot_fitted_velocity_scatter_plot(fittedVelocityList=[],fittedCovVelocityLis
     ax.set_xlabel('Electroosmotic velocity (mm/s)',fontsize=15)
     plt.show()
     
+def plot_fitted_velocity_scatter_plot_gui(scene, fittedVelocityList=[],fittedCovVelocityList=[]):
+    fitteduEPArray = np.array([])
+    fitteduEOArray = np.array([])
+    
+    for i in range(len(fittedVelocityList)):
+        fitteduEPArray = np.append(fitteduEPArray,fittedVelocityList[i][0])
+        fitteduEOArray = np.append(fitteduEOArray,fittedVelocityList[i][1])
+        
+    averageuEP = np.average(fitteduEPArray)
+    averageuEO = np.average(fitteduEOArray)
+    
+    ax = pg.PlotWidget(scene)
+    
+    ax.plot(fitteduEOArray*1e3,fitteduEPArray*1e3, pen=pg.mkPen(None), symbol='o', symbolPen='r')
+    ax.plot([averageuEO*1e3],[averageuEP*1e3], pen=pg.mkPen(None), symbol='x', symbolPen=(105, 105,105))
+
+    #ax.plot(fitteduEOArray*1e3,fitteduEPArray*1e3,color="red",marker="o",linestyle="",label="Fitted Data")
+    #ax.plot(averageuEO*1e3,averageuEP*1e3,color="black",marker="X",linestyle="",label="Average", markersize=20)
+    
+    '''
+    ax.grid()
+    ax.legend(fontsize=15,loc="upper right")
+    ax.set_title('Electrophoretic vs Electroosmotic velocity',fontsize=20)
+    ax.set_ylabel('Electrophoretic velocity (mm/s)',fontsize=15)
+    ax.set_xlabel('Electroosmotic velocity (mm/s)',fontsize=15)
+    plt.show()
+    '''
+    return ax
+
 def plot_fitted_velocity_fixed_uEO_gui(scene, fitteduEPArray=np.array([]),uEO=0.001):
 
     fitteduEOArray = np.array([])
@@ -723,6 +839,124 @@ def plot_double_kymograph(xDataArrayList=[],yDataArrayList=[],frameTimeStampArra
     
     
     plt.show() 
+
+def plot_double_kymograph_gui(scene1, scene2, xDataArrayList=[],yDataArrayList=[],frameTimeStampArray=np.array([]),eFieldTimeArray=np.array([]),eFieldDataArray=np.array([]),positionTimeArray=np.array([]),
+                   frameSumWidthCentroidArray=np.array([]),frameSumHeightCentroidArray=np.array([]),pitchX=0.4e-6,pitchY=0.4e-6,saveFig=True,figurePath=""):
+    global plotExtFieldKymo
+    global plotCentroidKymo
+    
+    xMaxSumValue = max(np.ravel(xDataArrayList))
+    xMinSumValue = min(np.ravel(xDataArrayList))
+    
+    yMaxSumValue = max(np.ravel(yDataArrayList))
+    yMinSumValue = min(np.ravel(yDataArrayList))
+    
+    startTime = frameTimeStampArray[0]
+    stopTime = frameTimeStampArray[-1]
+    
+    averageFrameTime = frameTimeStampArray[-1]-frameTimeStampArray[1]
+    averageFrameTime = averageFrameTime/(len(frameTimeStampArray)-1)
+    '''
+    pw = pg.PlotWidget()
+    pw.show()
+    #pw.setWindowsTitle('pyqtgraph example: MultiplePlotAxes')
+    p1 = pw.plotItem
+    p1.setLabels(left='axis 1')
+    
+    ## create a new ViewBox, link the right axis to its coordinate system
+    p2 = pg.ViewBox()
+    p1.showAxis('right')
+    p1.scene().addItem(p2)
+    p1.getAxis('right').linkToView(p2)
+    p2.setXLink(p1)
+    p1.getAxis('right').setLabel('axis2', color='#0000ff')
+
+    p2.setGeometry(p1.vb.sceneBoundingRect())
+    p2.linkedViewChanged(p1.vb, p2.XAxis)
+    '''
+    pw1 = pg.PlotWidget(scene1)
+    pw2 = pg.PlotWidget(scene2)
+
+    axPosition1 = pw1.plotItem
+    eFieldAxes1 = pg.ViewBox()
+    axPosition1.showAxis('right')
+    axPosition1.scene().addItem(eFieldAxes1)
+    axPosition1.getAxis('right').linkToView(eFieldAxes1)
+    eFieldAxes1.setXLink(axPosition1)
+    axPosition1.getAxis('right').setLabel('axis2', color='#0000ff')
+
+    eFieldAxes1.setGeometry(axPosition1.vb.sceneBoundingRect())
+    eFieldAxes1.linkedViewChanged(axPosition1.vb, eFieldAxes1.XAxis)
+
+    axPosition2 = pw2.plotItem
+    eFieldAxes2 = pg.ViewBox()
+    axPosition2.showAxis('right')
+    axPosition2.scene().addItem(eFieldAxes2)
+    axPosition2.getAxis('right').linkToView(eFieldAxes2)
+    eFieldAxes2.setXLink(axPosition2)
+    axPosition2.getAxis('right').setLabel('axis2', color='#0000ff')
+
+    eFieldAxes2.setGeometry(axPosition2.vb.sceneBoundingRect())
+    eFieldAxes2.linkedViewChanged(axPosition2.vb, eFieldAxes2.XAxis)
+    
+    '''
+    yPositionArray = np.arange(len(yDataArrayList[0]))*pitchY
+    norm = plt.Normalize((yMinSumValue/yMaxSumValue), 0.8)
+    for i in range(len(yDataArrayList)):    
+        
+        #sumArray = np.ones(len(yDataArrayList[i]))*frameTimeStampArray[i]-0.5*averageFrameTime
+        sumArray = np.ones(len(yDataArrayList[i]))*frameTimeStampArray[i]
+        
+              
+        points = np.array([sumArray,yPositionArray]).T.reshape(-1,1,2)
+        segments = np.concatenate([points[:-1],points[1:]],axis=1)
+        lc = LineCollection(segments,cmap='Greens',lw=2,norm=norm)
+        lc.set_array(yDataArrayList[i][1:]/yMaxSumValue)
+        yLine = axPosition1.add_collection(lc)
+
+        
+    axPosition1.set(title='Image profile kymograph')
+    axPosition1.set_xlim(startTime, stopTime)
+    axPosition1.set_ylim(0, yPositionArray[-1])    
+    axPosition1.tick_params(labelsize=15)
+    axPosition1.set_facecolor(cm.Greens(0))
+    fig.colorbar(yLine, ax=axPosition1)
+    
+    
+    xPositionArray = np.arange(len(xDataArrayList[0]))*pitchX
+    norm = plt.Normalize((xMinSumValue/xMaxSumValue), 0.8)
+    for i in range(len(xDataArrayList)):    
+        
+        sumArray = np.ones(len(xDataArrayList[i]))*frameTimeStampArray[i]
+        points = np.array([sumArray,xPositionArray]).T.reshape(-1,1,2)
+        segments = np.concatenate([points[:-1],points[1:]],axis=1)
+        lc = LineCollection(segments,cmap='Greens',lw=2,norm=norm)
+        lc.set_array(xDataArrayList[i][1:]/xMaxSumValue)
+        xLine = axPosition2.add_collection(lc)        
+                           
+        
+        
+    axPosition2.set(title='')
+    axPosition2.set_xlim(startTime, stopTime)
+    axPosition2.set_ylim(0, yPositionArray[-1])    
+    axPosition2.tick_params(labelsize=15)
+    axPosition2.set_facecolor(cm.Greens(0))
+    fig.colorbar(xLine, ax=axPosition2)    
+    '''
+ 
+    if(plotExtFieldKymo == True):
+        eFieldAxes1.addItem(pg.PlotCurveItem(eFieldTimeArray,(eFieldDataArray/max(eFieldDataArray)), pen=Col.make_pen('blue')))
+        eFieldAxes2.addItem(pg.PlotCurveItem(eFieldTimeArray,(eFieldDataArray/max(eFieldDataArray)), pen=Col.make_pen('blue')))     
+
+
+        #eFieldAxes1.plot(eFieldTimeArray,(eFieldDataArray/max(eFieldDataArray)),linestyle='-',color="cyan",label="E-Field")
+        #eFieldAxes2.plot(eFieldTimeArray,(eFieldDataArray/max(eFieldDataArray)),linestyle='-',color="cyan",label="E-Field")
+    
+    if(plotCentroidKymo == True):
+        axPosition1.plot(positionTimeArray,frameSumHeightCentroidArray, pen=Col.make_pen('red'))
+        axPosition2.plot(positionTimeArray,frameSumWidthCentroidArray, pen=Col.make_pen('red'))        
+        
+    return pw1, pw2, axPosition1, axPosition2, eFieldAxes1, eFieldAxes2
     
     
 
@@ -850,7 +1084,7 @@ def plot_frame_video_and_sums2(scene, frameArray=np.array([]), pitchX=0.4e-6,pit
     #view.show()
 
     imv = pg.ImageView()
-    imv.show()
+    #imv.show()
 
 
     # add the plotItem to the graphicsWindow and set it as central
@@ -862,4 +1096,5 @@ def plot_frame_video_and_sums2(scene, frameArray=np.array([]), pitchX=0.4e-6,pit
 
     img.setTransform(tr)
     imv.setImage(frameArray, xvals=timeArray)
+    imv.show()
     return imv

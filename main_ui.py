@@ -53,7 +53,7 @@ class MainWindow(QMainWindow):
         self.spinBoxStart.valueChanged.connect(self.show_startTime)
         self.spinBoxStop.valueChanged.connect(self.show_stopTime)
 
-        self.buttonUpdate.clicked.connect(self.plot_existing_frames)
+        self.buttonUpdate.clicked.connect(self.update2)
         self.autoOffset.clicked.connect(self.calculate_offset)
         self.generateFrames.clicked.connect(self.generate_frames)
         self.processData.clicked.connect(self.process_data)
@@ -70,6 +70,8 @@ class MainWindow(QMainWindow):
 
         self.spinBoxStart.setValue(43.1)
         self.spinBoxStop.setValue(43.85)
+        self.spinBoxeFieldSync.setValue(0.001581849)
+        self.spinBoxSPCMSync.setValue(0.00073128 -2.220855e-6)
 
 
 
@@ -301,12 +303,11 @@ class MainWindow(QMainWindow):
                 imv = tdmsPlot.plot_frame_video_and_sums2(scene=self.scene, frameArray=np.array(frameArrayList2),pitchX=tdmsAnimate.pitchX,pitchY=tdmsAnimate.pitchY, timeArray=frameTimeStampArray2)
                 #imv = tdmsPlot.plot_frame_video_and_sums2(scene=self.scene, frameArray=x,pitchX=1,pitchY=1, timeArray=np.array([i for i in range(500)]))
                 proxy_widget = self.scene.addWidget(imv)
-                self.graphicsFrames.fitInView(self.scene.sceneRect())
+                #self.graphicsFrames.fitInView(self.scene.sceneRect())
     
     def process_data(self):
         print('start')
-        threadCount = QThreadPool.globalInstance().maxThreadCount()
-        print(threadCount)
+
         # Step 2: Create a QThread object
         self.thread = QThread()
         # Step 3: Create a worker object
@@ -319,25 +320,39 @@ class MainWindow(QMainWindow):
         self.worker.finished.connect(self.worker.deleteLater)
         self.thread.finished.connect(self.thread.deleteLater)
         
-        self.worker.fitted_velocity.connect(self.plot_fitted_velocity)
+        self.worker.fitted_velocity1.connect(self.plot_fitted_velocity1)
+        self.worker.fitted_velocity2.connect(self.plot_fitted_velocity2)
         self.worker.position_and_velocity_trace.connect(self.plot_position_and_velocity_trace)
         self.worker.overlapping_periods.connect(self.plot_overlapping_periods)
+        self.worker.kymograph.connect(self.plot_kymograph)
         # Step 6: Start the thread
         self.thread.start()
         # Final resets
         self.processData.setEnabled(False)
+        self.generateFrames.setEnabled(False)
         self.thread.finished.connect(
             lambda: self.processData.setEnabled(True)
         )
         
         self.thread.finished.connect(lambda: self.generateFrames.setEnabled(True))
     
-    def plot_fitted_velocity(self):
+    def plot_fitted_velocity1(self):
         print("plotting")
         global fitteduEPArray, uEO 
+
         self.scene = QGraphicsScene()
         self.graphicsVelocity_2.setScene(self.scene)
         plot = tdmsPlot.plot_fitted_velocity_fixed_uEO_gui(scene=self.scene, fitteduEPArray=fitteduEPArray,uEO=uEO)
+        proxy_widget = self.scene.addWidget(plot)
+        #self.graphicsVelocity_2.fitInView(self.scene.sceneRect())
+
+    def plot_fitted_velocity2(self):
+        print("plotting")
+        global fittedVelocityList, fittedCovVelocityList
+
+        self.scene = QGraphicsScene()
+        self.graphicsVelocity_2.setScene(self.scene)
+        plot = tdmsPlot.plot_fitted_velocity_scatter_plot_gui(fittedVelocityList=fittedVelocityList,fittedCovVelocityList=fittedCovVelocityList)
         proxy_widget = self.scene.addWidget(plot)
         #self.graphicsVelocity_2.fitInView(self.scene.sceneRect())
 
@@ -349,22 +364,42 @@ class MainWindow(QMainWindow):
         self.graphicsParticlePositionTrace.setScene(self.scenePosition)
         self.sceneVelocity = QGraphicsScene()
         self.graphicsParticleVelocityTrace.setScene(self.sceneVelocity)
-        pos2, pos1, vel2, vel1, pw1 = tdmsPlot.plot_position_and_velocity_trace_gui(self.scenePosition, self.sceneVelocity, frameTimeStampArray=frameTimeStampArray,heightPositionArray=heightPositionArray,
+        pos2, pos1, vel2, vel1, pw1, pw2 = tdmsPlot.plot_position_and_velocity_trace_gui(self.scenePosition, self.sceneVelocity, frameTimeStampArray=frameTimeStampArray,heightPositionArray=heightPositionArray,
                                          positionTimeArray=positionTimeArray,filteredHeightPositionArray=filteredHeightPositionArray,
                                          velocityTimeArray=velocityTimeArray,heightVelocityArray=heightVelocityArray,
                                          eFieldTimeArray=eFieldTimeArray,eFieldDataArray=eFieldStrengthDataArray) 
         #proxy_widget1 = self.scenePosition.addWidget(pos1) 
-        porxy_widget2 = self.sceneVelocity.addWidget(vel1)
+        #proxy_widget2 = self.sceneVelocity.addWidget(vel1)
         #proxy_widget3 = self.scenePosition.addWidget(pos2) 
-        porxy_widget4 = self.sceneVelocity.addWidget(vel2)
+        #proxy_widget4 = self.sceneVelocity.addWidget(vel2)
         proxy_widget5 = self.scenePosition.addWidget(pw1) 
+        proxy_widget6 = self.sceneVelocity.addWidget(pw2)
         #self.graphicsParticlePositionTrace.fitInView(self.scene.sceneRect())
         #self.graphicsParticleVelocityTrace.fitInView(self.scene.sceneRect())
     
     def plot_overlapping_periods(self):
-        return None
-    
+        global velocityTimeArrayList, heightVelocityArrayList, averageVelocityArray
 
+        self.scene = QGraphicsScene()
+        self.graphicsOverlappingPeriods.setScene(self.scene)
+        pw, plotPeriod, ploteField = tdmsPlot.plot_overlapping_periods_gui(self.scene, timeArrayList=velocityTimeArrayList,dataArrayList=heightVelocityArrayList,averageVelocityTimeArray=np.linspace(0.0,1.0,100),averageVelocityArray=averageVelocityArray,eFieldFreq=tdmsEKModel.f)
+        proxy_widget = self.scene.addWidget(pw)
+
+    def plot_kymograph(self):
+        global frameTimeStampArray,frameSumWidthArrayList,frameSumHeightArrayList,frameSumWidthCentroidArray,frameSumHeightCentroidArray, filteredWidthPositionArray, filteredHeightPositionArray, eFieldTimeArray, eFieldStrengthDataArray
+        global positionTimeArray
+
+        self.scene1 = QGraphicsScene()
+        self.scene2 = QGraphicsScene()
+
+        self.graphicsKymoX.setScene(self.scene1)
+        self.graphicsKymoY.setScene(self.scene2)
+
+        pw1, pw2, kymox1, kymox2, kymoy1, kymoy2 = tdmsPlot.plot_double_kymograph_gui(self.scene1, self.scene2, xDataArrayList=frameSumWidthArrayList,yDataArrayList=frameSumHeightArrayList,frameTimeStampArray=frameTimeStampArray,eFieldTimeArray=eFieldTimeArray,eFieldDataArray=eFieldStrengthDataArray, 
+                            positionTimeArray=positionTimeArray,frameSumHeightCentroidArray=filteredHeightPositionArray,frameSumWidthCentroidArray=filteredWidthPositionArray,pitchX=tdmsAnimate.pitchX,pitchY=tdmsAnimate.pitchY)    
+
+        proxy_widget1 = self.scene1.addWidget(pw1)
+        proxy_widget2 = self.scene2.addWidget(pw2)
 
 
 
@@ -607,9 +642,12 @@ class generate_frames(QObject):
 
 class process_data(QObject):
     finished = pyqtSignal()
-    fitted_velocity = pyqtSignal()
+    fitted_velocity1 = pyqtSignal()
+    fitted_velocity2 = pyqtSignal()
     position_and_velocity_trace = pyqtSignal()
     overlapping_periods = pyqtSignal()
+    kymograph = pyqtSignal()
+    finished = pyqtSignal()
 
     def run(self):
         print("starting")
@@ -619,9 +657,9 @@ class process_data(QObject):
         global compensateOutliers, uEO, z, experimentName, tdmsFolderPath
         global fittedCovVelocityList, fittedVelocityList  
         global fitteduEPArray
-        global frameTimeStampArray,frameSumWidthArrayList,frameSumHeightArrayList,frameSumWidthCentroidArray,frameSumHeightCentroidArray
-        global heightPositionArray, positionTimeArray, filteredHeightPositionArray, velocityTimeArray, heightVelocityArray
-  
+        global frameTimeStampArray,frameSumWidthArrayList,frameSumHeightArrayList,frameSumWidthCentroidArray,frameSumHeightCentroidArray, filteredWidthPositionArray, filteredHeightPositionArray
+        global heightPositionArray, positionTimeArray, velocityTimeArray, heightVelocityArray
+        global velocityTimeArrayList, heightVelocityArrayList, averageVelocityArray
         frameTimeStampArray,frameSumWidthArrayList,frameSumHeightArrayList,frameSumWidthCentroidArray,frameSumHeightCentroidArray = tdmsData.flatten_fragments_to_segment(frameTimeStampArrayList=frameTimeStampArrayList, frameSumWidthArrayListList=frameSumWidthArrayListList, frameSumHeightArrayListList=frameSumHeightArrayListList,
                                                                                                                                                                           frameSumWidthCentroidArrayList=frameSumWidthCentroidArrayList,frameSumHeightCentroidArrayList=frameSumHeightCentroidArrayList)   
 
@@ -630,6 +668,7 @@ class process_data(QObject):
         positionTimeArray, filteredWidthPositionArray = tdmsAnalysis.low_pass_filter(timeArray=frameTimeStampArray, dataArray=widthPositionArray,eFieldFreq=tdmsEKModel.f,compensateOutliers=compensateOutliers)
         heightVelocityArray, velocityTimeArray = tdmsAnalysis.differentiate_signal(dataArray=filteredHeightPositionArray,timeArray=positionTimeArray)
         
+
         positionTimeArrayList, filteredHeightPositionArrayList = tdmsAnalysis.split_trace_per_efield_period(eFieldTimeArray=eFieldTimeArray,eFieldDataArray=eFieldStrengthDataArray,dataArray=filteredHeightPositionArray,timeArray=positionTimeArray)
         positionTimeArrayList, filteredWidthPositionArrayList = tdmsAnalysis.split_trace_per_efield_period(eFieldTimeArray=eFieldTimeArray,eFieldDataArray=eFieldStrengthDataArray,dataArray=filteredWidthPositionArray,timeArray=positionTimeArray)
         frameTimeStampArrayList, heightPositionArrayList = tdmsAnalysis.split_trace_per_efield_period(eFieldTimeArray=eFieldTimeArray,eFieldDataArray=eFieldStrengthDataArray,dataArray=heightPositionArray,timeArray=frameTimeStampArray)
@@ -646,8 +685,10 @@ class process_data(QObject):
         heightVelocityArrayList = heightVelocityArrayList[1:]
 
         self.position_and_velocity_trace.emit()
+        self.overlapping_periods.emit()
 
         if(fixeduEO == False):
+            global fittedVelocityList, fittedCovVelocityList
             initialGuess, fittedVelocityList, fittedCovVelocityList, velocityFitArrayList = tdmsEKModel.fit_model_to_segment(timeArrayList=velocityTimeArrayList,velocityArrayList=heightVelocityArrayList,y=0,z=z)
             
             fitteduEPArray = np.array([])
@@ -664,7 +705,7 @@ class process_data(QObject):
             tdmsSave.save_uEO_and_uEP_to_file(frameTimeStampArray=frameTimeStampArray, tdmsFolderPath=tdmsFolderPath, experimentName=experimentName, fittedVelocityList=fittedVelocityList, fittedCovVelocityList=fittedCovVelocityList,velocityTimeArrayList=velocityTimeArrayList)
   
             #tdmsPlot.plot_fitted_velocity_scatter_plot(fittedVelocityList=fittedVelocityList,fittedCovVelocityList=fittedCovVelocityList)
-            self.fitted_velocity.emit()
+            self.fitted_velocity2.emit()
         
         else:
             initialGuess, fittedVelocityList, fittedCovVelocityList, velocityFitArrayList = tdmsEKModel.fit_model_to_segment_fixed_uEO(timeArrayList=velocityTimeArrayList,velocityArrayList=heightVelocityArrayList,uEO=uEO,y=0,z=z)
@@ -681,8 +722,10 @@ class process_data(QObject):
             averageVelocityArray = tdmsEKModel.calc_period_from_uEO_and_uEP(normalizedTimeArray=np.linspace(0.0,1.0,100), uEO=averageuEO, uEP=averageuEP, order=100,y=0,z=z)
             
             #tdmsPlot.plot_fitted_velocity_fixed_uEO(fitteduEPArray=fitteduEPArray,uEO=uEO)
-            self.fitted_velocity.emit()
+            self.fitted_velocity1.emit()
             tdmsSave.save_fixed_uEO_and_uEP_to_file(frameTimeStampArray=frameTimeStampArray, tdmsFolderPath=tdmsFolderPath, experimentName=experimentName, fitteduEPArray=fitteduEPArray,uEO=uEO,velocityTimeArrayList=velocityTimeArrayList) 
+        self.kymograph.emit()
+        self.finished.emit()
 
 
 if __name__ == "__main__":
