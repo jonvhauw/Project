@@ -142,6 +142,7 @@ if (__name__ == "__main__"):
     """      
     
     print("### Plotting signals \n")
+
     '''
     tdmsPlot.plot_trace_segment(AODTimeArray=AODTimeArray,AOD1DataArray=AOD1DataArray,AOD2DataArray=AOD2DataArray,
                       pixelNumberArray=pixelNumberArray,SPCMTimeArray=SPCMTimeArray,SPCMDataArray=SPCMDataArray,

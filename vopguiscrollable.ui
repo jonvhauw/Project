@@ -64,6 +64,137 @@
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_3">
+            <item row="2" column="2">
+             <widget class="QFrame" name="frameSync">
+              <property name="frameShape">
+               <enum>QFrame::StyledPanel</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Raised</enum>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_11">
+               <item row="5" column="0">
+                <widget class="QPushButton" name="buttonUpdate">
+                 <property name="text">
+                  <string>Update</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QDoubleSpinBox" name="spinBoxeFieldSync">
+                 <property name="decimals">
+                  <number>10</number>
+                 </property>
+                </widget>
+               </item>
+               <item row="7" column="1">
+                <widget class="QPushButton" name="generateFrames">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="text">
+                  <string>Generate frames</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="7" column="0">
+                <widget class="QCheckBox" name="updateFrames">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="tabletTracking">
+                  <bool>false</bool>
+                 </property>
+                 <property name="text">
+                  <string>Update frames</string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QLabel" name="labelAODXSync">
+                 <property name="text">
+                  <string>ExtField Sync</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="0">
+                <widget class="QDoubleSpinBox" name="spinBoxStop">
+                 <property name="value">
+                  <double>43.000000000000000</double>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QDoubleSpinBox" name="spinBoxStart">
+                 <property name="value">
+                  <double>40.000000000000000</double>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="0">
+                <widget class="QLabel" name="labelStart">
+                 <property name="text">
+                  <string>Start</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0">
+                <widget class="QLabel" name="labelStop">
+                 <property name="text">
+                  <string>Stop</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="1">
+                <widget class="QDoubleSpinBox" name="spinBoxSPCMSync">
+                 <property name="decimals">
+                  <number>10</number>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="QLabel" name="labelSPCMSync">
+                 <property name="text">
+                  <string>SPCM Sync</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="5" column="1">
+                <widget class="QPushButton" name="autoOffset">
+                 <property name="text">
+                  <string>Auto offset</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="9" column="1">
+                <spacer name="verticalSpacer">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item row="8" column="0">
+                <widget class="QPushButton" name="processData">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="text">
+                  <string>Process data</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
             <item row="0" column="2">
              <widget class="QFrame" name="frameControl">
               <property name="frameShape">
@@ -501,137 +632,6 @@
               </layout>
              </widget>
             </item>
-            <item row="2" column="2">
-             <widget class="QFrame" name="frameSync">
-              <property name="frameShape">
-               <enum>QFrame::StyledPanel</enum>
-              </property>
-              <property name="frameShadow">
-               <enum>QFrame::Raised</enum>
-              </property>
-              <layout class="QGridLayout" name="gridLayout_11">
-               <item row="5" column="0">
-                <widget class="QPushButton" name="buttonUpdate">
-                 <property name="text">
-                  <string>Update</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="1">
-                <widget class="QDoubleSpinBox" name="spinBoxeFieldSync">
-                 <property name="decimals">
-                  <number>10</number>
-                 </property>
-                </widget>
-               </item>
-               <item row="7" column="1">
-                <widget class="QPushButton" name="generateFrames">
-                 <property name="enabled">
-                  <bool>false</bool>
-                 </property>
-                 <property name="text">
-                  <string>Generate frames</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="7" column="0">
-                <widget class="QCheckBox" name="updateFrames">
-                 <property name="enabled">
-                  <bool>false</bool>
-                 </property>
-                 <property name="tabletTracking">
-                  <bool>false</bool>
-                 </property>
-                 <property name="text">
-                  <string>Update frames</string>
-                 </property>
-                 <property name="checked">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="1">
-                <widget class="QLabel" name="labelAODXSync">
-                 <property name="text">
-                  <string>ExtField Sync</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="3" column="0">
-                <widget class="QDoubleSpinBox" name="spinBoxStop">
-                 <property name="value">
-                  <double>43.000000000000000</double>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="0">
-                <widget class="QDoubleSpinBox" name="spinBoxStart">
-                 <property name="value">
-                  <double>40.000000000000000</double>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="0">
-                <widget class="QLabel" name="labelStart">
-                 <property name="text">
-                  <string>Start</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="0">
-                <widget class="QLabel" name="labelStop">
-                 <property name="text">
-                  <string>Stop</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="3" column="1">
-                <widget class="QDoubleSpinBox" name="spinBoxSPCMSync">
-                 <property name="decimals">
-                  <number>10</number>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="1">
-                <widget class="QLabel" name="labelSPCMSync">
-                 <property name="text">
-                  <string>SPCM Sync</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="5" column="1">
-                <widget class="QPushButton" name="autoOffset">
-                 <property name="text">
-                  <string>Auto offset</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="9" column="1">
-                <spacer name="verticalSpacer">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>20</width>
-                   <height>40</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item row="8" column="0">
-                <widget class="QPushButton" name="processData">
-                 <property name="enabled">
-                  <bool>false</bool>
-                 </property>
-                 <property name="text">
-                  <string>Process data</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
             <item row="0" column="0" rowspan="2" colspan="2">
              <widget class="QGraphicsView" name="graphicsTimeTraces">
               <property name="sizePolicy">
@@ -642,8 +642,21 @@
               </property>
              </widget>
             </item>
-            <item row="2" column="1" rowspan="2">
+            <item row="2" column="1">
              <widget class="QGraphicsView" name="graphicsFrames"/>
+            </item>
+            <item row="3" column="1">
+             <widget class="QSlider" name="imageSlider">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="tickPosition">
+               <enum>QSlider::TicksBelow</enum>
+              </property>
+              <property name="tickInterval">
+               <number>0</number>
+              </property>
+             </widget>
             </item>
            </layout>
           </widget>
@@ -677,8 +690,8 @@
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>-366</y>
-             <width>1042</width>
+             <y>0</y>
+             <width>910</width>
              <height>923</height>
             </rect>
            </property>

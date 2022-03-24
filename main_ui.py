@@ -73,6 +73,9 @@ class MainWindow(QMainWindow):
         self.spinBoxeFieldSync.setValue(0.001581849)
         self.spinBoxSPCMSync.setValue(0.00073128 -2.220855e-6)
 
+        self.imageSlider.sliderMoved.connect(self.move_slider)
+        #self.imageSlider.sliderReleased.connect(self.move_slider)
+
 
 
 
@@ -293,17 +296,28 @@ class MainWindow(QMainWindow):
         #x = np.random.rand(4, 30, 30, 500)
 
         global frameTimeStampArrayList,frameArrayListList
-
+        global frameArrayList2, frameTimeStampArray2
         frameTimeStampArray2 = tdmsData.ravel_list_of_arrays(arrayList=frameTimeStampArrayList)
         frameArrayList2 = tdmsData.ravel_list_of_lists(listList=frameArrayListList)
-
+        #self.imageSlider.setRange(frameTimeStampArray2[0], frameTimeStampArray2[-1])
+        self.imageSlider.setRange(0, len(frameTimeStampArray2)-1)
         if self.updateFrames.isChecked():
                 self.scene = QGraphicsScene()
                 self.graphicsFrames.setScene(self.scene)
-                imv = tdmsPlot.plot_frame_video_and_sums2(scene=self.scene, frameArray=np.array(frameArrayList2),pitchX=tdmsAnimate.pitchX,pitchY=tdmsAnimate.pitchY, timeArray=frameTimeStampArray2)
+                imv = tdmsPlot.plot_frame_video_and_sums_slider(scene=self.scene, i=0, frameArray=np.array(frameArrayList2),pitchX=tdmsAnimate.pitchX,pitchY=tdmsAnimate.pitchY, timeArray=frameTimeStampArray2)
                 #imv = tdmsPlot.plot_frame_video_and_sums2(scene=self.scene, frameArray=x,pitchX=1,pitchY=1, timeArray=np.array([i for i in range(500)]))
                 proxy_widget = self.scene.addWidget(imv)
-                #self.graphicsFrames.fitInView(self.scene.sceneRect())
+                self.graphicsFrames.fitInView(self.scene.sceneRect())
+    
+    def move_slider(self):
+        global frameArrayList2, frameTimeStampArray2
+        i = self.imageSlider.value()
+        self.scene = QGraphicsScene()
+        self.graphicsFrames.setScene(self.scene)
+        imv = tdmsPlot.plot_frame_video_and_sums_slider(scene=self.scene, i=i, frameArray=np.array(frameArrayList2),pitchX=tdmsAnimate.pitchX,pitchY=tdmsAnimate.pitchY, timeArray=frameTimeStampArray2)
+        #imv = tdmsPlot.plot_frame_video_and_sums2(scene=self.scene, frameArray=x,pitchX=1,pitchY=1, timeArray=np.array([i for i in range(500)]))
+        proxy_widget = self.scene.addWidget(imv)
+        self.graphicsFrames.fitInView(self.scene.sceneRect())
     
     def process_data(self):
         print('start')

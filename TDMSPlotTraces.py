@@ -164,12 +164,12 @@ def plot_trace2(scene, AODTimeArray=np.array([]),pixelNumberArray=np.array([]),S
     #ax.legend(fontsize=15,loc="upper right") 
     #ax.grid()
     #plt.show()
-'''
+
 def plot_trace1(AODTimeArray=np.array([]),pixelNumberArray=np.array([]),SPCMTimeArray=np.array([]),SPCMDataArray=np.array([]),AOD1DataArray=np.array([]),AOD2DataArray=np.array([]),
                       eFieldTimeArray=np.array([]),eFieldDataArray=np.array([]),discontTimeArray=np.array([]),discontDataArray=np.array([]),AODSyncTimeArray=np.array([]),AODSyncDataArray=np.array([]),
                       SPCMSyncDataArray=np.array([]),SPCMSyncTimeArray=np.array([]),yLabel="Normalized Trace (a.u.)"):
     
-    global plotAOD
+    global plotAODX
     global plotPixelNumber
     global plotAODSync
     global plotDiscont
@@ -183,7 +183,7 @@ def plot_trace1(AODTimeArray=np.array([]),pixelNumberArray=np.array([]),SPCMTime
     fig, ax = plt.subplots()
     cid = fig.canvas.mpl_connect('button_press_event', on_right_click_plot_time)
     
-    if(plotAOD == True):
+    if(plotAODX == True):
         if(normalize == True):
             if(plotPixelNumber == True):
                 ax.plot(AODTimeArray,pixelNumberArray/max(pixelNumberArray),linestyle='-',color="lightgreen",label="pixelNumber")
@@ -234,7 +234,7 @@ def plot_trace1(AODTimeArray=np.array([]),pixelNumberArray=np.array([]),SPCMTime
     ax.legend(fontsize=15,loc="upper right") 
     ax.grid()
     plt.show()
-''' 
+
 def plot_position_and_velocity_trace_gui(scenePos, sceneVel, frameTimeStampArray=np.array([]),widthPositionArray=np.array([]),heightPositionArray=np.array([]),
                                      positionTimeArray=np.array([]),filteredHeightPositionArray=np.array([]),filteredWidthPositionArray=np.array([]),
                                      velocityTimeArray=np.array([]),heightVelocityArray=np.array([]),widthVelocityArray=np.array([]),
@@ -1096,5 +1096,47 @@ def plot_frame_video_and_sums2(scene, frameArray=np.array([]), pitchX=0.4e-6,pit
 
     img.setTransform(tr)
     imv.setImage(frameArray, xvals=timeArray)
-    imv.show()
+    imv.ui.roiBtn.hide()
+    imv.ui.menuBtn.hide()
+    imv.ui.histogram.hide()
+    return imv
+
+def plot_frame_video_and_sums_slider(scene, i=0, frameArray=np.array([]), pitchX=0.4e-6,pitchY=0.4e-6, timeArray=np.array([])):
+      
+    frameArray = np.swapaxes(frameArray, 0, 3)
+    frameArray = frameArray[:][:][:][0]
+
+    frameArray = np.swapaxes(frameArray, 0, 2)
+
+
+    #x = np.random.rand(500,50,50)
+
+    pg.setConfigOptions(antialias=True)
+
+    # main graphics window
+    #view = pg.GraphicsView()
+
+    # show the window
+    #view.show()
+
+    imv = pg.ImageView()
+    #imv.show()
+    norm = mpl.colors.Normalize(vmin=0, vmax=frameArray.max())
+    cmap = cm.plasma
+    m = cm.ScalarMappable(norm=norm, cmap=cmap)
+
+    # add the plotItem to the graphicsWindow and set it as central
+
+    # create an image object
+    img = pg.ImageItem(border='w', levels=(frameArray.min(),frameArray.max()))
+    tr = QtGui.QTransform()  # prepare ImageItem transformation:
+    tr.scale(pitchX, pitchY)
+
+    img.setTransform(tr)
+    imv.setImage(m.to_rgba(frameArray[i]))
+    
+    imv.ui.roiBtn.hide()
+    imv.ui.menuBtn.hide()
+    imv.ui.histogram.hide()
+
     return imv
