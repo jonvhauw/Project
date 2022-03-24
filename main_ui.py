@@ -53,7 +53,7 @@ class MainWindow(QMainWindow):
         self.spinBoxStart.valueChanged.connect(self.show_startTime)
         self.spinBoxStop.valueChanged.connect(self.show_stopTime)
 
-        self.buttonUpdate.clicked.connect(self.update2)
+        self.buttonUpdate.clicked.connect(self.update)
         self.autoOffset.clicked.connect(self.calculate_offset)
         self.generateFrames.clicked.connect(self.generate_frames)
         self.processData.clicked.connect(self.process_data)
@@ -96,6 +96,7 @@ class MainWindow(QMainWindow):
 
     def resizeEvent(self, event: QResizeEvent):
         self.graphicsTimeTraces.fitInView(self.scene.sceneRect())
+        self.graphicsFrames.fitInView(self.scene.sceneRect())
 
     def getfiles(self):
         dlg = QFileDialog()
@@ -232,7 +233,7 @@ class MainWindow(QMainWindow):
         global eFieldTimeArray, eFieldDataArray
         global discontTimeArray, discontDataArray
         global AODSyncTimeArray, AODSyncDataArray, SPCMSyncDataArray, SPCMSyncTimeArray
-        global offsetExtField0, offsetSPCM0
+        global offsetExtField0, offsetSPCM0 
 
         AOD1_s_value = self.comboStyleAODX.currentText()
         print('AOD1 waarde is: ', AOD1_s_value)
@@ -248,6 +249,8 @@ class MainWindow(QMainWindow):
 
         offsetExtField0 = offsetExtFieldTime
         offsetSPCM0 = offsetSPCMTime
+
+
 
         self.scene = QGraphicsScene()
         self.graphicsTimeTraces.setScene(self.scene)
