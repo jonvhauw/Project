@@ -87,69 +87,65 @@ def plot_trace2(scene, AODTimeArray=np.array([]),pixelNumberArray=np.array([]),S
     ax = pg.PlotWidget(scene)
     ax.plotItem.getViewBox().setMouseMode(pg.ViewBox.RectMode)
 
-    #ax = pg.plot()
-    #ax = self.graphicsTimeTraces.plot()
-
-    #pw = pg.plot(AODTimeArray, AOD1DataArray/max(AOD1DataArray), pen=pen )  # plot x vs y in red
-    #pw.plot(AODTimeArray,AOD2DataArray/max(AOD2DataArray), pen='b' )
-    #fig, ax = plt.subplots()
-    #cid = fig.canvas.mpl_connect('button_press_event', on_right_click_plot_time)
+    ax.setLabel("bottom", "Time(s)")
+    ax.setLabel("left", yLabel)
+    ax.addLegend(offset=(500, 10))
     
     if(plotAODX == True):
         if(normalize == True):
             if(plotPixelNumber == True):
-                ax.plot(AODTimeArray,pixelNumberArray/max(pixelNumberArray), pen=Col.make_pen(color=Pix_c, style=Pix_s))
+                ax.plot(AODTimeArray,pixelNumberArray/max(pixelNumberArray), pen=Col.make_pen(color=Pix_c, style=Pix_s), name="Pixelnumber")
             else:
-                ax.plot(AODTimeArray,AOD1DataArray/max(AOD1DataArray), pen=Col.make_pen(color=AOD1_c, style=AOD1_s))
+                ax.plot(AODTimeArray,AOD1DataArray/max(AOD1DataArray), pen=Col.make_pen(color=AOD1_c, style=AOD1_s), name="AOD x")
                 #ax.plot(AODTimeArray,AOD2DataArray/max(AOD2DataArray), pen=Col.make_pen(color=AOD2_c, style=AOD2_s))
         else:
             if(plotPixelNumber == True):
-                ax.plot(AODTimeArray,pixelNumberArray,pen=Col.make_pen(color=Pix_c, style=Pix_s))
+                ax.plot(AODTimeArray,pixelNumberArray,pen=Col.make_pen(color=Pix_c, style=Pix_s), name="Pixelnumber")
             else:
-                ax.plot(AODTimeArray,AOD1DataArray, pen=Col.make_pen(color=AOD1_c, style=AOD1_s))
+                ax.plot(AODTimeArray,AOD1DataArray, pen=Col.make_pen(color=AOD1_c, style=AOD1_s), name="AOD 1")
                 #ax.plot(AODTimeArray,AOD2DataArray, pen=Col.make_pen(color=AOD2_c, style=AOD2_s))
     if(plotAODY == True):
         if(normalize == True):
-            if(plotPixelNumber == True):
-                ax.plot(AODTimeArray,pixelNumberArray/max(pixelNumberArray), pen=Col.make_pen(color=Pix_c, style=Pix_s))
+            if(plotPixelNumber == True and plotAODX == False):
+                ax.plot(AODTimeArray,pixelNumberArray/max(pixelNumberArray), pen=Col.make_pen(color=Pix_c, style=Pix_s), name="Pixelnumber")
             else:
                 #ax.plot(AODTimeArray,AOD1DataArray/max(AOD1DataArray), pen=Col.make_pen(color=AOD1_c, style=AOD1_s))
-                ax.plot(AODTimeArray,AOD2DataArray/max(AOD2DataArray), pen=Col.make_pen(color=AOD2_c, style=AOD2_s))
+                ax.plot(AODTimeArray,AOD2DataArray/max(AOD2DataArray), pen=Col.make_pen(color=AOD2_c, style=AOD2_s), name="AOD y")
         else:
-            if(plotPixelNumber == True):
-                ax.plot(AODTimeArray,pixelNumberArray,pen=Col.make_pen(color=Pix_c, style=Pix_s))
+            if(plotPixelNumber == True and plotAODX == False):
+                ax.plot(AODTimeArray,pixelNumberArray,pen=Col.make_pen(color=Pix_c, style=Pix_s), name="Pixelnumber")
             else:
                 #ax.plot(AODTimeArray,AOD1DataArray, pen=Col.make_pen(color=AOD1_c, style=AOD1_s))
-                ax.plot(AODTimeArray,AOD2DataArray, pen=Col.make_pen(color=AOD2_c, style=AOD2_s))
+                ax.plot(AODTimeArray,AOD2DataArray, pen=Col.make_pen(color=AOD2_c, style=AOD2_s), name="AOD 2")
     if(plotSPCM == True):
         if(normalize == True):
             if(plotSPCMSampleRatio >= 1):
-                ax.plot(SPCMTimeArray,SPCMDataArray/max(SPCMDataArray), pen=Col.make_pen(color=SPCM_c, style=SPCM_s))
+                ax.plot(SPCMTimeArray,SPCMDataArray/max(SPCMDataArray), pen=Col.make_pen(color=SPCM_c, style=SPCM_s), name="SPCM")
             else:
                 sampleArray = np.arange(0,len(SPCMTimeArray),int(1.0/plotSPCMSampleRatio))
-                ax.plot(SPCMTimeArray[sampleArray],SPCMDataArray[sampleArray]/max(SPCMDataArray[sampleArray]), pen=Col.make_pen(color=SPCM_c, style=SPCM_s))
+                ax.plot(SPCMTimeArray[sampleArray],SPCMDataArray[sampleArray]/max(SPCMDataArray[sampleArray]), pen=Col.make_pen(color=SPCM_c, style=SPCM_s), name="SPCM")
         else:
             if(plotSPCMSampleRatio >= 1):
-                ax.plot(SPCMTimeArray,SPCMDataArray, pen='c')
+                ax.plot(SPCMTimeArray,SPCMDataArray, pen='c', name="SPCM")
             else:
                 sampleArray = np.arange(0,len(SPCMTimeArray),int(1.0/plotSPCMSampleRatio))
-                ax.plot(SPCMTimeArray[sampleArray],SPCMDataArray[sampleArray], pen=Col.make_pen(color=SPCM_c, style=SPCM_s))
+                ax.plot(SPCMTimeArray[sampleArray],SPCMDataArray[sampleArray], pen=Col.make_pen(color=SPCM_c, style=SPCM_s), name="SPCM")
                 
     if(plotExtField == True):       
         if(normalize == True):
-            ax.plot(eFieldTimeArray,eFieldDataArray/max(eFieldDataArray), pen=Col.make_pen(color=EF_c, style=EF_s))
+            ax.plot(eFieldTimeArray,eFieldDataArray/max(eFieldDataArray), pen=Col.make_pen(color=EF_c, style=EF_s), name="E-Field")
         else:
-            ax.plot(eFieldTimeArray,eFieldDataArray,linestyle='-', pen=Col.make_pen(color=EF_c, style=EF_s))
+            ax.plot(eFieldTimeArray,eFieldDataArray, pen=Col.make_pen(color=EF_c, style=EF_s), name="E-Field")
 
     #from here: dashed lines standard 
     if(plotSPCMSync == True):      
-        ax.plot(SPCMSyncTimeArray,SPCMSyncDataArray, pen=Col.make_pen(color=SPCM_sync_c, style=SPCM_sync_s))  
+        ax.plot(SPCMSyncTimeArray,SPCMSyncDataArray, pen=Col.make_pen(color=SPCM_sync_c, style=SPCM_sync_s), name="SPCM Sync")  
         
     if(plotAODSync == True):
-        ax.plot(AODSyncTimeArray,AODSyncDataArray, pen=Col.make_pen(color=AOD_sync_c, style=AOD_sync_s))  
+        ax.plot(AODSyncTimeArray,AODSyncDataArray, pen=Col.make_pen(color=AOD_sync_c, style=AOD_sync_s), name="AOD Sync")  
             
     if(plotDiscont == True):
-        ax.plot(discontTimeArray,discontDataArray, pen=Col.make_pen(color=Disc_c, style=Disc_s))    
+        ax.plot(discontTimeArray,discontDataArray, pen=Col.make_pen(color=Disc_c, style=Disc_s), name="Discontinuity")    
          
         
     ax.setTitle('Time traces',fontsize=20)
@@ -268,6 +264,9 @@ def plot_position_and_velocity_trace_gui(scenePos, sceneVel, frameTimeStampArray
     '''
     pw1 = pg.PlotWidget(scenePos)
     pw2 = pg.PlotWidget(sceneVel)
+
+    pw1.plotItem.getViewBox().setMouseMode(pg.ViewBox.RectMode)
+    pw2.plotItem.getViewBox().setMouseMode(pg.ViewBox.RectMode)
     #pw1.show()
     #pw2.show()
 
@@ -278,7 +277,10 @@ def plot_position_and_velocity_trace_gui(scenePos, sceneVel, frameTimeStampArray
     positionAx1.scene().addItem(positionAx2)
     positionAx1.getAxis('right').linkToView(positionAx2)
     positionAx2.setXLink(positionAx1)
-    positionAx1.getAxis('right').setLabel('axis2', color='#0000ff')
+    positionAx1.getAxis('right').setLabel('E-Field/max(E-Field)', color='g')
+    positionAx1.setLabel("left", "Particle position (um)")
+    positionAx1.setLabel("bottom", "Time (s)")
+    positionAx1.addLegend()
 
     positionAx2.setGeometry(positionAx1.vb.sceneBoundingRect())
     positionAx2.linkedViewChanged(positionAx1.vb, positionAx2.XAxis)
@@ -291,7 +293,10 @@ def plot_position_and_velocity_trace_gui(scenePos, sceneVel, frameTimeStampArray
     velocityAx1.scene().addItem(velocityAx2)
     velocityAx1.getAxis('right').linkToView(velocityAx2)
     velocityAx2.setXLink(velocityAx1)
-    velocityAx1.getAxis('right').setLabel('axis2', color='#0000ff')
+    velocityAx1.getAxis('right').setLabel('E-Field/max(E-Field)', color='g')
+    velocityAx1.setLabel('left', "Particle velocity (mm/s)")
+    velocityAx1.setLabel("bottom", "Time (s)")
+    velocityAx1.addLegend()
 
     velocityAx2.setGeometry(velocityAx1.vb.sceneBoundingRect())
     velocityAx2.linkedViewChanged(velocityAx1.vb, velocityAx2.XAxis)
@@ -300,10 +305,10 @@ def plot_position_and_velocity_trace_gui(scenePos, sceneVel, frameTimeStampArray
     if(plotExtField == True):
         stopIndexEField = np.where(eFieldTimeArray <= positionTimeArray[-1])[0][-1]
 
-        line = positionAx2.addItem(pg.PlotCurveItem(eFieldTimeArray[:stopIndexEField],eFieldDataArray[:stopIndexEField]/max(eFieldDataArray[:stopIndexEField]),pen=Col.make_pen('dark green')))
+        line = positionAx2.addItem(pg.PlotCurveItem(eFieldTimeArray[:stopIndexEField],eFieldDataArray[:stopIndexEField]/max(eFieldDataArray[:stopIndexEField]),pen=Col.make_pen('dark green'), name="E/Emax"))
         #lineListPosition = lineListPosition + line
 
-        line = velocityAx2.addItem(pg.PlotCurveItem(eFieldTimeArray[:stopIndexEField],eFieldDataArray[:stopIndexEField]/max(eFieldDataArray[:stopIndexEField]),pen=Col.make_pen('dark green')))
+        line = velocityAx2.addItem(pg.PlotCurveItem(eFieldTimeArray[:stopIndexEField],eFieldDataArray[:stopIndexEField]/max(eFieldDataArray[:stopIndexEField]),pen=Col.make_pen('dark green'), name="E/Emax"))
         #lineListVelocity = lineListVelocity + line
         '''
         line = positionAx2.plot(eFieldTimeArray[:stopIndexEField],eFieldDataArray[:stopIndexEField]/max(eFieldDataArray[:stopIndexEField]),lw=2,linestyle="-",color="green",label="E/Emax")
@@ -319,25 +324,25 @@ def plot_position_and_velocity_trace_gui(scenePos, sceneVel, frameTimeStampArray
         velocityAx2.yaxis.label.set_color("green")
         '''
     if(plotHeight == True):
-        line = positionAx1.plot(frameTimeStampArray,heightPositionArray*1e6, pen=pg.mkPen(None), symbol='o', symbolPen=(255, 140, 105))
+        line = positionAx1.plot(frameTimeStampArray,heightPositionArray*1e6, pen=pg.mkPen(None), symbol='o', symbolBrush=0.1, symbolPen=(255, 140, 105), name="y-position")
         #lineListPosition = lineListPosition + line
 
-        line = positionAx1.plot(positionTimeArray,filteredHeightPositionArray*1e6,lw=2, pen=Col.make_pen("dark red"))
+        line = positionAx1.plot(positionTimeArray,filteredHeightPositionArray*1e6,lw=2, pen=Col.make_pen("dark red"), name="y-position (filter)")
         #lineListPosition = lineListPosition + line
         
-        line = velocityAx1.plot(velocityTimeArray,heightVelocityArray*1e3, pen=Col.make_pen("red"))
+        line = velocityAx1.plot(velocityTimeArray,heightVelocityArray*1e3, pen=Col.make_pen("red"), name="y-velocity")
         #lineListVelocity = lineListVelocity + line
         
         
     
     if(plotWidth == True):
-        line = positionAx1.plot(frameTimeStampArray,widthPositionArray*1e6, pen=pg.mkPen(None), symbol='o', symbolPen=(21, 244, 238))
+        line = positionAx1.plot(frameTimeStampArray,widthPositionArray*1e6, pen=pg.mkPen(None), symbol='o', symbolBrush=0.1, symbolPen=(21, 244, 238), name="x-position")
         #lineListPosition = lineListPosition + line
         
-        line = positionAx1.plot(positionTimeArray,filteredWidthPositionArray*1e6, pen=Col.make_pen("dark blue"))
+        line = positionAx1.plot(positionTimeArray,filteredWidthPositionArray*1e6, pen=Col.make_pen("dark blue"), name="x-position (filter)")
         #lineListPosition = lineListPosition + line
         
-        line = velocityAx1.plot(velocityTimeArray,widthVelocityArray*1e3, pen=Col.make_pen("blue"))   
+        line = velocityAx1.plot(velocityTimeArray,widthVelocityArray*1e3, pen=Col.make_pen("blue"), name="x-velocity")   
         #lineListVelocity = lineListVelocity + line
     
     
@@ -510,22 +515,12 @@ def plot_overlapping_periods_gui(scene, timeArrayList=[],dataArrayList=[],averag
     maxPeriodDuration = 0
     labelList = []
     lineList = []
-    '''
-    pw = pg.PlotWidget()
-    pw.show()
-    #pw.setWindowsTitle('pyqtgraph example: MultiplePlotAxes')
-    p1 = pw.plotItem
-    p1.setLabels(left='axis 1')
-    
-    ## create a new ViewBox, link the right axis to its coordinate system
-    p2 = pg.ViewBox()
-    p1.showAxis('right')
-    p1.scene().addItem(p2)
-    p1.getAxis('right').linkToView(p2)
-    p2.setXLink(p1)
-    p1.getAxis('right').setLabel('axis2', color='#0000ff')
-    '''
+
     pw= pg.PlotWidget(scene)
+    #pw.setLabel("bottom", "Normalized time (time/period) (a.u.)")
+    #pw.setLabel("left", "Particle velocity (mm/s)")
+    pw.addLegend()
+    pw.plotItem.getViewBox().setMouseMode(pg.ViewBox.RectMode)
 
     periodOverlapAxes = pw.plotItem
     periodOverlapAxes.setLabels(left='Particle velocity (mm/s)')
@@ -548,9 +543,10 @@ def plot_overlapping_periods_gui(scene, timeArrayList=[],dataArrayList=[],averag
         
         tempTimeArray = timeArrayList[i] - timeArrayList[i][0] 
         tempTimeArray = tempTimeArray/maxPeriodDuration
-        
-        periodOverlapAxes.plot(tempTimeArray,dataArrayList[i]*1e3, pen = Col.make_pen('red'))
-        
+        if i == 0:
+            periodOverlapAxes.plot(tempTimeArray,dataArrayList[i]*1e3, pen = Col.make_pen('red'), name="Velocity")
+        else:
+            periodOverlapAxes.plot(tempTimeArray,dataArrayList[i]*1e3, pen = Col.make_pen('red'))
     #lineList.append(line[0])
     #labelList = [line[0].get_label()]
     
@@ -558,7 +554,7 @@ def plot_overlapping_periods_gui(scene, timeArrayList=[],dataArrayList=[],averag
         eFieldTimeArray = np.linspace(0,1,100)
         eFieldDataArray = np.sin(2*np.pi*eFieldTimeArray)
         
-        eFieldPeriodAxes.addItem(pg.PlotCurveItem(eFieldTimeArray,eFieldDataArray, pen=Col.make_pen('dark green', style='dashed')))
+        eFieldPeriodAxes.addItem(pg.PlotCurveItem(eFieldTimeArray,eFieldDataArray, pen=Col.make_pen('dark green', style='dashed'), name="E-Field/max(E-Field)"))
         
         #lineList.append(eLine[0])
         #labelList.append(eLine[0].get_label())
@@ -567,7 +563,7 @@ def plot_overlapping_periods_gui(scene, timeArrayList=[],dataArrayList=[],averag
         #eFieldPeriodAxes.tick_params(axis="y",labelsize=10)
         
     if(len(averageVelocityArray) > 0):
-        periodOverlapAxes.plot(averageVelocityTimeArray,averageVelocityArray*1e3,lw=2, pen=Col.make_pen('black'))
+        periodOverlapAxes.plot(averageVelocityTimeArray,averageVelocityArray*1e3,lw=2, pen=Col.make_pen('black'), name='Average')
         #lineList.append(avgLine[0])
         #labelList.append(avgLine[0].get_label())
         
@@ -619,9 +615,13 @@ def plot_fitted_velocity_scatter_plot_gui(scene, fittedVelocityList=[],fittedCov
     averageuEO = np.average(fitteduEOArray)
     
     ax = pg.PlotWidget(scene)
-    
-    ax.plot(fitteduEOArray*1e3,fitteduEPArray*1e3, pen=pg.mkPen(None), symbol='o', symbolPen='r')
-    ax.plot([averageuEO*1e3],[averageuEP*1e3], pen=pg.mkPen(None), symbol='x', symbolPen=(105, 105,105))
+    ax.setLabel("bottom", "Electroosmotic velocity (mm/s)")
+    ax.setLabel("left", "Electrophoretic velocity (mm/s)")
+    ax.addLegend()
+    ax.plotItem.getViewBox().setMouseMode(pg.ViewBox.RectMode)
+
+    ax.plot(fitteduEOArray*1e3,fitteduEPArray*1e3, pen=pg.mkPen(None), symbol='o', symbolPen='r', name="Fitted data")
+    ax.plot([averageuEO*1e3],[averageuEP*1e3], pen=pg.mkPen(None), symbol='x', symbolPen=(105, 105,105), name="Average")
 
     #ax.plot(fitteduEOArray*1e3,fitteduEPArray*1e3,color="red",marker="o",linestyle="",label="Fitted Data")
     #ax.plot(averageuEO*1e3,averageuEP*1e3,color="black",marker="X",linestyle="",label="Average", markersize=20)
@@ -646,11 +646,14 @@ def plot_fitted_velocity_fixed_uEO_gui(scene, fitteduEPArray=np.array([]),uEO=0.
     averageuEP = np.average(fitteduEPArray)
 
     ax = pg.PlotWidget(scene)
+    ax.setLabel("bottom", "Electroosmotic velocity (mm/s)")
+    ax.setLabel("left", "Electrophoretic velocity (mm/s)")
+    ax.addLegend()
     ax.plotItem.getViewBox().setMouseMode(pg.ViewBox.RectMode)
 
-    ax.plot(fitteduEOArray*1e3,fitteduEPArray*1e3, pen=pg.mkPen(None), symbol='o', symbolPen='r')
+    ax.plot(fitteduEOArray*1e3,fitteduEPArray*1e3, pen=pg.mkPen(None), symbol='o', symbolPen='r', name="Fitted Data")
     #print(np.array(uEO)*1e3,np.array(averageuEP)*1e3)
-    ax.plot([uEO*1e3], [averageuEP*1e3], pen=pg.mkPen(None), symbol='x', symbolPen=(105, 105, 105))
+    ax.plot([uEO*1e3], [averageuEP*1e3], pen=pg.mkPen(None), symbol='x', symbolPen=(105, 105, 105), symbolBrush=0.3, name='Average')
 
     #ax.plot(fitteduEOArray*1e3,fitteduEPArray*1e3,color="red",marker="o",linestyle="",label="Fitted Data")
     #ax.plot(uEO*1e3,averageuEP*1e3,color="black",marker="X",linestyle="",label="Average", markersize=20)
@@ -1118,8 +1121,13 @@ def plot_frame_video_and_sums_slider(scene, i=0, frameArray=np.array([]), pitchX
 
     # show the window
     #view.show()
+    
+    plot = pg.PlotItem()
+    plot.setLabel(axis='left', text='Y-axis')
+    plot.setLabel(axis='bottom', text='X-axis')
 
-    imv = pg.ImageView()
+
+    imv = pg.ImageView(view=plot)
     #imv.show()
     norm = mpl.colors.Normalize(vmin=0, vmax=frameArray.max())
     cmap = cm.plasma
@@ -1129,12 +1137,13 @@ def plot_frame_video_and_sums_slider(scene, i=0, frameArray=np.array([]), pitchX
 
     # create an image object
     img = pg.ImageItem(border='w', levels=(frameArray.min(),frameArray.max()))
-    tr = QtGui.QTransform()  # prepare ImageItem transformation:
-    tr.scale(pitchX, pitchY)
-
-    img.setTransform(tr)
+ 
     imv.setImage(m.to_rgba(frameArray[i]))
-    
+
+    map = pg.colormap.getFromMatplotlib("plasma")
+    bar = pg.ColorBarItem(colorMap=map)
+    bar.setImageItem(m.to_rgba(frameArray[i]), insert_in=plot)
+
     imv.ui.roiBtn.hide()
     imv.ui.menuBtn.hide()
     imv.ui.histogram.hide()

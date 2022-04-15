@@ -10,25 +10,29 @@ from PyQt5.QtWidgets import QApplication, QGraphicsScene, QMainWindow, QFileDial
 
 app = pg.QtGui.QApplication([])
 
-x = np.random.rand(500,50,50)
+x = np.random.rand(500, 50,50)
 
 pg.setConfigOptions(antialias=True)
 
 # main graphics window
-view = pg.GraphicsView()
-
+#pw = pg.PlotWidget()
+#pw.show()
 # show the window
 #view.show()
+plot = pg.PlotItem()
+plot.setLabel(axis='left', text='Y-axis')
+plot.setLabel(axis='bottom', text='X-axis')
 
+#pw.addItem(plot)
 # add a plotItem
-imv = pg.ImageView()
+imv = pg.ImageView(view=plot)
 imv.show()
 # add the plotItem to the graphicsWindow and set it as central
 #view.setCentralItem(p)
 
 # create an image object
 img = pg.ImageItem(border='w', levels=(x.min(),x.max()))
-
+plot.addItem(img)
 tr = QtGui.QTransform()  # prepare ImageItem transformation:
 tr.scale(0.4, 10)
 # add the imageItem to the plotItem
@@ -53,28 +57,30 @@ m = cm.ScalarMappable(norm=norm, cmap=cmap)
 # setting color map to the image view
 #imv.setColorMap(cmap)
 
-imv.setImage(x)
-app.exec_()
+#imv.setImage(x)
+
+#app.exec_()
 # hide axis and set title
 
 
 # data generator
-'''
+
 cnt=0
 def animLoop():
     global cnt
     if cnt < x.shape[0]:
         imv.setImage(m.to_rgba(x[cnt]))
+        bar = pg.ColorBarItem()
+        bar.setImageItem(m.to_rgba(x[cnt]), insert_in=plot)
+        #plot.addColorBar(m.to_rgba(x[cnt]))
+        #img = pg.ImageItem(m.to_rgba(x[cnt]))
+        #plot.addItem(img)
+        #pw.addItem(plot)
+        #pw.show()
+        print(cnt)
     cnt+=1
 
-slider = QtGui.QSlider()
-slider.setOrientation(QtCore.Qt.Horizontal)
-slider.setMinimum(0)
-# max is the last index of the image list
-slider.setMaximum(x.shape[0])
-imv.addWidget(slider)
 
-slider.sliderMoved.connect(animLoop)
 
 
 
@@ -85,10 +91,10 @@ slider.sliderMoved.connect(animLoop)
 timer = QtCore.QTimer()
 timer.setInterval(1000)
 timer.timeout.connect(animLoop)
-timer.start(2000)
+timer.start(200)
 
 app.exec_()
-'''
+
 def twin_plot():
     plotWidget1 = pg.plot(title="Three plot curves")
     plotWidget2 = pg.plot(title="Three plot curves")
