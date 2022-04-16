@@ -18,7 +18,7 @@ import TDMSSaveData as tdmsSave
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
-
+from threading import Thread
 
 tdmsPlot.plotExtField = True
 tdmsPlot.plotSPCM = True
@@ -49,6 +49,7 @@ class MainWindow(QMainWindow):
         self.comboColorSPCMSync.currentIndexChanged.connect(self.refreshDataProcessingPlot)
 
         self.actionimport_files.triggered.connect(self.getfiles)
+        self.actionimport_saved_files.triggered.connect(self.get_saved_files)
 
         self.spinBoxStart.valueChanged.connect(self.show_startTime)
         self.spinBoxStop.valueChanged.connect(self.show_stopTime)
@@ -93,7 +94,6 @@ class MainWindow(QMainWindow):
 
 
 
-
     def resizeEvent(self, event: QResizeEvent):
         self.graphicsTimeTraces.fitInView(self.scene.sceneRect())
         self.graphicsFrames.fitInView(self.scene.sceneRect())
@@ -116,6 +116,28 @@ class MainWindow(QMainWindow):
 
         self.update()
 
+    def get_saved_files(self):
+        dlg = QFileDialog()
+        dlg.setDirectory("C:\\Users\\jonas\\OneDrive\\Documenten\\Bach3\\Project\\Data")
+        dlg.setFileMode(QFileDialog.AnyFile)
+        dlg.setFileMode(QFileDialog.ExistingFiles)
+        #filenames = QStringList()
+            
+        if dlg.exec_():
+            self.savedFilenames = dlg.selectedFiles()
+
+        self.read_saved_data()
+
+    def read_saved_data(self):
+        global frameTimeStampArray,frameSumWidthCentroidArray,frameSumHeightCentroidArray,frameSumWidthArrayList,frameSumHeightArrayList
+        global compensateOutliers
+        compensateOutliers=True
+        tdmsPathList = self.savedFilenames
+        tdmsPathList,tdmsFolderPath,experimentName = tdms.get_tdms_file_path2(tdmsPathList)
+        tdmsFileList,txtDataFilePath = tdms.read_tdms_file_list(tdmsFilePathList=tdmsPathList)
+        frameTimeStampArray,frameSumWidthCentroidArray,frameSumHeightCentroidArray,frameSumWidthArrayList,frameSumHeightArrayList = tdmsSave.read_data_from_txt(savedDataPath=txtDataFilePath)
+        #self.plot_existing_frames()
+        self.processData.setEnabled(True)
 
     #functions to show certain parameters at a current time 
     def show_startTime(self):
@@ -436,9 +458,18 @@ class MainWindow(QMainWindow):
         self.plotKymo.setEnabled(True)
         self.graphicsKymoX.fitInView(self.scene.sceneRect())
         self.graphicsKymoY.fitInView(self.scene.sceneRect())
-    
+    '''
     def kymo_matplot(self):
-        return None
+        thread = Thread(target =self.kymo_matplot2)
+        thread.start()
+        thread.join()
+        print("thread finished...exiting")
+    '''
+    def kymo_matplot(self):
+        global frameTimeStampArray,frameSumWidthArrayList,frameSumHeightArrayList,frameSumWidthCentroidArray,frameSumHeightCentroidArray, filteredWidthPositionArray, filteredHeightPositionArray, eFieldTimeArray, eFieldStrengthDataArray
+        global positionTimeArray
+        tdmsPlot.plot_kymograph(xDataArrayList=frameSumWidthArrayList,yDataArrayList=frameSumHeightArrayList,frameTimeStampArray=frameTimeStampArray,eFieldTimeArray=eFieldTimeArray,eFieldDataArray=eFieldStrengthDataArray, 
+                            positionTimeArray=positionTimeArray,frameSumHeightCentroidArray=filteredHeightPositionArray,frameSumWidthCentroidArray=filteredWidthPositionArray,pitchX=tdmsAnimate.pitchX,pitchY=tdmsAnimate.pitchY)  
         '''
         # Step 2: Create a QThread object
         self.thread = QThread()
@@ -466,7 +497,7 @@ class MainWindow(QMainWindow):
         global widthPositionArrayList, heightPositionArrayList, positionTimeArrayList, filteredHeightPositionArrayList
         global velocityTimeArrayList, heightVelocityArrayList, averageVelocityArray, fitteduEPArray
         global tdmsFolderPath, experimentName
-        global uEO
+        global uEO, fixeduEO, fittedCovVelocityList, fittedVelocityList
      
         savedDataPath = tdmsSave.write_data_to_txt(frameTimeStampArray=frameTimeStampArray, frameSumWidthCentroidArray=frameSumWidthCentroidArray, frameSumHeightCentroidArray=frameSumHeightCentroidArray, 
                                                    frameSumHeightArrayList=frameSumHeightArrayList, frameSumWidthArrayList=frameSumWidthArrayList, tdmsFolderPath=tdmsFolderPath, experimentName=experimentName)     
@@ -478,7 +509,10 @@ class MainWindow(QMainWindow):
                                                        filteredHeightPositionArrayList=filteredHeightPositionArrayList,tdmsFolderPath=tdmsFolderPath,experimentName=experimentName)
         
         tdmsSave.write_scaled_velocity_to_txt(frameTimeStampArray=frameTimeStampArray,velocityTimeArrayList=velocityTimeArrayList,velocityArrayList=heightVelocityArrayList,tdmsFolderPath=tdmsFolderPath,experimentName=experimentName)
-        tdmsSave.save_fixed_uEO_and_uEP_to_file(frameTimeStampArray=frameTimeStampArray, tdmsFolderPath=tdmsFolderPath, experimentName=experimentName, fitteduEPArray=fitteduEPArray,uEO=uEO,velocityTimeArrayList=velocityTimeArrayList)
+        if fixeduEO == True:
+            tdmsSave.save_fixed_uEO_and_uEP_to_file(frameTimeStampArray=frameTimeStampArray, tdmsFolderPath=tdmsFolderPath, experimentName=experimentName, fitteduEPArray=fitteduEPArray,uEO=uEO,velocityTimeArrayList=velocityTimeArrayList)
+        else:
+            tdmsSave.save_uEO_and_uEP_to_file(frameTimeStampArray=frameTimeStampArray, tdmsFolderPath=tdmsFolderPath, experimentName=experimentName, fittedVelocityList=fittedVelocityList, fittedCovVelocityList=fittedCovVelocityList,velocityTimeArrayList=velocityTimeArrayList)
         self.saveData.setEnabled(True)       
 
 
@@ -652,7 +686,7 @@ class generate_frames(QObject):
         global pixelNumberArray, AODTimeArray, SPCMDataArray, SPCMTimeArray, eFieldDataArray, eFieldTimeArray
         global discontIndexArray
  
-
+        global frameTimeStampArray,frameSumWidthArrayList,frameSumHeightArrayList,frameSumWidthCentroidArray,frameSumHeightCentroidArray
         global AODTimeArray,AOD1DataArray,AOD2DataArray,pixelNumberArray,SPCMTimeArray,SPCMDataArray,eFieldTimeArray,eFieldDataArray,discontTimeArray,discontDataArray,AODSyncTimeArray,AODSyncDataArray,SPCMSyncTimeArray,SPCMSyncDataArray
         global eFieldStrengthDataArray
         #global SPCMTimeFragmentArrayList, SPCMDataFragmentArrayList, AODTimeFragmentArrayList, AOD1DataFragmentArrayList, AOD2DataFragmentArrayList,pixelNumberFragmentArrayList
@@ -716,6 +750,9 @@ class generate_frames(QObject):
             frameSumHeightArrayListList.append(frameSumHeightArrayList)
 
             self.progress.emit()
+        frameTimeStampArray,frameSumWidthArrayList,frameSumHeightArrayList,frameSumWidthCentroidArray,frameSumHeightCentroidArray = tdmsData.flatten_fragments_to_segment(frameTimeStampArrayList=frameTimeStampArrayList, frameSumWidthArrayListList=frameSumWidthArrayListList, frameSumHeightArrayListList=frameSumHeightArrayListList,
+                                                                                                                                                                          frameSumWidthCentroidArrayList=frameSumWidthCentroidArrayList,frameSumHeightCentroidArrayList=frameSumHeightCentroidArrayList)   
+
         self.finished.emit()
 
 
@@ -733,17 +770,15 @@ class process_data(QObject):
         print("starting")
         global AODTimeArray,AOD1DataArray,AOD2DataArray,pixelNumberArray,SPCMTimeArray,SPCMDataArray,eFieldTimeArray,eFieldDataArray,discontTimeArray,discontDataArray,AODSyncTimeArray,AODSyncDataArray,SPCMSyncTimeArray,SPCMSyncDataArray
         global eFieldStrengthDataArray
-        global frameTimeStampArrayList,frameArrayListList,frameSumWidthArrayListList,frameSumHeightArrayListList, frameSumWidthCentroidArrayList, frameSumHeightCentroidArrayList
+
         global compensateOutliers, uEO, z, experimentName, tdmsFolderPath
         global fittedCovVelocityList, fittedVelocityList  
-        global fitteduEPArray
+        global fitteduEPArray, fixeduEO
         global frameTimeStampArray,frameSumWidthArrayList,frameSumHeightArrayList,frameSumWidthCentroidArray,frameSumHeightCentroidArray, filteredWidthPositionArray, filteredHeightPositionArray
         global heightPositionArray, positionTimeArray, velocityTimeArray, heightVelocityArray
         global velocityTimeArrayList, heightVelocityArrayList, averageVelocityArray
         global widthPositionArrayList, heightPositionArrayList, positionTimeArrayList, filteredHeightPositionArrayList
-        frameTimeStampArray,frameSumWidthArrayList,frameSumHeightArrayList,frameSumWidthCentroidArray,frameSumHeightCentroidArray = tdmsData.flatten_fragments_to_segment(frameTimeStampArrayList=frameTimeStampArrayList, frameSumWidthArrayListList=frameSumWidthArrayListList, frameSumHeightArrayListList=frameSumHeightArrayListList,
-                                                                                                                                                                          frameSumWidthCentroidArrayList=frameSumWidthCentroidArrayList,frameSumHeightCentroidArrayList=frameSumHeightCentroidArrayList)   
-
+        
         widthPositionArray, heightPositionArray = tdmsAnalysis.scale_to_dimensions(frameSumWidthCentroidArray=frameSumWidthCentroidArray,frameSumHeightCentroidArray=frameSumHeightCentroidArray,pitchX=tdmsAnimate.pitchX,pitchY=tdmsAnimate.pitchY)
         positionTimeArray, filteredHeightPositionArray = tdmsAnalysis.low_pass_filter(timeArray=frameTimeStampArray, dataArray=heightPositionArray,eFieldFreq=tdmsEKModel.f,compensateOutliers=compensateOutliers)
         positionTimeArray, filteredWidthPositionArray = tdmsAnalysis.low_pass_filter(timeArray=frameTimeStampArray, dataArray=widthPositionArray,eFieldFreq=tdmsEKModel.f,compensateOutliers=compensateOutliers)
