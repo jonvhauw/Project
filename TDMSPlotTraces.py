@@ -40,6 +40,9 @@ plotYPosition = True
 plotYPositionFilter = True
 plotYVelocity = True
 
+plotAverage = True
+plotVelocity = True 
+
 def on_right_click_plot_time(event):
     global globalEventList
     
@@ -181,6 +184,7 @@ def plot_trace1(AODTimeArray=np.array([]),pixelNumberArray=np.array([]),SPCMTime
     global plotSPCMSampleRatio
     global normalize
     global plotExtField
+
     
     
     fig, ax = plt.subplots()
@@ -241,7 +245,7 @@ def plot_trace1(AODTimeArray=np.array([]),pixelNumberArray=np.array([]),SPCMTime
 def plot_position_and_velocity_trace_gui(scenePos, sceneVel, frameTimeStampArray=np.array([]),widthPositionArray=np.array([]),heightPositionArray=np.array([]),
                                      positionTimeArray=np.array([]),filteredHeightPositionArray=np.array([]),filteredWidthPositionArray=np.array([]),
                                      velocityTimeArray=np.array([]),heightVelocityArray=np.array([]),widthVelocityArray=np.array([]),
-                                     eFieldTimeArray=np.array([]),eFieldDataArray=np.array([]),  EEmaxTrace_c = 'dark green', YTrace_c = 'red', YPosition_c ='red'):
+                                     eFieldTimeArray=np.array([]),eFieldDataArray=np.array([]),  EEmaxTrace_c = 'dark green', YTrace_c = 'red', YPosition_c ='red', EEmaxTrace_s = 'dashed', YTrace_s = 'solid'):
     
 
     plotHeight = False
@@ -317,11 +321,11 @@ def plot_position_and_velocity_trace_gui(scenePos, sceneVel, frameTimeStampArray
     stopIndexEField = np.where(eFieldTimeArray <= positionTimeArray[-1])[0][-1]
 
     if(plotExtField1 == True):
-        line = positionAx2.addItem(pg.PlotCurveItem(eFieldTimeArray[:stopIndexEField],eFieldDataArray[:stopIndexEField]/max(eFieldDataArray[:stopIndexEField]),pen=Col.make_pen(EEmaxTrace_c), name="E/Emax"))
+        line = positionAx2.addItem(pg.PlotCurveItem(eFieldTimeArray[:stopIndexEField],eFieldDataArray[:stopIndexEField]/max(eFieldDataArray[:stopIndexEField]),pen=Col.make_pen(EEmaxTrace_c, style = EEmaxTrace_s ), name="E/Emax"))
         #lineListPosition = lineListPosition + line
 
     if(plotExtField2 == True):
-        line = velocityAx2.addItem(pg.PlotCurveItem(eFieldTimeArray[:stopIndexEField],eFieldDataArray[:stopIndexEField]/max(eFieldDataArray[:stopIndexEField]),pen=Col.make_pen(EEmaxTrace_c), name="E/Emax"))
+        line = velocityAx2.addItem(pg.PlotCurveItem(eFieldTimeArray[:stopIndexEField],eFieldDataArray[:stopIndexEField]/max(eFieldDataArray[:stopIndexEField]),pen=Col.make_pen(EEmaxTrace_c, style = EEmaxTrace_s), name="E/Emax"))
         #lineListVelocity = lineListVelocity + line
         '''
         line = positionAx2.plot(eFieldTimeArray[:stopIndexEField],eFieldDataArray[:stopIndexEField]/max(eFieldDataArray[:stopIndexEField]),lw=2,linestyle="-",color="green",label="E/Emax")
@@ -341,10 +345,10 @@ def plot_position_and_velocity_trace_gui(scenePos, sceneVel, frameTimeStampArray
             line = positionAx1.plot(frameTimeStampArray,heightPositionArray*1e6, pen=pg.mkPen(None), symbol='o', symbolBrush=0.1, symbolPen=Col.make_pen(YPosition_c), name="y-position")
             #lineListPosition = lineListPosition + line
         if plotYPositionFilter == True:
-            line = positionAx1.plot(positionTimeArray,filteredHeightPositionArray*1e6,lw=2, pen=Col.make_pen(YTrace_c), name="y-position (filter)")
+            line = positionAx1.plot(positionTimeArray,filteredHeightPositionArray*1e6,lw=2, pen=Col.make_pen(YTrace_c, style = YTrace_s), name="y-position (filter)")
             #lineListPosition = lineListPosition + line
         if plotYVelocity == True:
-            line = velocityAx1.plot(velocityTimeArray,heightVelocityArray*1e3, pen=Col.make_pen(YTrace_c), name="y-velocity")
+            line = velocityAx1.plot(velocityTimeArray,heightVelocityArray*1e3, pen=Col.make_pen(YTrace_c, style = YTrace_s), name="y-velocity")
             #lineListVelocity = lineListVelocity + line
         
         
@@ -473,6 +477,8 @@ def plot_position_and_velocity_trace(frameTimeStampArray=np.array([]),widthPosit
 
 def plot_overlapping_periods(timeArrayList=[],dataArrayList=[],averageVelocityTimeArray=np.array([]),averageVelocityArray=np.array([]),eFieldFreq=100):
     global plotExtField
+    global plotAverage
+    global plotVelocity
     
     maxPeriodDuration = 0
     labelList = []
@@ -490,8 +496,8 @@ def plot_overlapping_periods(timeArrayList=[],dataArrayList=[],averageVelocityTi
         
         tempTimeArray = timeArrayList[i] - timeArrayList[i][0] 
         tempTimeArray = tempTimeArray/maxPeriodDuration
-        
-        line = periodOverlapAxes.plot(tempTimeArray,dataArrayList[i]*1e3,color="red",alpha=0.25,label="Velocity")
+        if plotVelocity == True:
+            line = periodOverlapAxes.plot(tempTimeArray,dataArrayList[i]*1e3,color="red",alpha=0.25,label="Velocity")
         
     lineList.append(line[0])
     labelList = [line[0].get_label()]
@@ -508,7 +514,7 @@ def plot_overlapping_periods(timeArrayList=[],dataArrayList=[],averageVelocityTi
         eFieldPeriodAxes.set_ylabel('E-Field/max(E-Field)',color="green",fontsize=15)
         eFieldPeriodAxes.tick_params(axis="y",labelsize=10)
         
-    if(len(averageVelocityArray) > 0):
+    if (len(averageVelocityArray) > 0) and plotAverage == True:
         avgLine = periodOverlapAxes.plot(averageVelocityTimeArray,averageVelocityArray*1e3,lw=2,color='black',label="Average")
         lineList.append(avgLine[0])
         labelList.append(avgLine[0].get_label())
@@ -525,7 +531,9 @@ def plot_overlapping_periods(timeArrayList=[],dataArrayList=[],averageVelocityTi
 
 def plot_overlapping_periods_gui(scene, timeArrayList=[],dataArrayList=[],averageVelocityTimeArray=np.array([]),averageVelocityArray=np.array([]),eFieldFreq=100, velocity_c = 'black', average_c = 'red' , EEmax_c = 'dark green', velocity_s = 'solid', average_s = 'solid', EEmax_s = 'dashed'):
     global plotExtField
-    
+    global plotAverage
+    global plotVelocity
+
     maxPeriodDuration = 0
     labelList = []
     lineList = []
@@ -557,9 +565,9 @@ def plot_overlapping_periods_gui(scene, timeArrayList=[],dataArrayList=[],averag
         
         tempTimeArray = timeArrayList[i] - timeArrayList[i][0] 
         tempTimeArray = tempTimeArray/maxPeriodDuration
-        if i == 0:
+        if i == 0 and plotVelocity == True:
             periodOverlapAxes.plot(tempTimeArray,dataArrayList[i]*1e3, pen = Col.make_pen(velocity_c, style= velocity_s), name="Velocity")
-        else:
+        elif plotVelocity == True:
             periodOverlapAxes.plot(tempTimeArray,dataArrayList[i]*1e3, pen = Col.make_pen(velocity_c, style= velocity_s))
     #lineList.append(line[0])
     #labelList = [line[0].get_label()]
@@ -576,7 +584,7 @@ def plot_overlapping_periods_gui(scene, timeArrayList=[],dataArrayList=[],averag
         #eFieldPeriodAxes.set_ylabel('E-Field/max(E-Field)',color="green",fontsize=15)
         #eFieldPeriodAxes.tick_params(axis="y",labelsize=10)
         
-    if(len(averageVelocityArray) > 0):
+    if(len(averageVelocityArray) > 0) and plotAverage == True:
         periodOverlapAxes.plot(averageVelocityTimeArray,averageVelocityArray*1e3,lw=2, pen=Col.make_pen(average_c, style = average_s), name='Average')
         #lineList.append(avgLine[0])
         #labelList.append(avgLine[0].get_label())

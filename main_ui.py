@@ -42,9 +42,9 @@ class MainWindow(QMainWindow):
         self.updateFrames.stateChanged.connect(self.plot_existing_frames)
 
 
-        #self.checkVelocityFitting_3.stateChanged.connect(self.refreshDataAnalysisVelocity)
-        self.checkEEmaxFitting_3.stateChanged.connect(self.refreshDataAnalysisEEmax)
-        #self.checkAverageFitting_3.stateChanged.connect(self.refreshDataAnalysisAverage)
+        self.checkVelocityFitting_3.stateChanged.connect(self.refreshDataAnalysisOverlap)
+        self.checkEEmaxFitting_3.stateChanged.connect(self.refreshDataAnalysisOverlap)
+        self.checkAverageFitting_3.stateChanged.connect(self.refreshDataAnalysisOverlap)
 
         self.checkEEmaxPosition_3.stateChanged.connect(self.refreshDataAnalysisPositionVelocity)
         self.checkEEmaxVelocity_3.stateChanged.connect(self.refreshDataAnalysisPositionVelocity)
@@ -74,6 +74,9 @@ class MainWindow(QMainWindow):
         self.comboColorEEmaxTrace_3.currentIndexChanged.connect(self.plot_position_and_velocity_trace)
         self.comboColorYTrace_3.currentIndexChanged.connect(self.plot_position_and_velocity_trace)
         self.comboColorYPosition_3.currentIndexChanged.connect(self.plot_position_and_velocity_trace)
+
+        self.comboStyleEEmaxTrace_3.currentIndexChanged.connect(self.plot_position_and_velocity_trace)
+        self.comboStyleYTrace_3.currentIndexChanged.connect(self.plot_position_and_velocity_trace)
 
         self.actionimport_files.triggered.connect(self.getfiles)
         #self.actionimport_saved_files.triggered.connect(self.get_saved_files)
@@ -283,8 +286,10 @@ class MainWindow(QMainWindow):
 
         self.update2()
 
-    def refreshDataAnalysisEEmax(self):
+    def refreshDataAnalysisOverlap(self):
         tdmsPlot.plotExtField = self.checkEEmaxFitting_3.isChecked()
+        tdmsPlot.plotAverage = self.checkAverageFitting_3.isChecked()
+        tdmsPlot.plotVelocity = self.checkVelocityFitting_3.isChecked()
         
         self.plot_overlapping_periods()
 
@@ -460,7 +465,7 @@ class MainWindow(QMainWindow):
         pos2, pos1, vel2, vel1, pw1, pw2 = tdmsPlot.plot_position_and_velocity_trace_gui(self.scenePosition, self.sceneVelocity, frameTimeStampArray=frameTimeStampArray,heightPositionArray=heightPositionArray,
                                          positionTimeArray=positionTimeArray,filteredHeightPositionArray=filteredHeightPositionArray,
                                          velocityTimeArray=velocityTimeArray,heightVelocityArray=heightVelocityArray,
-                                         eFieldTimeArray=eFieldTimeArray,eFieldDataArray=eFieldStrengthDataArray, EEmaxTrace_c = self.comboColorEEmaxTrace_3.currentText(), YTrace_c = self.comboColorYTrace_3.currentText(), YPosition_c = self.comboColorYPosition_3.currentText()) 
+                                         eFieldTimeArray=eFieldTimeArray,eFieldDataArray=eFieldStrengthDataArray, EEmaxTrace_c = self.comboColorEEmaxTrace_3.currentText(), YTrace_c = self.comboColorYTrace_3.currentText(), YPosition_c = self.comboColorYPosition_3.currentText(), EEmaxTrace_s = self.comboStyleEEmaxTrace_3.currentText(), YTrace_s = self.comboStyleYTrace_3.currentText()) 
         #proxy_widget1 = self.scenePosition.addWidget(pos1) 
         #proxy_widget2 = self.sceneVelocity.addWidget(vel1)
         #proxy_widget3 = self.scenePosition.addWidget(pos2) 
