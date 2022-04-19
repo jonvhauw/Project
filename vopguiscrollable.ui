@@ -30,7 +30,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tabDataProcessing">
        <attribute name="title">
@@ -258,17 +258,12 @@
                  </property>
                  <item>
                   <property name="text">
-                   <string>dotted</string>
+                   <string>solid</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
                    <string>dashed</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>solid</string>
                   </property>
                  </item>
                 </widget>
@@ -283,36 +278,51 @@
                <item row="1" column="1">
                 <widget class="QComboBox" name="comboColorAODX">
                  <property name="currentText">
-                  <string>Red </string>
+                  <string>red</string>
                  </property>
                  <item>
                   <property name="text">
-                   <string>Red </string>
+                   <string>red</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>Green</string>
+                   <string>dark red</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>Blue</string>
+                   <string>light green</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>Yellow</string>
+                   <string>dark green</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>Purple</string>
+                   <string>blue</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>Black</string>
+                   <string>dark blue</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>turquoise</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>gold</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>black</string>
                   </property>
                  </item>
                 </widget>
@@ -340,36 +350,51 @@
                <item row="2" column="1">
                 <widget class="QComboBox" name="comboColorAODY">
                  <property name="currentText">
-                  <string>Red </string>
+                  <string>red</string>
                  </property>
                  <item>
                   <property name="text">
-                   <string>Red </string>
+                   <string>red</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>Green</string>
+                   <string>dark red</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>Blue</string>
+                   <string>light green</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>Yellow</string>
+                   <string>dark green</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>Purple</string>
+                   <string>blue</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>Black</string>
+                   <string>dark bleu</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>turquoise</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>gold</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>black</string>
                   </property>
                  </item>
                 </widget>
@@ -377,21 +402,16 @@
                <item row="2" column="2">
                 <widget class="QComboBox" name="comboStyleAODY">
                  <property name="currentIndex">
-                  <number>2</number>
+                  <number>0</number>
                  </property>
                  <item>
                   <property name="text">
-                   <string>Dotted</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Dashed</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
                    <string>solid</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>dashed</string>
                   </property>
                  </item>
                 </widget>
@@ -399,21 +419,16 @@
                <item row="3" column="2">
                 <widget class="QComboBox" name="comboStyleSPCM">
                  <property name="currentIndex">
-                  <number>2</number>
+                  <number>0</number>
                  </property>
                  <item>
                   <property name="text">
-                   <string>Dotted</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Dashed</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
                    <string>solid</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>dashed</string>
                   </property>
                  </item>
                 </widget>
@@ -421,36 +436,51 @@
                <item row="4" column="1">
                 <widget class="QComboBox" name="comboColorEField">
                  <property name="currentIndex">
-                  <number>2</number>
+                  <number>0</number>
                  </property>
                  <item>
                   <property name="text">
-                   <string>Red </string>
+                   <string>blue</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>Green</string>
+                   <string>dark blue</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>Blue</string>
+                   <string>turquoise</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>Yellow</string>
+                   <string>red</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>Purple</string>
+                   <string>dark red</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>Black</string>
+                   <string>light green</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>dark green</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>gold</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>black</string>
                   </property>
                  </item>
                 </widget>
@@ -459,32 +489,47 @@
                 <widget class="QComboBox" name="comboColorSPCM">
                  <item>
                   <property name="text">
-                   <string>Red </string>
+                   <string>light green</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>Green</string>
+                   <string>dark green</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>Blue</string>
+                   <string>red</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>Yellow</string>
+                   <string>dark red</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>Purple</string>
+                   <string>blue</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>Black</string>
+                   <string>dark blue</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>turquoise</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>gold</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>black</string>
                   </property>
                  </item>
                 </widget>
@@ -502,16 +547,11 @@
                <item row="6" column="2">
                 <widget class="QComboBox" name="comboStyleAODSync">
                  <property name="currentIndex">
-                  <number>1</number>
+                  <number>0</number>
                  </property>
                  <item>
                   <property name="text">
-                   <string>Dotted</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Dashed</string>
+                   <string>dashed</string>
                   </property>
                  </item>
                  <item>
@@ -534,36 +574,51 @@
                <item row="6" column="1">
                 <widget class="QComboBox" name="comboColorAODSync">
                  <property name="currentText">
-                  <string>Red </string>
+                  <string>black</string>
                  </property>
                  <item>
                   <property name="text">
-                   <string>Red </string>
+                   <string>black</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>Green</string>
+                   <string>red</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>Blue</string>
+                   <string>dark red</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>Yellow</string>
+                   <string>light green</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>Purple</string>
+                   <string>dark green</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>Black</string>
+                   <string>blue</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>dark blue</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>turquoise</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>gold</string>
                   </property>
                  </item>
                 </widget>
@@ -571,16 +626,11 @@
                <item row="5" column="2">
                 <widget class="QComboBox" name="comboStyleSPCMSync">
                  <property name="currentIndex">
-                  <number>1</number>
+                  <number>0</number>
                  </property>
                  <item>
                   <property name="text">
-                   <string>Dotted</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Dashed</string>
+                   <string>dashed</string>
                   </property>
                  </item>
                  <item>
@@ -593,36 +643,51 @@
                <item row="5" column="1">
                 <widget class="QComboBox" name="comboColorSPCMSync">
                  <property name="currentText">
-                  <string>Red </string>
+                  <string>gold</string>
                  </property>
                  <item>
                   <property name="text">
-                   <string>Red </string>
+                   <string>gold</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>Green</string>
+                   <string>red</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>Blue</string>
+                   <string>dark red</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>Yellow</string>
+                   <string>light green</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>Purple</string>
+                   <string>dark green</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>Black</string>
+                   <string>blue</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>dark blue</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>turquoise</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>black</string>
                   </property>
                  </item>
                 </widget>
@@ -640,16 +705,11 @@
                <item row="4" column="2">
                 <widget class="QComboBox" name="comboStyleEField">
                  <property name="currentIndex">
-                  <number>2</number>
+                  <number>0</number>
                  </property>
                  <item>
                   <property name="text">
-                   <string>Dotted</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Dashed</string>
+                   <string>dashed</string>
                   </property>
                  </item>
                  <item>
@@ -729,10 +789,266 @@
              <x>0</x>
              <y>0</y>
              <width>1072</width>
-             <height>1260</height>
+             <height>1283</height>
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout">
+            <item row="0" column="1">
+             <widget class="QFrame" name="ParticleTraceControl_2">
+              <property name="frameShape">
+               <enum>QFrame::StyledPanel</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Raised</enum>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_13">
+               <item row="0" column="0">
+                <widget class="QCheckBox" name="checkVelocityFitting_3">
+                 <property name="text">
+                  <string>Velocity</string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QCheckBox" name="checkEEmaxFitting_3">
+                 <property name="text">
+                  <string>E/E-max</string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="0">
+                <widget class="QCheckBox" name="checkAverageFitting_3">
+                 <property name="text">
+                  <string>Average </string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QComboBox" name="comboColorVelocityFitting_3">
+                 <item>
+                  <property name="text">
+                   <string>red</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>dark red</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>light green</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>dark green</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>blue</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>dark blue</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>turquoise</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>gold</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>black</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QComboBox" name="comboColorEEmaxFitting_3">
+                 <property name="currentIndex">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>blue</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>dark blue</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>turquoise</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>red</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>dark red</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>light green</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>dark green</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>gold</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>black</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+               <item row="3" column="1">
+                <widget class="QComboBox" name="comboColorAverageFitting_3">
+                 <property name="currentText">
+                  <string>gold</string>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>gold</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>red</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>dark red</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>light green</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>dark green</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>blue</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>dark blue</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>turquoise</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>black</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+               <item row="0" column="2">
+                <widget class="QComboBox" name="comboStyleVelocityFitting_3">
+                 <property name="currentIndex">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>dashed</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>solid</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+               <item row="1" column="2">
+                <widget class="QComboBox" name="comboStyleEEmaxFitting_3">
+                 <property name="currentIndex">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>dashed</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>solid</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+               <item row="3" column="2">
+                <widget class="QComboBox" name="comboStyleAverageFitting_3">
+                 <property name="currentIndex">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>dashed</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>solid</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item row="5" column="0" colspan="2">
+             <widget class="QGraphicsView" name="graphicsKymoY">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+             </widget>
+            </item>
             <item row="0" column="0">
              <widget class="QGraphicsView" name="graphicsOverlappingPeriods">
               <property name="sizePolicy">
@@ -743,17 +1059,50 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="1">
-             <widget class="QFrame" name="ParticleTraceControl_2">
+            <item row="1" column="0">
+             <widget class="QGraphicsView" name="graphicsVelocity_2"/>
+            </item>
+            <item row="2" column="0" colspan="2">
+             <widget class="QGraphicsView" name="graphicsParticlePositionTrace">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="0" colspan="2">
+             <widget class="QGraphicsView" name="graphicsKymoX">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0" colspan="2">
+             <widget class="QGraphicsView" name="graphicsParticleVelocityTrace">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QFrame" name="framecontrolFitting_2">
               <property name="frameShape">
                <enum>QFrame::StyledPanel</enum>
               </property>
               <property name="frameShadow">
                <enum>QFrame::Raised</enum>
               </property>
-              <layout class="QGridLayout" name="gridLayout_13">
+              <layout class="QGridLayout" name="gridLayout_12">
                <item row="3" column="2">
-                <widget class="QComboBox" name="comboColorYPosition_3">
+                <widget class="QComboBox" name="comboColorYTrace_3">
                  <item>
                   <property name="text">
                    <string>red</string>
@@ -761,7 +1110,17 @@
                  </item>
                  <item>
                   <property name="text">
-                   <string>green</string>
+                   <string>dark red</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>light green</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>dark green</string>
                   </property>
                  </item>
                  <item>
@@ -771,59 +1130,17 @@
                  </item>
                  <item>
                   <property name="text">
-                   <string>yellow</string>
+                   <string>dark blue</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>purple</string>
+                   <string>turquoise</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>black</string>
-                  </property>
-                 </item>
-                </widget>
-               </item>
-               <item row="2" column="0">
-                <widget class="QCheckBox" name="checkYPositionFilter_3">
-                 <property name="text">
-                  <string>y-position (filter)</string>
-                 </property>
-                 <property name="checked">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="2">
-                <widget class="QComboBox" name="comboColorEEmaxTrace_3">
-                 <property name="currentIndex">
-                  <number>1</number>
-                 </property>
-                 <item>
-                  <property name="text">
-                   <string>red</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>green</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>blue</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>yellow</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>purple</string>
+                   <string>gold</string>
                   </property>
                  </item>
                  <item>
@@ -843,6 +1160,16 @@
                  </property>
                 </widget>
                </item>
+               <item row="4" column="0">
+                <widget class="QCheckBox" name="checkYPosition_3">
+                 <property name="text">
+                  <string>y-position</string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
                <item row="1" column="1">
                 <widget class="QCheckBox" name="checkEEmaxVelocity_3">
                  <property name="text">
@@ -853,14 +1180,7 @@
                  </property>
                 </widget>
                </item>
-               <item row="0" column="0">
-                <widget class="QLabel" name="labelPositionTrace_3">
-                 <property name="text">
-                  <string>position trace </string>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="1">
+               <item row="3" column="1">
                 <widget class="QCheckBox" name="checkYVelocity_3">
                  <property name="text">
                   <string>y-velocity</string>
@@ -870,33 +1190,11 @@
                  </property>
                 </widget>
                </item>
-               <item row="0" column="1">
-                <widget class="QLabel" name="labelVelocityTrace_3">
-                 <property name="text">
-                  <string>velocity trace </string>
-                 </property>
-                </widget>
-               </item>
-               <item row="3" column="0">
-                <widget class="QCheckBox" name="checkYPosition_3">
-                 <property name="text">
-                  <string>y-position</string>
-                 </property>
-                 <property name="checked">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="3">
+               <item row="3" column="3">
                 <widget class="QComboBox" name="comboStyleYTrace_3">
                  <property name="currentIndex">
-                  <number>2</number>
+                  <number>0</number>
                  </property>
-                 <item>
-                  <property name="text">
-                   <string>dotted</string>
-                  </property>
-                 </item>
                  <item>
                   <property name="text">
                    <string>dashed</string>
@@ -912,13 +1210,8 @@
                <item row="1" column="3">
                 <widget class="QComboBox" name="comboStyleEEmaxTrace_3">
                  <property name="currentIndex">
-                  <number>2</number>
+                  <number>0</number>
                  </property>
-                 <item>
-                  <property name="text">
-                   <string>dotted</string>
-                  </property>
-                 </item>
                  <item>
                   <property name="text">
                    <string>dashed</string>
@@ -931,8 +1224,21 @@
                  </item>
                 </widget>
                </item>
-               <item row="2" column="2">
-                <widget class="QComboBox" name="comboColorYTrace_3">
+               <item row="1" column="2">
+                <widget class="QComboBox" name="comboColorEEmaxTrace_3">
+                 <property name="currentIndex">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>light green</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>dark green</string>
+                  </property>
+                 </item>
                  <item>
                   <property name="text">
                    <string>red</string>
@@ -940,7 +1246,7 @@
                  </item>
                  <item>
                   <property name="text">
-                   <string>green</string>
+                   <string>dark red</string>
                   </property>
                  </item>
                  <item>
@@ -950,12 +1256,17 @@
                  </item>
                  <item>
                   <property name="text">
-                   <string>yellow</string>
+                   <string>dark blue</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>purple</string>
+                   <string>turquoise</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>gold</string>
                   </property>
                  </item>
                  <item>
@@ -965,257 +1276,101 @@
                  </item>
                 </widget>
                </item>
-              </layout>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QGraphicsView" name="graphicsVelocity_2"/>
-            </item>
-            <item row="1" column="1">
-             <widget class="QFrame" name="framecontrolFitting_2">
-              <property name="frameShape">
-               <enum>QFrame::StyledPanel</enum>
-              </property>
-              <property name="frameShadow">
-               <enum>QFrame::Raised</enum>
-              </property>
-              <layout class="QGridLayout" name="gridLayout_12">
-               <item row="1" column="1">
-                <widget class="QCheckBox" name="checkVelocityFitting_3">
+               <item row="4" column="2">
+                <widget class="QComboBox" name="comboColorYPosition_3">
+                 <item>
+                  <property name="text">
+                   <string>gold</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>red</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>dark red</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>light green</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>dark green</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>blue</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>dark blue</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>turquoise</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>black</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+               <item row="0" column="0">
+                <widget class="QLabel" name="labelPositionTrace_3">
                  <property name="text">
-                  <string>Velocity</string>
-                 </property>
-                 <property name="checked">
-                  <bool>true</bool>
+                  <string>position trace </string>
                  </property>
                 </widget>
                </item>
                <item row="8" column="1">
-                <widget class="QLabel" name="label_3">
-                 <property name="text">
-                  <string/>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="2">
-                <widget class="QComboBox" name="comboColorEEmaxFitting_3">
-                 <property name="currentIndex">
-                  <number>1</number>
-                 </property>
-                 <item>
-                  <property name="text">
-                   <string>red</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>green</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>blue</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>yellow</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>purple</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>black</string>
-                  </property>
-                 </item>
-                </widget>
-               </item>
-               <item row="4" column="1">
-                <widget class="QPushButton" name="plotKymo">
-                 <property name="enabled">
-                  <bool>false</bool>
-                 </property>
-                 <property name="text">
-                  <string>Plot Kymographs</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="6" column="1">
                 <widget class="QLabel" name="label_2">
                  <property name="text">
                   <string/>
                  </property>
                 </widget>
                </item>
-               <item row="3" column="1">
-                <widget class="QCheckBox" name="checkAverageFitting_3">
+               <item row="10" column="1">
+                <widget class="QLabel" name="label_3">
                  <property name="text">
-                  <string>Average </string>
-                 </property>
-                 <property name="checked">
-                  <bool>true</bool>
+                  <string/>
                  </property>
                 </widget>
                </item>
-               <item row="2" column="3">
-                <widget class="QComboBox" name="comboStyleEEmaxFitting_3">
-                 <property name="currentIndex">
-                  <number>1</number>
-                 </property>
-                 <item>
-                  <property name="text">
-                   <string>dotted</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>dashed</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>solid</string>
-                  </property>
-                 </item>
-                </widget>
-               </item>
-               <item row="1" column="3">
-                <widget class="QComboBox" name="comboStyleVelocityFitting_3">
-                 <property name="currentIndex">
-                  <number>2</number>
-                 </property>
-                 <item>
-                  <property name="text">
-                   <string>dotted</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>dashed</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>solid</string>
-                  </property>
-                 </item>
-                </widget>
-               </item>
-               <item row="3" column="2">
-                <widget class="QComboBox" name="comboAverageFitting_3">
-                 <property name="currentText">
-                  <string>red</string>
-                 </property>
-                 <item>
-                  <property name="text">
-                   <string>red</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>green</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>blue</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>yellow</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>purple</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>black</string>
-                  </property>
-                 </item>
-                </widget>
-               </item>
-               <item row="3" column="3">
-                <widget class="QComboBox" name="comboStyleAverageFitting_3">
-                 <property name="currentIndex">
-                  <number>2</number>
-                 </property>
-                 <item>
-                  <property name="text">
-                   <string>dotted</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>dashed</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>solid</string>
-                  </property>
-                 </item>
-                </widget>
-               </item>
-               <item row="2" column="1">
-                <widget class="QCheckBox" name="checkEEmaxFitting_3">
+               <item row="0" column="1">
+                <widget class="QLabel" name="labelVelocityTrace_3">
                  <property name="text">
-                  <string>E/E-max</string>
-                 </property>
-                 <property name="checked">
-                  <bool>true</bool>
+                  <string>velocity trace </string>
                  </property>
                 </widget>
                </item>
-               <item row="1" column="2">
-                <widget class="QComboBox" name="comboColorVelocityFitting_3">
-                 <item>
-                  <property name="text">
-                   <string>red</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>green</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>blue</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>yellow</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>purple</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>black</string>
-                  </property>
-                 </item>
-                </widget>
-               </item>
-               <item row="9" column="1">
+               <item row="13" column="1">
                 <widget class="QLabel" name="label_4">
                  <property name="text">
                   <string/>
                  </property>
                 </widget>
                </item>
-               <item row="5" column="1">
+               <item row="3" column="0">
+                <widget class="QCheckBox" name="checkYPositionFilter_3">
+                 <property name="text">
+                  <string>y-position (filter)</string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="12" column="1">
                 <widget class="QPushButton" name="saveData">
                  <property name="enabled">
                   <bool>false</bool>
@@ -1225,47 +1380,17 @@
                  </property>
                 </widget>
                </item>
+               <item row="11" column="1">
+                <widget class="QPushButton" name="plotKymo">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="text">
+                  <string>Plot Kymographs</string>
+                 </property>
+                </widget>
+               </item>
               </layout>
-             </widget>
-            </item>
-            <item row="2" column="0" colspan="2">
-             <widget class="QGraphicsView" name="graphicsParticlePositionTrace">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="0" colspan="2">
-             <widget class="QGraphicsView" name="graphicsParticleVelocityTrace">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-             </widget>
-            </item>
-            <item row="4" column="0" colspan="2">
-             <widget class="QGraphicsView" name="graphicsKymoX">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-             </widget>
-            </item>
-            <item row="5" column="0" colspan="2">
-             <widget class="QGraphicsView" name="graphicsKymoY">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
              </widget>
             </item>
            </layout>

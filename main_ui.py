@@ -41,15 +41,45 @@ class MainWindow(QMainWindow):
         self.checkSPCMSync.stateChanged.connect(self.refreshDataProcessingPlotSPCMSync)
         self.updateFrames.stateChanged.connect(self.plot_existing_frames)
 
-        self.comboColorAODX.currentIndexChanged.connect(self.refreshDataProcessingPlot)
-        self.comboColorAODY.currentIndexChanged.connect(self.refreshDataProcessingPlot)
-        self.comboColorAODSync.currentIndexChanged.connect(self.refreshDataProcessingPlot)
-        self.comboColorSPCM.currentIndexChanged.connect(self.refreshDataProcessingPlot)
-        self.comboColorEField.currentIndexChanged.connect(self.refreshDataProcessingPlot)
-        self.comboColorSPCMSync.currentIndexChanged.connect(self.refreshDataProcessingPlot)
+
+        self.checkVelocityFitting_3.stateChanged.connect(self.refreshDataAnalysisOverlap)
+        self.checkEEmaxFitting_3.stateChanged.connect(self.refreshDataAnalysisOverlap)
+        self.checkAverageFitting_3.stateChanged.connect(self.refreshDataAnalysisOverlap)
+
+        self.checkEEmaxPosition_3.stateChanged.connect(self.refreshDataAnalysisPositionVelocity)
+        self.checkEEmaxVelocity_3.stateChanged.connect(self.refreshDataAnalysisPositionVelocity)
+        self.checkYPositionFilter_3.stateChanged.connect(self.refreshDataAnalysisPositionVelocity)
+        self.checkYVelocity_3.stateChanged.connect(self.refreshDataAnalysisPositionVelocity)
+        self.checkYPosition_3.stateChanged.connect(self.refreshDataAnalysisPositionVelocity)
+
+
+
+
+
+        self.comboColorAODX.currentIndexChanged.connect(self.plot)
+        self.comboColorAODY.currentIndexChanged.connect(self.plot)
+        self.comboColorAODSync.currentIndexChanged.connect(self.plot)
+        self.comboColorSPCM.currentIndexChanged.connect(self.plot)
+        self.comboColorEField.currentIndexChanged.connect(self.plot)
+        self.comboColorSPCMSync.currentIndexChanged.connect(self.plot)
+
+        self.comboColorVelocityFitting_3.currentIndexChanged.connect(self.plot_overlapping_periods)
+        self.comboColorAverageFitting_3.currentIndexChanged.connect(self.plot_overlapping_periods)
+        self.comboColorEEmaxFitting_3.currentIndexChanged.connect(self.plot_overlapping_periods)
+
+        self.comboStyleVelocityFitting_3.currentIndexChanged.connect(self.plot_overlapping_periods)
+        self.comboStyleAverageFitting_3.currentIndexChanged.connect(self.plot_overlapping_periods)
+        self.comboStyleEEmaxFitting_3.currentIndexChanged.connect(self.plot_overlapping_periods)
+
+        self.comboColorEEmaxTrace_3.currentIndexChanged.connect(self.plot_position_and_velocity_trace)
+        self.comboColorYTrace_3.currentIndexChanged.connect(self.plot_position_and_velocity_trace)
+        self.comboColorYPosition_3.currentIndexChanged.connect(self.plot_position_and_velocity_trace)
+
+        self.comboStyleEEmaxTrace_3.currentIndexChanged.connect(self.plot_position_and_velocity_trace)
+        self.comboStyleYTrace_3.currentIndexChanged.connect(self.plot_position_and_velocity_trace)
 
         self.actionimport_files.triggered.connect(self.getfiles)
-        self.actionimport_saved_files.triggered.connect(self.get_saved_files)
+        #self.actionimport_saved_files.triggered.connect(self.get_saved_files)
 
         self.spinBoxStart.valueChanged.connect(self.show_startTime)
         self.spinBoxStop.valueChanged.connect(self.show_stopTime)
@@ -61,12 +91,13 @@ class MainWindow(QMainWindow):
         self.plotKymo.clicked.connect(self.kymo_matplot)
         self.saveData.clicked.connect(self.save_data)
 
-        self.comboStyleAODX.currentIndexChanged.connect(self.update2)
-        self.comboStyleAODY.currentIndexChanged.connect(self.refreshDataProcessingPlot)
-        self.comboStyleAODSync.currentIndexChanged.connect(self.refreshDataProcessingPlot)
-        self.comboStyleSPCM.currentIndexChanged.connect(self.refreshDataProcessingPlot)
-        self.comboStyleEField.currentIndexChanged.connect(self.refreshDataProcessingPlot)
-        self.comboStyleSPCMSync.currentIndexChanged.connect(self.refreshDataProcessingPlot)
+        self.comboStyleAODX.currentIndexChanged.connect(self.plot)
+        self.comboStyleAODY.currentIndexChanged.connect(self.plot)
+        self.comboStyleAODSync.currentIndexChanged.connect(self.plot)
+        self.comboStyleSPCM.currentIndexChanged.connect(self.plot)
+        self.comboStyleEField.currentIndexChanged.connect(self.plot)
+        self.comboStyleSPCMSync.currentIndexChanged.connect(self.plot)
+
 
         self.spinBoxeFieldSync.setMinimum(-1)
         self.spinBoxSPCMSync.setMinimum(-1)
@@ -214,8 +245,8 @@ class MainWindow(QMainWindow):
         plotje= tdmsPlot.plot_trace2(self.scene, AODTimeArray=AODTimeArray,AOD1DataArray=AOD1DataArray,AOD2DataArray=AOD2DataArray,
                              pixelNumberArray=pixelNumberArray,SPCMTimeArray=SPCMTimeArray,SPCMDataArray=SPCMDataArray,
                              eFieldTimeArray=eFieldTimeArray,eFieldDataArray=eFieldDataArray,discontTimeArray=discontTimeArray,discontDataArray=discontDataArray,AODSyncTimeArray=AODSyncTimeArray,AODSyncDataArray=AODSyncDataArray,
-                             SPCMSyncDataArray=SPCMSyncDataArray,SPCMSyncTimeArray=SPCMSyncTimeArray)
-        
+                             SPCMSyncDataArray=SPCMSyncDataArray,SPCMSyncTimeArray=SPCMSyncTimeArray,  AOD1_c=self.comboColorAODX.currentText(), AOD2_c = self.comboColorAODY.currentText(), SPCM_c = self.comboColorSPCM.currentText(),EF_c = self.comboColorEField.currentText(), SPCM_sync_c = self.comboColorSPCMSync.currentText(), AOD_sync_c = self.comboColorAODSync.currentText(), AOD1_s=self.comboStyleAODX.currentText(), AOD2_s = self.comboStyleAODY.currentText(), SPCM_s = self.comboStyleSPCM.currentText(), EF_s = self.comboStyleEField.currentText(), SPCM_sync_s = self.comboStyleSPCMSync.currentText(), AOD_sync_s = self.comboStyleAODSync.currentText())
+
 
 
         proxy_widget = self.scene.addWidget(plotje)
@@ -254,6 +285,22 @@ class MainWindow(QMainWindow):
 
         self.update2()
 
+    def refreshDataAnalysisOverlap(self):
+        tdmsPlot.plotExtField = self.checkEEmaxFitting_3.isChecked()
+        tdmsPlot.plotAverage = self.checkAverageFitting_3.isChecked()
+        tdmsPlot.plotVelocity = self.checkVelocityFitting_3.isChecked()
+        
+        self.plot_overlapping_periods()
+
+    def refreshDataAnalysisPositionVelocity(self):
+        tdmsPlot.plotExtField1 = self.checkEEmaxPosition_3.isChecked()
+        tdmsPlot.plotExtField2 = self.checkEEmaxVelocity_3.isChecked()
+        tdmsPlot.plotYPosition = self.checkYPosition_3.isChecked()
+        tdmsPlot.plotYPositionFilter = self.checkYPositionFilter_3.isChecked()
+        tdmsPlot.plotYVelocity = self.checkYVelocity_3.isChecked()
+
+        self.plot_position_and_velocity_trace()
+
     def update2(self):
         global AODTimeArray, AOD1DataArray, AOD2DataArray
         global pixelNumberArray, SPCMTimeArray, SPCMDataArray
@@ -285,8 +332,8 @@ class MainWindow(QMainWindow):
         plotje= tdmsPlot.plot_trace2(self.scene, AODTimeArray=AODTimeArray,AOD1DataArray=AOD1DataArray,AOD2DataArray=AOD2DataArray,
                              pixelNumberArray=pixelNumberArray,SPCMTimeArray=SPCMTimeArray,SPCMDataArray=SPCMDataArray,
                              eFieldTimeArray=eFieldTimeArray,eFieldDataArray=eFieldDataArray,discontTimeArray=discontTimeArray,discontDataArray=discontDataArray,AODSyncTimeArray=AODSyncTimeArray,AODSyncDataArray=AODSyncDataArray,
-                             SPCMSyncDataArray=SPCMSyncDataArray,SPCMSyncTimeArray=SPCMSyncTimeArray, AOD1_s = AOD1_s_value)
-        
+                             SPCMSyncDataArray=SPCMSyncDataArray,SPCMSyncTimeArray=SPCMSyncTimeArray,  AOD1_c=self.comboColorAODX.currentText(), AOD2_c = self.comboColorAODY.currentText(), SPCM_c = self.comboColorSPCM.currentText(),EF_c = self.comboColorEField.currentText(), SPCM_sync_c = self.comboColorSPCMSync.currentText(), AOD_sync_c = self.comboColorAODSync.currentText(), AOD1_s=self.comboStyleAODX.currentText(), AOD2_s = self.comboStyleAODY.currentText(), SPCM_s = self.comboStyleSPCM.currentText(), EF_s = self.comboStyleEField.currentText(), SPCM_sync_s = self.comboStyleSPCMSync.currentText(), AOD_sync_s = self.comboStyleAODSync.currentText())
+
 
 
         proxy_widget = self.scene.addWidget(plotje)
@@ -417,7 +464,7 @@ class MainWindow(QMainWindow):
         pos2, pos1, vel2, vel1, pw1, pw2 = tdmsPlot.plot_position_and_velocity_trace_gui(self.scenePosition, self.sceneVelocity, frameTimeStampArray=frameTimeStampArray,heightPositionArray=heightPositionArray,
                                          positionTimeArray=positionTimeArray,filteredHeightPositionArray=filteredHeightPositionArray,
                                          velocityTimeArray=velocityTimeArray,heightVelocityArray=heightVelocityArray,
-                                         eFieldTimeArray=eFieldTimeArray,eFieldDataArray=eFieldStrengthDataArray) 
+                                         eFieldTimeArray=eFieldTimeArray,eFieldDataArray=eFieldStrengthDataArray, EEmaxTrace_c = self.comboColorEEmaxTrace_3.currentText(), YTrace_c = self.comboColorYTrace_3.currentText(), YPosition_c = self.comboColorYPosition_3.currentText(), EEmaxTrace_s = self.comboStyleEEmaxTrace_3.currentText(), YTrace_s = self.comboStyleYTrace_3.currentText()) 
         #proxy_widget1 = self.scenePosition.addWidget(pos1) 
         #proxy_widget2 = self.sceneVelocity.addWidget(vel1)
         #proxy_widget3 = self.scenePosition.addWidget(pos2) 
@@ -434,7 +481,7 @@ class MainWindow(QMainWindow):
 
         self.scene = QGraphicsScene()
         self.graphicsOverlappingPeriods.setScene(self.scene)
-        pw, plotPeriod, ploteField = tdmsPlot.plot_overlapping_periods_gui(self.scene, timeArrayList=velocityTimeArrayList,dataArrayList=heightVelocityArrayList,averageVelocityTimeArray=np.linspace(0.0,1.0,100),averageVelocityArray=averageVelocityArray,eFieldFreq=tdmsEKModel.f)
+        pw, plotPeriod, ploteField = tdmsPlot.plot_overlapping_periods_gui(self.scene, timeArrayList=velocityTimeArrayList,dataArrayList=heightVelocityArrayList,averageVelocityTimeArray=np.linspace(0.0,1.0,100),averageVelocityArray=averageVelocityArray,eFieldFreq=tdmsEKModel.f, velocity_c = self.comboColorVelocityFitting_3.currentText(), average_c = self.comboColorAverageFitting_3.currentText() , EEmax_c = self.comboColorEEmaxFitting_3.currentText(), velocity_s = self.comboStyleVelocityFitting_3.currentText(), average_s = self.comboStyleAverageFitting_3.currentText(), EEmax_s = self.comboStyleEEmaxFitting_3.currentText())
         proxy_widget = self.scene.addWidget(pw)
         #self.graphicsOverlappingPeriods.resizeScene()
         self.graphicsOverlappingPeriods.fitInView(self.scene.sceneRect())
