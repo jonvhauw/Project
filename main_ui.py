@@ -163,8 +163,7 @@ class MainWindow(QMainWindow):
         global eFieldTimeArray, eFieldDataArray
 
         self.autoOffset.setEnabled(False)
-
-        offsetExtFieldTimeAuto, offsetSPCMTimeAuto, Period = tdmsData.find_auto_offset(AODSyncTimeArray=AODSyncTimeArray, AODSyncDataArray=AODSyncDataArray, SPCMSyncTimeArray=SPCMSyncTimeArray, 
+        offsetExtFieldTimeAuto, offsetSPCMTimeAuto = tdmsData.find_auto_offset(AODSyncTimeArray=AODSyncTimeArray, AODSyncDataArray=AODSyncDataArray, SPCMSyncTimeArray=SPCMSyncTimeArray, 
                                     SPCMSyncDataArray=SPCMDataArray, eFieldTimeArray=eFieldTimeArray, eFieldDataArray=eFieldDataArray)   
 
         self.spinBoxeFieldSync.setMinimum(-1)
