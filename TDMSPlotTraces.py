@@ -687,7 +687,7 @@ def plot_fitted_velocity_fixed_uEO_gui(scene, fitteduEPArray=np.array([]),uEO=0.
     ax.set_xlabel('Electroosmotic velocity (mm/s)',fontsize=15)
     plt.show()
     '''
-    return ax    
+    return ax, uEO*1e3, averageuEP*1e3
 
 def plot_fitted_velocity_fixed_uEO(fitteduEPArray=np.array([]),uEO=0.001):
     fitteduEOArray = np.array([])
