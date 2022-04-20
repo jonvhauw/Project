@@ -30,7 +30,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tabDataProcessing">
        <attribute name="title">
@@ -350,8 +350,13 @@
                <item row="2" column="1">
                 <widget class="QComboBox" name="comboColorAODY">
                  <property name="currentText">
-                  <string>red</string>
+                  <string>dark blue</string>
                  </property>
+                 <item>
+                  <property name="text">
+                   <string>dark blue</string>
+                  </property>
+                 </item>
                  <item>
                   <property name="text">
                    <string>red</string>
@@ -375,11 +380,6 @@
                  <item>
                   <property name="text">
                    <string>blue</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>dark bleu</string>
                   </property>
                  </item>
                  <item>
