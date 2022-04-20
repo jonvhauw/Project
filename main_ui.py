@@ -437,10 +437,15 @@ class MainWindow(QMainWindow):
 
         self.scene = QGraphicsScene()
         self.graphicsVelocity_2.setScene(self.scene)
-        plot = tdmsPlot.plot_fitted_velocity_fixed_uEO_gui(scene=self.scene, fitteduEPArray=fitteduEPArray,uEO=uEO)
+        plot, ueo, uep = tdmsPlot.plot_fitted_velocity_fixed_uEO_gui(scene=self.scene, fitteduEPArray=fitteduEPArray,uEO=uEO)
         proxy_widget = self.scene.addWidget(plot)
+
+        
+
         #self.graphicsVelocity_2.resizeScene()
         self.graphicsVelocity_2.fitInView(self.scene.sceneRect())
+        self.label_7.setText(str(ueo) + ' mm/s')
+        self.label_8.setText(str(uep) + ' mm/s')
 
     def plot_fitted_velocity2(self):
         print("plotting")
