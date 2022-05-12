@@ -102,10 +102,10 @@ class MainWindow(QMainWindow):
         self.spinBoxeFieldSync.setMinimum(-1)
         self.spinBoxSPCMSync.setMinimum(-1)
 
-        self.spinBoxStart.setValue(43.1)
-        self.spinBoxStop.setValue(43.85)
-        self.spinBoxeFieldSync.setValue(0.0028518545866624834)
-        self.spinBoxSPCMSync.setValue(0.0017841314182235968)
+        self.spinBoxStart.setValue(0)
+        self.spinBoxStop.setValue(1)
+        self.spinBoxeFieldSync.setValue(0)
+        self.spinBoxSPCMSync.setValue(0)
 
         self.imageSlider.sliderMoved.connect(self.move_slider)
         #self.imageSlider.sliderReleased.connect(self.move_slider)
@@ -145,6 +145,8 @@ class MainWindow(QMainWindow):
         if dlg.exec_():
             self.filenames = dlg.selectedFiles()
 
+        self.spinBoxeFieldSync.setValue(0)
+        self.spinBoxSPCMSync.setValue(0)
         self.update()
 
     def get_saved_files(self):
@@ -194,7 +196,7 @@ class MainWindow(QMainWindow):
         global eFieldTimeArray, eFieldDataArray
 
         self.autoOffset.setEnabled(False)
-        offsetExtFieldTimeAuto, offsetSPCMTimeAuto = tdmsData.find_auto_offset(AODSyncTimeArray=AODSyncTimeArray, AODSyncDataArray=AODSyncDataArray, SPCMSyncTimeArray=SPCMSyncTimeArray, 
+        offsetSPCMTimeAuto, offsetExtFieldTimeAuto= tdmsData.find_auto_offset(AODSyncTimeArray=AODSyncTimeArray, AODSyncDataArray=AODSyncDataArray, SPCMSyncTimeArray=SPCMSyncTimeArray, 
                                     SPCMSyncDataArray=SPCMDataArray, eFieldTimeArray=eFieldTimeArray, eFieldDataArray=eFieldDataArray)   
 
         self.spinBoxeFieldSync.setMinimum(-1)

@@ -593,34 +593,18 @@ def discont_index_to_time_and_data_array(discontIndexArray=np.array([]), AODTime
 
 import TDMSEKModel as Model
 def find_auto_offset(AODSyncTimeArray=np.array([]),AODSyncDataArray=np.array([]),SPCMSyncTimeArray=np.array([]),
-                        SPCMSyncDataArray=np.array([]),eFieldTimeArray=np.array([]),eFieldDataArray=np.array([]), cutoff = 10, mult=10000):
+                        SPCMSyncDataArray=np.array([]),eFieldTimeArray=np.array([]),eFieldDataArray=np.array([])):
 
-    AODSyncDataArray = AODSyncDataArray[:cutoff]
-    SPCMSyncDataArray = SPCMSyncDataArray[: cutoff]
-    eFieldDataArray = eFieldDataArray[: mult*cutoff]
-
-    AODSyncDiff = np.diff(AODSyncDataArray)
-    AODIndex = np.where(AODSyncDiff == 1)[0][0]
-    AODTime = (AODSyncTimeArray[AODIndex]+AODSyncTimeArray[AODIndex+1])/2
-    print(AODSyncTimeArray[AODIndex], AODSyncTimeArray[AODIndex+1])
-
-    SPCMSyncDiff = np.diff(SPCMSyncDataArray)
-    SPCMIndex = np.where(SPCMSyncDiff == 1)[0][0]
-    SPCMTime = (SPCMSyncTimeArray[SPCMIndex]+SPCMSyncTimeArray[SPCMIndex+1])/2
-    print(SPCMSyncTimeArray[SPCMIndex+1], SPCMSyncTimeArray[SPCMIndex+2])
-
-    eFieldSyncArray = np.where(eFieldDataArray >= 0, 1, 0)
-    eFieldsyncDiff = np.diff(eFieldSyncArray)
-    eFieldIndex = np.where(eFieldsyncDiff == 1)[0][0]
-    eFieldTime = (eFieldTimeArray[eFieldIndex]+eFieldTimeArray[eFieldIndex+1])/2
-    print(eFieldTimeArray[eFieldIndex], eFieldTimeArray[eFieldIndex+1])
-
-    period = 1/Model.f
-
-    offsetSPCMTime = mod((SPCMTime-AODTime), period)
-    offsetExtFieldTime = mod((eFieldTime-AODTime), period)
-
-    print(SPCMTime, eFieldTime, AODTime)
+    offsetSPCMTime = AODSyncTimeArray[1]-SPCMSyncTimeArray[1]
+    
+    efield_heavyside = np.heaviside(eFieldDataArray, 1)
+    efield_switch = np.where(np.abs(np.diff(efield_heavyside))>=1)
+    efieldSyncTimeArray = eFieldTimeArray[efield_switch]
+    
+    if eFieldDataArray[0]>=0:
+        offsetExtFieldTime = AODSyncTimeArray[3]-efieldSyncTimeArray[4]
+    else:
+        offsetExtFieldTime = AODSyncTimeArray[3]-efieldSyncTimeArray[3]
     return offsetSPCMTime, offsetExtFieldTime
 
 
